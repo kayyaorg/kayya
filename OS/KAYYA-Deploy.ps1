@@ -34,7 +34,7 @@ Set-Content $askpass -Encoding ascii -Value "@echo off`r`npowershell -NoProfile 
 $umbenennen = @{ "index.html" = "beta1.html"; "landing.html" = "index.html" }
 # SEIT 16.10.2026: g5.html (G 0.5, eigenes Zugangswort) wird mit hochgeladen.
 # NICHT hochladen: kayya-setup.php / kayya-upgrade1.php (Tokens, nach Gebrauch loeschen).
-$files = if ($NurIndex) { @("index.html","landing.html") } else { @("index.html","landing.html","g5.html","ted-proxy.php","kayya-ki.php","foerder-proxy.php",".htaccess") }
+$files = if ($NurIndex) { @("index.html","landing.html") } else { @("index.html","landing.html","g5.html","wartung.html","wartung-api.php","ted-proxy.php","kayya-ki.php","foerder-proxy.php",".htaccess") }
 $targets = @(Get-Content $ziele | Where-Object { $_ -and $_ -notmatch '^\s*#' })
 if ($targets.Count -eq 0) { Write-Host "ziele.txt enthaelt noch kein aktives Ziel (Beispielzeile entkommentieren)." -ForegroundColor Yellow; exit 2 }
 $ok = $true

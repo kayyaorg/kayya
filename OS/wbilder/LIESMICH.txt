@@ -1,0 +1,9 @@
+wbilder\ - Hintergrundbilder der Immobilien (Wartungsuebersicht)
+
+Konvention: immo-<ID>.jpg  (z. B. immo-3.jpg fuer das Schloss-Strassen-Center)
+Querformat, ca. 1600-2400 px breit, JPG. Wird auf der Immobilien-Seite
+dezent (22 % Deckkraft) als Hintergrund eingeblendet; fehlt das Bild,
+bleibt der Hintergrund einfach leer.
+
+IDs aktuell: 1 = Wohnanlage Thaerstrasse · 2 = Gewerbehof Sued
+             3 = Schloss-Strassen-Center (SSC)

@@ -64,9 +64,12 @@ tr:last-child td{border-bottom:none}
 .ladend{opacity:.55;pointer-events:none}
 @media (max-width:640px){ .kpis{gap:14px} td,th{padding:7px 5px} }
 @media print{ header,.btn,#toast{display:none!important} }
+#immobg{position:fixed;inset:0;z-index:-1;background-size:cover;background-position:center;opacity:0;transition:opacity .6s;pointer-events:none}
+.zrk{margin-bottom:12px;display:inline-block}
 </style>
 </head>
 <body>
+<div id="immobg"></div>
 <div class="wrap">
 <header>
   <div class="marke">Wartungs<b>übersicht</b><span class="chip">β.1.0.0 · DB</span></div>
@@ -102,6 +105,15 @@ function ampTag(a){
 }
 function deckAuf(html){ $('deck-inhalt').innerHTML=html; $('deck').classList.add('an'); }
 function deckZu(){ $('deck').classList.remove('an'); }
+
+/* Hintergrundbild der Immobilie: wbilder/immo-<id>.jpg (fehlt das Bild, bleibt der Hintergrund leer) */
+function immoBild(id){
+  var el=$('immobg'), img=new Image(), url='wbilder/immo-'+(+id)+'.jpg';
+  img.onload=function(){ el.style.backgroundImage='url("'+url+'")'; el.style.opacity='.22'; };
+  img.onerror=function(){ immoBildAus(); };
+  img.src=url;
+}
+function immoBildAus(){ var el=$('immobg'); el.style.opacity='0'; el.style.backgroundImage=''; }
 
 /* ---------- Login ---------- */
 function vLogin(){
@@ -160,6 +172,7 @@ function fImmoOk(){
 
 /* ---------- Ebene 2: Immobilie -> Anlagen-Gruppen ---------- */
 function vImmo(id){
+  immoBild(id);
   api({action:'immobilie',id:+id},function(im){
     if(!im) return;
     var grp=function(titel,liste){
@@ -180,7 +193,8 @@ function vImmo(id){
     };
     var sr=im.anlagen.filter(function(a){ return +a.sicherheitsrelevant===1; });
     var ns=im.anlagen.filter(function(a){ return +a.sicherheitsrelevant!==1; });
-    $('app').innerHTML='<div class="crumb"><a href="#/">Immobilien</a> › '+esc(im.name)+'</div>'
+    $('app').innerHTML='<a class="btn mini zrk" href="#/">← Zurück</a>'
+     +'<div class="crumb"><a href="#/">Immobilien</a> › '+esc(im.name)+'</div>'
      +'<h1>'+esc(im.name)+'</h1><div class="hinweis">'+esc(im.adresse||'')+'</div>'
      +grp('Sicherheitsrelevante Anlagen',sr)+grp('Nicht sicherheitsrelevante Anlagen',ns)
      +'<div style="margin-top:16px"><button class="btn mini" onclick="fAnlage('+im.id+')">+ Anlage anlegen</button></div>';
@@ -204,7 +218,8 @@ var AKT=null;
 function vAnlage(id){
   api({action:'anlage',id:+id},function(a){
     if(!a) return; AKT=a;
-    var h='<div class="crumb"><a href="#/">Immobilien</a> › <a href="#/immo/'+a.immobilie_id+'">'+esc(a.immobilie)+'</a> › '+esc(a.name)+'</div>'
+    var h='<a class="btn mini zrk" href="#/immo/'+a.immobilie_id+'">← Zurück</a>'
+     +'<div class="crumb"><a href="#/">Immobilien</a> › <a href="#/immo/'+a.immobilie_id+'">'+esc(a.immobilie)+'</a> › '+esc(a.name)+'</div>'
      +'<h1>'+esc(a.name)+' '+(+a.sicherheitsrelevant===1?'<span class="tag akz" style="vertical-align:4px">sicherheitsrelevant</span>':'')+'</h1>'
      +'<div class="hinweis" style="margin-bottom:16px">'+esc(a.typ||'')+(a.hersteller?' · '+esc(a.hersteller):'')+(a.baujahr?' · Baujahr '+esc(a.baujahr):'')+(a.standort?' · '+esc(a.standort):'')+'</div>';
 
@@ -369,6 +384,7 @@ function route(){
   if(!WER){ api({action:'me'},function(j){ if(j){ WER=j; kopf(); route(); } }); return; }
   kopf();
   var h=location.hash.replace('#/','');
+  if(h.indexOf('immo/')!==0) immoBildAus();
   if(h.indexOf('immo/')===0) vImmo(h.slice(5));
   else if(h.indexOf('anlage/')===0) vAnlage(h.slice(7));
   else vDash();
