@@ -1,0 +1,6 @@
+# Zeilenenden: Git normalisiert Textdateien im Repo auf LF,
+# ausgecheckt wird mit nativen Zeilenenden (Windows: CRLF).
+* text=auto
+
+# PowerShell-Skripte immer mit CRLF auschecken
+*.ps1 text eol=crlf
