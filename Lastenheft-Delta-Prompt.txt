@@ -1,0 +1,269 @@
+﻿================================================================================
+KAȲȲA OS – LASTENHEFT-DELTA (mitlaufend gepflegt)
+Stand: 22.08.2026 · Quelle: Prototyp KAȲȲA OS v1.0
+Diesen kompletten Text im Cowork-Chat einfügen + Lastenheft V2 (260723_V2, im Ordner Arbeitsdokumente) anhängen.
+================================================================================
+
+Du bist mein Anforderungsmanager für die Ausschreibungsunterlage „KAȲȲA OS“.
+
+AUFGABE
+Ergänze das angehängte Lastenheft V2 (260723_V2_KAYYA_Lastenheft) um die unten
+aufgeführten Anforderungen. Sie stammen aus einem klickbaren Prototyp (v1.0), der
+auf Basis des Lastenhefts gebaut und mit Stakeholdern verprobt wurde – sie sind
+dort noch NICHT oder nur teilweise enthalten. Erstelle eine neue Version
+„V3_KAYYA_Lastenheft“ als Word-Dokument (Datumspräfix = Erstellungstag; nur DOCX, kein PDF).
+
+ARBEITSWEISE (verbindlich)
+- Übernimm exakt die Konventionen des Dokuments: Anforderungs-IDs (Modulkürzel +
+  Nummer, fortlaufend an bestehende anschließend), Verbindlichkeit MUSS/SOLL/KANN,
+  Sprachstil.
+- Ordne jede neue Anforderung dem fachlich passenden Kapitel/Modul zu (Vorschlag
+  unten, bei besserer Einordnung begründet abweichen). Keine bestehenden
+  Anforderungen ändern oder löschen – nur ergänzen; Umbenennungen (Block H) als
+  redaktionelle Änderung kennzeichnen.
+- Prüfe je Punkt auf Überschneidung mit bestehenden Anforderungen; bei
+  Teilüberdeckung formuliere als Präzisierung mit Verweis („konkretisiert KI-03“).
+- Erstelle am Dokumentende ein Änderungsverzeichnis V2→V3 (Tabelle: neue ID,
+  Kapitel, Kurztitel, Herkunft „Prototyp v1.0“).
+- Frage bei Unklarheiten nach, statt zu raten.
+
+ZU ERGÄNZENDE ANFORDERUNGEN
+
+A) Rechnungsfreigabe & Internes Kontrollsystem (→ Kapitel 6 / M9)
+1. [MUSS] Mehrstufiger Rechnungs-Workflow: Stufe 1 digitaler Eingang mit
+   automatischer kaufmännischer Prüfung (Dubletten-Erkennung über Lieferant/
+   Betrag/Leistung/Zeitraum, Plausibilität zur Maßnahme); Stufe 2 fachliche
+   Freigabe durch den Fachbereich (z. B. Kursleitung); ab konfigurierbarer
+   Betragsschwelle (Default 500 €) zusätzliche Freigabe durch das Management.
+   Jede Stufe mit sichtbarem Status je Beleg.
+2. [MUSS] Eindeutige Maßnahmen-ID als Pflichtfeld auf jeder Eingangsrechnung;
+   harte Validierung gegen den Maßnahmenbestand – Belege ohne gültige ID werden
+   in Stufe 1 gestoppt (konkretisiert AG-03 „Kein Beleg ohne Bezug“).
+3. [MUSS] IKS-Missbrauchserkennung im Freigabeprozess: (a) Durchklick-Erkennung –
+   fachliche Freigaben unterhalb einer konfigurierbaren Mindestprüfzeit erzeugen
+   einen protokollierten Warnhinweis und ein Signal an das Management inkl.
+   Vier-Augen-Stichprobe; (b) Debitoren-Häufung – statistische Auffälligkeit,
+   wenn dieselbe Person überdurchschnittlich oft denselben Lieferanten/
+   Nachunternehmer freigibt, mit Empfehlung Freigabe-Rotation/Stichprobe.
+   Hinweise, keine automatischen Sanktionen (konform AG-04); zentrales
+   IKS-Signalboard im Management mit Bearbeitungsstatus.
+
+B) Vergabe & Business Development (→ Kapitel 4 / M9)
+4. [MUSS] Angebots-Workflow mit Ertragsvorschau: je Ausschreibung sichtbare
+   Kalkulation Erlöse − direkte Kosten − Umlagen = Deckungsbeitrag in €, Marge
+   in %, DB je Monat; Preis-Benchmark aus gewonnenen UND verlorenen Losen
+   (konkretisiert MZ-02/MZ-06).
+5. [MUSS] Vorausgefüllte Angebots-/Bewerbungsunterlage: Bieter-Stammdaten,
+   Zulassungen, Konzepttext aus dem Organisationsgedächtnis, qualifikations-
+   geprüfte Personalliste (DM-02) und automatisch zusammengestellte Anlagen-
+   Checkliste; editierbar, als Entwurf speicherbar, Freigabe vor Abgabe.
+6. [SOLL] KI-Chancen-Radar: proaktive Erkennung neuer Geschäftschancen jenseits
+   veröffentlichter Ausschreibungen (Förderprogramm-Scans, Gesetzes-/Pauschalen-
+   änderungen, Nachfragesignale aus dem Arbeitgeberportal/Talentpool,
+   Vergabe-Vorfeld) mit Potenzialschätzung, Konfidenz und ausgearbeiteter
+   Konzeptskizze als KI-Entwurf.
+7. [SOLL] Kuratierter News-Stream im Management-Cockpit: Branchen-,
+   Regulierungs- und Wettbewerbsmeldungen aus offenen Quellen, je Meldung mit
+   KI-Einordnung der Relevanz für das eigene Haus und Verknüpfung zu
+   Chancen-Radar/Vergabe-Monitor.
+
+C) Management-Cockpit Personal & Compliance (→ M5 / M6 / M7)
+8. [MUSS] Personal-Übersicht für die Geschäftsführung: alle Beschäftigten mit
+   vollbelastetem Gehalt, kostenmäßiger Allokation auf Maßnahmen/Kostenträger
+   aus Ist-Zeiten (FI-01) inkl. grafischer Aufteilung, Anwesenheitsquote und
+   Krank-Tagen; Gehaltsdaten ausschließlich für Management/GF sichtbar
+   (konkretisiert AG-06).
+9. [SOLL] Compliance-Kalender mit KI-Vorbereitung: zu ablaufenden Zulassungen
+   bereitet die KI Verlängerungsanträge, Audit-Nachweispakete und interne
+   Audit-Protokolle als freigabepflichtige Entwürfe vor (konkretisiert
+   QM-01/QM-02).
+
+D) Rollen-Frontends – Präzisierungen aus dem Prototyp (→ Kapitel 8)
+10. [MUSS] Kursleiter-Cockpit: Einstieg auf Maßnahmen-Ebene – zuerst die der
+    Lehrkraft zugeordneten Maßnahmen (aus der Einsatzplanung, mit Rolle je
+    Maßnahme, nächstem Termin und Sachkosten-Budget); erst nach Auswahl einer
+    Maßnahme folgt die Teilnehmer-Ebene (Anwesenheit, Lernstände). Zusätzlich:
+    eigene konfliktgeprüfte Einsätze (Wochenansicht) und eigene Zeiterfassung;
+    Rechnungsfreigabe des Fachbereichs (s. A); Status-Transparenz zur
+    Motivationsbegleitung – sichtbar, DASS ein Teilnehmer betreut wird
+    (Status/Wiedervorlage), niemals Fallinhalte (präzisiert MB-01/AG-06);
+    Kompetenz-Matrix der Kohorte (Teilnehmer × Kompetenzen als Ampel-Raster,
+    LN-02).
+11. [SOLL] Teilnehmer-App zusätzlich: Check-in je Unterrichtseinheit per QR aus
+    der App (Variante zu HW-02), Motivations-Elemente (Lernpunkte, Serien,
+    Abzeichen) sowie Selbstauskunfts-Bereich für Einwilligungen und Datenexport
+    (Umsetzung TN-03).
+
+E) KI-Assistenz-Oberfläche (→ M9, neues Unterkapitel „Assistenz-UI“)
+12. [MUSS] In jedem Rollen-Frontend ist der KI-Assistent direkt sichtbar und
+    promptbar (persönliche Ansprache, freie Eingabe, rollenspezifische
+    Schnellaktionen); Antworten enthalten ausführbare Aktions-Verweise in die
+    jeweilige Fachfunktion; jede Ausgabe als „KI-Entwurf – Freigabe
+    erforderlich“ gekennzeichnet (UI-Ausprägung von AG-04).
+13. [SOLL] Globale Befehls-/Suchpalette (Tastaturkürzel) für Navigation und
+    KI-Anfragen über alle berechtigten Bereiche.
+
+F) Übergreifende UI-Anforderungen (→ Kapitel 1 Grundsätze oder neues Kapitel „UX“)
+14. [MUSS] Mehrsprachigkeit aller Frontends (nicht nur Teilnehmerportal): mind.
+    Deutsch, Englisch, Türkisch, Tagalog, Arabisch inkl. vollständiger
+    Rechts-nach-links-Unterstützung; Sprachumschaltung zur Laufzeit
+    (erweitert TN-02).
+15. [KANN] Hell-/Dunkel-Modus, responsives Verhalten bis Smartphone-Breite für
+    alle Rollen (präzisiert PWA-Grundsatz).
+16. [SOLL] Demo-/Präsentationsmodus im Sandbox-Mandanten: geführte Tour durch
+    die Rollen-Frontends mit erklärenden Stationen; Reset auf definierten
+    Ausgangszustand (erweitert RP-04).
+17. [SOLL] Ereignisprotokoll-Ansicht für berechtigte Rollen: gefilterte
+    Live-Sicht auf das Append-only-Protokoll nach AG-02 (Nummer, Zeitstempel,
+    Akteur, Ereignis).
+18. [KANN] Bank-Kontenübersicht „wie im Banking-Tool“ (Referenz S-Firm/EBICS)
+    mit Salden aller Konten inkl. Auslandskonto und KI-Zuordnung der Umsätze zu
+    Maßnahme und Sphäre (UI-Ausprägung von FI-05/FI-07/KI-03).
+
+G) Recruiting & interne Talentförderung (→ M5 Personal, neue Anforderungen)
+19. [MUSS] Stellenbedarfs-Erkennung aus dem Maßnahmenbetrieb: offener
+    Personalbedarf entsteht automatisch aus Zuschlägen (MZ-03), Betreuungs-
+    schlüsseln, Ausfällen und Fristen (z. B. Einsatzsperren) und wird im
+    Management-Personalcockpit angezeigt.
+20. [MUSS] Ein-Klick-Stellenausschreibung über Recruiter-APIs (Multiposting):
+    KI-vorausgefüllte Anzeige aus Anforderungsprofil (PE-01) und Leistungs-
+    beschreibung; Veröffentlichung per API an mind. BA-Jobbörse sowie gängige
+    Jobportale (StepStone, Indeed, LinkedIn) und die eigene Karriereseite;
+    Kanalstatus und Rückläufe je Stelle.
+21. [MUSS] Bewerbungsmanagement mit KI-Vorprüfung: Eingang aller Kanäle in
+    einer Pipeline, Matching gegen das Anforderungsprofil (Score,
+    Muss-Kriterien), Umleitungsvorschlag passender Bewerbungen auf anderen
+    offenen Bedarf; Einladungs- und Absage-Entwürfe (wertschätzend) mit
+    menschlicher Freigabe; DSGVO-konforme Löschfristen für Bewerberdaten.
+22. [MUSS] Internes Talent-Matching vor externer Ausschreibung: Die KI prüft
+    laufend Beschäftigte UND Teilnehmer (Absolventen-Pipeline) auf Eignung für
+    offene bzw. entstehende Stellen – mit Match-Begründung, Förderpfad-
+    Vorschlag (Weiterbildung, Bindungsklausel, Beförderung) und
+    Wirtschaftlichkeitseffekt (vermiedene externe Besetzung). Ziel:
+    Mitarbeitende binden und ihnen bessere Stellen im Haus bieten.
+    Personal-Entscheidungen ausschließlich durch Menschen (AG-04); Einwilligung
+    der Teilnehmer für die Übernahme-Ansprache erforderlich (TN-03).
+
+H) Benennung & Startseite (redaktionell, → Kapitel 8 Einleitung)
+23. [SOLL] Die Einstiegsseite der Plattform heißt nicht „Rollenauswahl“,
+    sondern „Einblick je Nutzer“ (bzw. sinngemäß „Ein Blick je Nutzer auf
+    KAȲȲA OS“): Sie präsentiert die Frontends als personalisierte Einblicke
+    derselben Datenbasis, nicht als technische Rollen. Rücknavigation
+    einheitlich „Zurück zur Übersicht“. Diese Benennung ist in allen Sprachen
+    der Oberfläche konsistent zu führen.
+
+I) Bestellwesen / Mittelanforderung (→ Kapitel 6 / M5, neue Anforderungen)
+24. [MUSS] Bestellworkflow (BANF) für Fachbereiche: Kursleitungen und andere
+    Fachbereiche können Mittel für ihre Maßnahme direkt im eigenen Frontend
+    bestellen. Jede Bestellung trägt automatisch die eindeutige Maßnahmen-ID
+    und durchläuft die Freigabekette fachlich (Fachbereich, mit Absenden
+    erteilt) → buchhalterisch (FiBu: Budget-, Kontierungs- und Lieferanten-
+    prüfung; ab Betragsschwelle zusätzlich Management/Vier-Augen) → bestellt.
+25. [MUSS] Budget-Prüfung in Echtzeit: Bestellungen werden gegen das
+    Sachkosten-Budget der Maßnahme (Plan aus der Kalkulation, MZ-03) geprüft;
+    offene Bestellungen reservieren Budget. Bei Überschreitung harte Sperre
+    mit Handlungsoptionen (Betrag reduzieren, Umwidmung, Nachtrag aus
+    Ist-Daten gem. MZ-05).
+26. [SOLL] 3-Wege-Abgleich: eingehende Rechnungen werden automatisch gegen
+    Bestellung und Wareneingang abgeglichen; Abweichungen landen in der
+    Freigabe-Queue (verzahnt mit A/1–3).
+
+J) Zeugnisse im Ökosystem & Aufbewahrungsarchiv (→ M7/M8, ZG, Kapitel 8)
+27. [MUSS] Zeugnisse als Eingliederungsnachweis im Kostenträger-Dashboard:
+    je Maßnahme eine anonymisierungskonforme Liste der Abschlüsse mit Verbleib
+    (QM-03) und Prüfcode; der Kostenträger kann jeden Nachweis direkt aus dem
+    Dashboard verifizieren (Registerabgleich, eIDAS-Siegel, Hash); jeder
+    Prüfzugriff wird protokolliert (erweitert RP-02, ZG-05).
+28. [MUSS] Teilen von Zertifikaten durch Teilnehmer: aus der Teilnehmer-App
+    heraus als Open Badge 3.0 / Verifiable Credential in berufliche Netzwerke
+    (mind. LinkedIn) übernehmbar, als signierte Badge-Datei exportierbar und
+    als öffentlicher Prüflink kopierbar – ohne Preisgabe weiterer Aktendaten;
+    Teilen-Einwilligung dokumentiert und widerrufbar (TN-03).
+29. [MUSS] Archivbereich „Aufbewahrungspflichtige Dokumente“ im Management:
+    zentrale Sicht auf alle nach deutschem Recht aufbewahrungspflichtigen
+    Dokumente – u. a. Rechnungen/Buchungsbelege und Jahresabschlüsse (10 Jahre,
+    § 147 AO/§ 257 HGB), Handels-/Geschäftsbriefe (6 Jahre), Lohnunterlagen
+    (§ 41 EStG/§ 28f SGB IV), Zeugnisse/Prüfungsunterlagen (Fristen gem.
+    AZAV/Trägerverträgen), Teilnehmerakten je Datenart, Verträge und
+    Zuwendungsbestätigungen. Je Kategorie: Rechtsgrundlage, Frist, Bestand,
+    Fristende je Dokument; automatische Löschvorschläge nach Fristablauf mit
+    ausschließlich menschlicher Freigabe und protokolliertem Löschnachweis
+    (konkretisiert DK-01/TN-03). Besonderheit Zeugnisse: Prüfcode/Hash bleibt
+    nach Löschung der personenbezogenen Akte dauerhaft verifizierbar.
+
+K) REHA-Profil mit Vitalwerten (→ M1 Teilnehmerakte / Kapitel 8, neue Anforderung)
+30. [MUSS] Für Teilnehmende in (medizinisch-beruflichen) Reha-Maßnahmen führt
+    die Plattform ein REHA-Profil, das neben den täglichen Reha-Maßnahmen die
+    laufenden Erkenntnisse dokumentiert – mindestens Blutdruck, Puls und
+    subjektives Befinden. Einträge erfolgen sowohl durch Selbsteingabe der
+    Teilnehmenden (App) als auch durch die Fachkraft/Kursleitung (z. B. im
+    Rahmen von Belastungserprobungen), jeweils mit gekennzeichneter Quelle
+    und Zeitstempel; beide Sichten arbeiten auf demselben Verlauf.
+    Zugriff feldgenau (AG-06): Teilnehmer/in, erfassende Fachkraft und
+    therapeutisches Team – nicht Verwaltung, Management-Aggregate oder
+    Kostenträger. Werte erscheinen nicht im allgemeinen Ereignisprotokoll
+    (dort nur der Vorgang „Eintrag erfasst“); Aufbewahrung und Löschung
+    gemäß Gesundheitsdaten-Fristen (TN-03).
+
+L) Live-Stellenmarkt & Teilnehmer-Matching (→ M7/VM, Kapitel 7.2 „BA – offene Daten“)
+31. [MUSS] Live-Anbindung der BA-Jobsuche-API (bund.dev, clientId-basiert):
+    Die Plattform ruft reale Stellenangebote der Bundesagentur für Arbeit zur
+    Laufzeit ab (Suchprofil je Teilnehmer: Zielberuf, Ort, Umkreis) und zeigt
+    sie mit Quellenangabe, Abrufzeitpunkt und Direktlink zur Original-Anzeige.
+    Umsetzung des im Lastenheft angelegten Matching-Bausteins (VM-03).
+32. [MUSS] Teilnehmer-Verprobung: Jede Live-Stelle wird gegen das
+    Teilnehmerprofil bewertet (Berufs-/Qualifikationsabgleich, Ort,
+    Vertragsart, Vergütung) und als Match-Score mit nachvollziehbarer
+    Begründung dargestellt – als KI-Empfehlung; die Vermittlungsentscheidung
+    und die Übernahme als Vorschlag in die Teilnehmerakte erfolgen durch
+    Menschen (AG-04). Sichten: Vermittlungs-/Arbeitgeberbereich (alle
+    Profile) und Teilnehmer-App (eigenes Profil).
+33. [MUSS] Ehrlichkeitsprinzip Live-Daten: Ist die Quelle nicht erreichbar,
+    zeigt die Oberfläche einen klaren Fehlerhinweis mit Wiederholen-Option –
+    niemals Ersatz-/Fake-Daten als live gekennzeichnet. Caching max. 10 Min.
+    je Profil; jeder Abruf wird protokolliert (AG-02-Prinzip).
+
+M) Produkt-KI-Branding & Engine-Transparenz (→ AG-04/AG-07, Kapitel 1)
+34. [MUSS] Die KI-Funktionen treten in allen Frontends unter der Produktmarke
+    „KAȲȲA“ auf (Ansprache, Empfehlungen, Entwürfe: „KAȲȲA empfiehlt …“) –
+    konsistent mit dem White-Label-Ziel AG-07. Die zugrunde liegende
+    KI-Engine (Anthropic Claude, vgl. Kapitel 7 KI-Inferenz) wird
+    transparent ausgewiesen: dezenter, dauerhaft sichtbarer Hinweis
+    „powered by Claude“ im Assistenz-Panel sowie Engine-Angabe in
+    Systeminfo/Impressum. Vertragliche Vorgaben KI-08/KI-10 (AVV, kein
+    Training auf eigenen Daten) bleiben unberührt.
+
+N) Vergabe-Import aus Echtquellen (→ MZ-01, Kapitel 7.2)
+35. [MUSS] Import realer Bekanntmachungen in den Vergabe-Monitor: mind. TED
+    (api.ted.europa.eu, CPV-gefiltert) und Datenservice Öffentlicher Einkauf;
+    je Bekanntmachung Titel, Vergabestelle, Frist, Quell-Link und
+    Importzeitpunkt. Übernahme in die Bewertungs-Pipeline per Klick
+    (Status „prüfen“, KAȲȲA-Analyse nach Unterlagen-Import). Browser-seitige
+    CORS-Sperren der Quellen werden über einen plattformseitigen Abruf/Proxy
+    gelöst; Importstand wird transparent angezeigt (Ehrlichkeitsprinzip wie 33).
+
+ERGEBNIS
+1) Vollständiges Word-Dokument 260723_V2_KAYYA_Lastenheft.docx im Stil des
+   Originals,
+2) Änderungsverzeichnis V2→V3 als Kapitel am Ende,
+3) kurze Liste offener Rückfragen, falls Einordnungen unklar waren.
+
+================================================================================
+ÄNDERUNGSHISTORIE DIESER DELTA-DATEI
+- 22.07. Blöcke A–F (IKS, Vergabe-Ertrag, Personal-Cockpit, Assistenz-UI, UX)
+- 22.07. Block G (Recruiting & interne Talentförderung)
+- 22.07. Block H (Startseite „Einblick je Nutzer“, Rücknavigation)
+- 22.07. Block I (Bestellwesen/BANF, Budget-Prüfung, 3-Wege-Abgleich) +
+  Präzisierung Punkt 10 (Kursleiter: Maßnahmen-Ebene zuerst)
+- 22.07. Block J (Zeugnisse: Eingliederungsnachweis beim Kostenträger,
+  LinkedIn-/Badge-Teilen in der Teilnehmer-App, Archivbereich
+  aufbewahrungspflichtige Dokumente inkl. Rechnungen)
+- 24.07. Block K (REHA-Profil: Vitalwerte & Befinden, Selbst- und
+  Fachkraft-Eingabe, feldgenauer Zugriff)
+- 09.08. Block L (Live-BA-Jobbörse + Teilnehmer-Matching, erster
+  Online-Baustein · Prototyp v0.7)
+- 22.08. Block M (Produkt-KI-Branding "KAȲȲA" + Engine-Transparenz
+  "powered by Claude" · Nutzer-Persona Bernhard · Prototyp v0.8)
+- 22.08. Block N (Echte TED-Ausschreibungen im Vergabe-Monitor, dynamische
+  Fristen · Prototyp v1.0)
+================================================================================

@@ -1,0 +1,144 @@
+================================================================
+DEINE AUFGABEN, BERNHARD                     Stand: 23.08.2026
+Träger: Bernhard Krug (Einzelunternehmen) · Wahrheitsquelle Impressum: Thaerstraße 40, 10249 Berlin · b@kayya.org
+Alles, was NUR DU tun kannst (Logins, Verträge, Unterschriften).
+Alles andere baue ich. Reihenfolge = Priorität.
+================================================================
+
+■ SCHRITT 1 · KAȲȲA ONLINE BRINGEN (≈15 Min · 0 €)
+  □ 1a  Host Europe: Domain kayya.de mit dem Webhosting-Paket
+        verbinden (A-Record auf die cPanel-IP).
+  □ 1b  cPanel → Dateimanager → public_html: FÜNF Dateien aus
+        KAYYA\OS\ hochladen: index.html · kayya-ki.php · ted-proxy.php
+        · foerder-proxy.php · .htaccess  (oder 1e – dann lädt Claude)
+  □ 1c  https://kayya.de aufrufen. Vorgeschaltet ist die Zugangsseite
+        (Zugänge: LILA!! Bernhard · Hanna$$ Johanna · INVEST!! Reinhold). Für echten Schutz zusätzlich cPanel →
+        „Verzeichnisschutz“ auf public_html (Server-Passwort).
+        SSL: cPanel → „SSL/TLS Status“ → AutoSSL.
+  ► TED-Ausschreibungen damit VOLL LIVE (Proxy braucht keinen Key).
+  ✓ 1d  ZWEITE DOMAIN kayya.org (IONOS) – ERLEDIGT 23.08.2026:
+        https://kayya.org und www.kayya.org liefern KAȲȲA OS β.1.2.0,
+        SSL gültig, TED-Proxy LIVE (echte EU-Ausschreibungen), KI-Proxy
+        erreichbar (wartet auf Key → Schritt 3).
+        Optional (1 Klick): Mein IONOS → Domains & SSL → kayya.org →
+        "HTTPS erzwingen" (leitet http:// automatisch auf https:// um).
+  ► kayya.org kann ab sofort als Demo-Link an Dritte gehen (3 Zugänge, s. 1c).
+  ✓ 1e  AUTO-UPLOAD EINGERICHTET – ERLEDIGT 28.08.2026: Claude lädt nach
+        jeder Änderung selbst hoch (SFTP über Windows-OpenSSH) und prüft von außen.
+        Ordner C:\Users\BKRG\KAYYA-Zugang\ → ZUGANG-EINRICHTEN.txt lesen,
+        ziele.txt (Host + Ordner) und netrc.txt (Benutzer/Passwort) füllen.
+        Zugangsdaten: Mein IONOS → Hosting → Webspace → „SFTP & SSH“.
+        Die Datei bleibt auf deinem PC; ich zeige sie nie an.
+        Test: KAYYA\OS\KAYYA-Deploy.ps1 (Rechtsklick → Mit PowerShell ausführen).
+
+■ SCHRITT 2 · RECHTSTEXTE VERVOLLSTÄNDIGEN (≈10 Min · 0 €)
+  Impressum & Datenschutzerklärung sind eingebaut (vor und hinter
+  der Tür erreichbar). In der Datei KAYYA OS\index.html ganz unten
+  im Block „const LEGAL“ (oder sag mir die Werte, ich trage sie ein):
+  ✓ 2a  Geschäftsanschrift: Thaerstraße 40, 10249 Berlin (Live-Impressum, Stand 08.09.2026)
+  ✓ 2b  Handelsregister: entfällt im Impressum, solange als Einzelunternehmen
+        (Bernhard Krug) aufgetreten wird. Offen: Verhältnis zur KAYYA GmbH
+        (HRB 354345) → siehe Schritt 4½a.
+  □ 2c  USt-IdNr.: auf Wunsch vorerst NICHT im Impressum (sobald erteilt
+        und gewünscht → mir nennen)
+  ✓ 2d  Aufsichtsbehörde: Berliner Beauftragte für Datenschutz und
+        Informationsfreiheit (eingetragen 23.08.)
+  ✓ 2e  Datenschutzbeauftragter: RA Bernhard M. Krug (benannt 23.08.,
+        steht in der Datenschutzerklärung).
+  ► Rechtstexte: durch RA Bernhard M. Krug geprüft (23.08.2026) –
+    Prüfvorbehalts-Hinweise aus Impressum/Datenschutz entfernt.
+
+■ SCHRITT 3 · DIE KAȲȲA-KI ECHT MACHEN (≈10 Min · ~10–30 €/Monat)
+  □ 3a  https://console.anthropic.com → Konto für KAȲȲA / Bernhard Krug
+        (E-Mail b@kayya.org), Zahlungsmittel hinterlegen.
+  □ 3b  Commercial Terms / Datenverarbeitungs-Zusatz (DPA) akzeptieren
+        – das ist die vertragliche Basis „kein Training, AVV“.
+  □ 3c  Settings → Limits → Monats-Spend-Limit (Start: 25 $).
+  □ 3d  API-Key „kayya-os-prod“ erzeugen → Datei
+        C:\Users\BKRG\KAYYA-Zugang\kayya-key.php anlegen, Inhalt
+        genau:  <?php return 'sk-ant-DEIN-KEY';
+        → dann einmal KAYYA\OS\KAYYA-Deploy.ps1 -Key ausführen
+        (oder die Datei von Hand neben kayya-ki.php auf den Server
+        legen). Der Key steht nie in kayya-ki.php → Updates sicher.
+  ► Die Demo erkennt das automatisch; vor der ersten Echt-Antwort
+    erscheint die Einwilligung (DSGVO Art. 6 Abs. 1 lit. a).
+
+■ SCHRITT 4 · APIs & VERTRÄGE (aktualisiert 30.08.2026 nach
+  Vollprüfung aller 16 Bundesländer – 67 Schnittstellen getestet,
+  Details: API-Anbindungen.html)
+  ► KEINE AKTION NÖTIG – läuft bereits live über unseren Server:
+    BA-Jobsuche + Ausbildungsstellen (bundesweit + regional, z.B.
+    Bayern), BA-Weiterbildungssuche/NOW, service.bund.de, TED,
+    EU Funding & Tenders, Zuwendungen Berlin/Hamburg/Bremen,
+    EFRE-Vorhaben NRW, Kursportal Baden-Württemberg.
+  ► EBENFALLS OHNE REGISTRIERUNG nutzbar (Einbau vorbereitet):
+    BA-Berufssprachkurse (Key infosysbub-spraf), AVGS-Coaching-
+    suche (infosysbub-avgs), BA-Entgeltatlas (infosysbub-ega),
+    Datenservice Öffentliche Vergabe oeffentlichevergabe.de
+    (ALLE deutschen eForms-Bekanntmachungen als Tagesexport,
+    je Bundesland filterbar – ersetzt Länder-Vergabeportale!).
+  □ 4a  eM@w (BA) – Anfrage Schnittstellenbeschreibung + Teilnahme-
+        vereinbarung. PFLICHT, Wochen Vorlauf → JETZT senden.
+  □ 4b  DATEV-Kommunikationspartner – mit deiner Steuerkanzlei.
+  □ 4c  EBICS-Teilnehmervereinbarung – bei der Hausbank.
+  □ 4d  eIDAS-Fernsiegel – Angebot bei D-Trust ODER Swisscom.
+  □ 4e  KURSNET / mein NOW – Registrierung als Datenlieferant
+        (für die EIGENE Listung unserer Angebote).
+  □ 4f  Bayern-Statistik (optional): kostenlose GENESIS-Kennung
+        beim Bayerischen Landesamt für Statistik (Arbeitsmarkt-
+        zahlen je Landkreis für Bedarfsanalysen).
+  □ 4g  BA-Arbeitgeberkonto (Jobbörse) – späteres Multiposting.
+  □ 4h  EU-Login + PIC-Nummer – erst bei EU-FörderANTRÄGEN.
+  □ 4i  e-Vergabe/DTVP-Bieterkonten – nur für Angebotsabgabe.
+  ✗ GESTRICHEN (geprüft, keine offene API): Förderdatenbank des
+    Bundes (Bot-Schutz), HAD Hessen, Vergabeportale BY/SN/ST/NI/HB
+    (alle nur HTML – Daten kommen stattdessen über eForms-DE),
+    WISY-Kursportale HH/SH, Weiterbildungsdatenbank NRW.
+
+■ SCHRITT 4½ · INVESTOR-BEREICH & GRÜNDUNG (NEU 30.08.2026)
+  ► Investor-Bereich ist LIVE: Landing Page → „Investor Deck" →
+    Passwort LILADOCS → laufend gepflegter Projektstand mit
+    Kennzahlen, Investitionsbedarf und allen Dokumenten.
+    (Falsches Passwort zeigt weiter den Spruch.)
+  □ 4½a UG-Gründungspaket im Ordner KAYYA\Gruendung\ durchsehen:
+        Musterprotokoll, alternativ Gesellschaftsvertrag, HR-
+        Anmeldungsentwurf, Gesellschafterliste, Checkliste.
+        WICHTIG: PLZ klären (du sagtest 10437, Thaerstraße 40
+        liegt in 10249) + Verhältnis zur bestehenden KAYYA GmbH
+        (HRB 354345) entscheiden. Dann Notartermin.
+■ SCHRITT 5 · LIZENZEN & ZULASSUNGEN (Zeitachse, nicht sofort)
+  □ 5a  AZAV-Trägerzulassung (fachkundige Stelle, ~3–8 T€) – erst
+        nach erstem Kostenträger-Interesse terminieren.
+  □ 5b  BAMF-Trägerzulassung – nur wenn Berufssprach-/Integrations-
+        kurse angeboten werden.
+  □ 5c  Marke „KAȲȲA“ beim DPMA anmelden (~300 €, Klassen 41/42/35)
+        – schützt den Namen der GmbH und der Software.
+  □ 5d  Berufsgenossenschaft (VBG) anmelden – Pflicht für die GmbH
+        mit Beschäftigten; Betriebshaftpflicht/Vermögensschaden.
+  □ 5e  ENTSCHEIDUNG: Gemeinnützigkeit (gGmbH) beantragen? Nur dann
+        gelten Spenden/Zuwendungsbestätigungen (FI-09) und Sphären-
+        trennung – sonst nehmen wir beides aus Produkt & Doku.
+  □ 5f  Software-Lizenzen: KEINE nötig – KAȲȲA OS ist Eigenbau,
+        Schriften sind Systemschriften, APIs frei bzw. vertraglich.
+
+■ SCHRITT 6 · COWORK: DOKUMENTE AUF GmbH + SELBSTBAU (≈15 Min)
+  □ 6a  Dokumente-Update-Prompt.txt in Cowork einfügen, die 5 Dateien
+        aus Arbeitsdokumente\ + Lastenheft-Delta-Prompt.txt anhängen.
+  □ 6b  Ergebnisse (nur DOCX/PPTX) in Arbeitsdokumente\ legen.
+
+■ SCHRITT 7 · KOSTENTRÄGER-GESPRÄCHE VORBEREITEN (≈30 Min)
+  □ 7a  Arbeitsdokumente\260823_V1_KAYYA_Kostentraeger-Gespraechspaket.docx
+        lesen – Anhang „Offene Entscheidungen“ beantworten, allen voran:
+        Preis/Pilotkonditionen, Pilot-Fokus, gGmbH ja/nein, AZAV-Stelle/
+        Termin, Echt-KI vor den Gesprächen, Team-Sprachregelung.
+  □ 7b  One-Pager (1 Seite) und Live-Demo-Drehbuch ausdrucken; Drehbuch
+        einmal komplett auf kayya.org durchklicken (Zugang LILA!!).
+  □ 7c  Firmenname im Handelsregister: „KAYYA GmbH“ oder „KAȲȲA GmbH“?
+        (Impressum/Datenschutz stehen noch auf KAYYA GmbH.)
+
+────────────────────────────────────────────────────────────────
+WAS ICH OHNE DICH WEITERBAUE, sobald du „weiter“ sagst:
+FI-09-Entscheidung
+umsetzen · Rechtstexte mit deinen Werten befüllen · jede weitere
+Funktion, die du dir wünschst.
+================================================================

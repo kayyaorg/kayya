@@ -1,0 +1,86 @@
+================================================================
+KAȲȲA – STRATEGIE & BUDGET (Selbstbau-Modus)   Stand: 22.08.2026
+Antworten auf: Was brauchen wir noch? Was können wir zu zweit?
+Wofür müssen wir wirklich Geld ausgeben?
+================================================================
+
+1) IST DAS LASTENHEFT ANGEPASST?
+   V2 liegt vor (Arbeitsdokumente). V3 entsteht erst, wenn du den
+   Lastenheft-Delta-Prompt in Cowork laufen lässt (Schritt 4 deiner
+   Aufgabenliste). ABER: Sein Zweck ändert sich – siehe Punkt 2.
+
+2) BRAUCHEN WIR LASTENHEFT & INVESTORENDECK NOCH?
+   LASTENHEFT: Als AUSSCHREIBUNG (Kap. 13–15, „Aufforderung zur
+   Angebotsabgabe“) – NEIN, wir kaufen keinen Generalauftragnehmer.
+   Als PRODUKT-SPEZIFIKATION – JA, unbedingt behalten: Sie ist unser
+   Pflichten-Katalog für den Selbstbau, Grundlage für AZAV-/eM@w-
+   Anträge und später für punktuelle Freelancer-Aufträge („bau exakt
+   FI-07“). Der Dokumente-Update-Prompt widmet es entsprechend um.
+   INVESTORENDECK: Nur nötig, falls wir Fremdkapital wollen. Im
+   Selbstbau-Modus: einmotten bzw. umwidmen zum KOSTENTRÄGER-/
+   PARTNER-PITCH (Jobcenter, REZ, Arbeitgeberverbünde) – das ist
+   das Publikum, das uns Umsatz bringt, nicht Investoren.
+
+3) WAS KÖNNEN WIR BEIDE OHNE BEZAHLTE PROGRAMMIERER?
+   Schon erledigt / kann ich jederzeit:
+   ✓ Komplettes Frontend (v1.1, 10 Rollen, alle Workflows)
+   ✓ Live-Daten: BA-Jobbörse (läuft), TED (Proxy liegt bereit)
+   ✓ ECHTE KAȲȲA-KI über Claude-API (Proxy liegt bereit – nur
+     dein Key fehlt) → damit sind Textentwürfe, Bescheid-Analysen,
+     Konzeptskizzen, Antworten REAL nutzbar
+   ✓ Alle Dokumente, Anträge, Konzepte, Kalkulationen, Kursinhalte,
+     Präsentationen, Webseiten, Auswertungen
+   ✓ Weitere Frei-APIs (bund.dev-Katalog), PDF-/CSV-Erzeugung,
+     Formulare, E-Mail-Vorlagen, sogar kleine PHP-Werkzeuge
+   Du dazu: Logins, Uploads (cPanel), Unterschriften, Gespräche.
+
+4) WOFÜR MÜSSEN WIR WIRKLICH FREMDE ARBEITSLEISTUNG KAUFEN?
+   Erst wenn ECHTE Personendaten & Geld im Produktivbetrieb fließen:
+   a) Betrieb & Sicherheit: Server-Administration, Backups,
+      Härtung, Bereitschaft (DSGVO Art. 32; ein Mensch mit
+      Admin-Pflichten). ~200–500 €/Monat als Managed-Service ODER
+      Freelancer-Stunden – NICHT vorher nötig.
+   b) eM@w-Produktivzulassung: Das XML-Verfahren kann ich
+      programmieren; für Zulassungstest & Betrieb brauchen wir
+      die stabile Umgebung aus (a). Punktuell Freelancer sinnvoll
+      (~5–10 T€), zahlbar aus der ersten Maßnahme.
+   c) Pflicht-Prüfungen: Datenschutz/AVV prüft RA Bernhard M. Krug
+      selbst (0 €, erledigt f. Demo 23.08.); bleibt: Pen-Test vor
+      Echtdaten (~2–5 T€).
+   d) NICHT nötig: Agentur für Frontend, Design, Konzepte, Doku,
+      KI-Integration – das ist unser Teil.
+
+5) WIE VIEL GELD BENÖTIGEN WIR TATSÄCHLICH?
+   PHASE A – JETZT (Demo → nutzbares Produkt, Akquise):
+     Hosting kayya.de ............ ~5–10 €/Monat (läuft)
+     Claude-API .................. ~10–30 €/Monat (Limit setzbar)
+     Domain, TED, BA-APIs ........ 0 €
+     SUMME: < 50 €/Monat. Kein weiteres Kapital nötig.
+   PHASE B – TRÄGER WERDEN (parallel, Vorlauf nutzen):
+     Gründung ............ ERLEDIGT: KAȲȲA GmbH ist angemeldet (22.08.)
+       Offen dazu: HRB-Eintrag abwarten, USt-IdNr., ggf. Antrag auf
+       Gemeinnützigkeit (nur dann gelten Spenden/FI-09 und Sphären)
+     AZAV-Trägerzulassung ........ ~3–8 T€ (fachkundige Stelle)
+       → förderfähig; zeitlich NACH erstem Kundeninteresse
+     eIDAS-Fernsiegel ............ ab ~50 €/Monat, erst bei
+       ersten echten Zeugnissen
+   PHASE C – ERSTE MASSNAHME GEWONNEN (aus Erlösen zahlbar):
+     Betrieb/Sicherheit (a) + eM@w-Endspurt (b) + Prüfungen (c)
+     ≈ 10–20 T€ einmalig + ~300–600 €/Monat – gedeckt durch die
+     Maßnahmen-Erlöse (vgl. Ertragsvorschau: ein einziges
+     FbW-Los trägt ~2.500–5.000 €/Monat Deckungsbeitrag).
+   FAZIT: Bis zum zahlenden Kunden brauchen wir KEIN Kapital
+   außer Kleinstbeträgen. Der alte Förderfahrplan (Investoren/
+   große Summen) wird zur Option, nicht zur Voraussetzung.
+
+6) UNSER WEG ZU ZWEIT (die nächsten 4 Wochen)
+   W1: kayya.de live + KI echt (deine Schritte 1–2) · eM@w-Mail
+   W2: Dokumente via Cowork umgewidmet · Kostenträger-Pitch
+       (ich baue Gesprächspaket + Live-Demo-Drehbuch)
+   W3: Erste REZ-/Jobcenter-Gespräche (Demo zeigen!) · HRB/Konto/DSB
+   W4: Feedback einbauen · AZAV-Vorbereitung mit fachkundiger
+       Stelle terminieren
+   Ehrlicher Hinweis: Echte Teilnehmer-/Finanzdaten verarbeiten
+   wir ERST nach Phase-C-Grundlagen (a–c) – bis dahin ist KAȲȲA
+   Demo-, Akquise- und Entwurfs-Werkzeug mit echten Marktdaten.
+================================================================

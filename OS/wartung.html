@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wartungsübersicht</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico">
+<style>
+:root{ --bg:#FAFAF7; --ink:#141414; --mut:#6B6B66; --line:#E3E1DA; --card:#FFFFFF;
+  --akz:#4D004D; --rot:#B3261E; --gelb:#9A6A00; --gruen:#1E7B4D; }
+@media (prefers-color-scheme:dark){
+  :root{ --bg:#131312; --ink:#ECEAE4; --mut:#95938C; --line:#2B2B28; --card:#1A1A18;
+    --akz:#D9A8D9; --rot:#FF7A70; --gelb:#E8B94A; --gruen:#4CC98A; }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink)}
+body{font:15px/1.5 "Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:980px;margin:0 auto;padding:0 22px 60px}
+header{display:flex;align-items:center;justify-content:space-between;padding:20px 0;border-bottom:1px solid var(--line);margin-bottom:26px;flex-wrap:wrap;gap:10px}
+.marke{font-size:17px;font-weight:800}.marke b{color:var(--akz)}
+.chip{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--mut);border:1px solid var(--line);border-radius:99px;padding:2px 9px;margin-left:8px;vertical-align:2px}
+.kopfr{display:flex;gap:14px;align-items:center;font-size:13px;color:var(--mut)}
+.kopfr a:hover,.kopfr span[onclick]:hover{color:var(--ink);cursor:pointer}
+h1{font-size:24px;font-weight:800;letter-spacing:-.01em}
+h2{font-size:17px;font-weight:700;margin-bottom:10px}
+.crumb{font-size:13px;color:var(--mut);margin-bottom:6px}
+.crumb a{color:var(--akz)}
+.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin:26px 0 10px;border-top:1px solid var(--line);padding-top:14px}
+.karte{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px}
+.karte.klick{cursor:pointer;transition:border-color .15s}
+.karte.klick:hover{border-color:var(--akz)}
+.zeile{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.hinweis{font-size:12.5px;color:var(--mut)}
+.tag{display:inline-block;font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;border:1px solid var(--line);color:var(--mut)}
+.tag.rot{color:var(--rot);border-color:var(--rot)}
+.tag.gelb{color:var(--gelb);border-color:var(--gelb)}
+.tag.gruen{color:var(--gruen);border-color:var(--gruen)}
+.tag.akz{color:var(--akz);border-color:var(--akz)}
+.btn{display:inline-block;font-size:13px;font-weight:600;border-radius:9px;padding:8px 14px;border:1px solid var(--ink);background:none;color:var(--ink);cursor:pointer;font-family:inherit}
+.btn:hover{border-color:var(--akz);color:var(--akz)}
+.btn.voll{background:var(--ink);color:var(--bg)}
+.btn.voll:hover{background:var(--akz);border-color:var(--akz);color:#fff}
+.btn.mini{font-size:12px;padding:5px 10px}
+input,select,textarea{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:9px 11px;width:100%}
+textarea{min-height:110px}
+label{font-size:12px;font-weight:700;color:var(--mut);display:block;margin:10px 0 4px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.num{font-weight:800;font-size:22px}
+.kpis{display:flex;gap:22px;flex-wrap:wrap;margin:6px 0 2px}
+.kpis>div{min-width:110px}
+.mang{border-left:3px solid var(--line);padding:10px 14px;margin-bottom:10px}
+.mang.wes{border-left-color:var(--rot)}
+.mrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+#deck{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto;z-index:50}
+#deck.an{display:flex}
+#deck .glas{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;max-width:620px;width:100%}
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--ink);color:var(--bg);font-size:13.5px;border-radius:10px;padding:10px 18px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:60;max-width:90vw}
+#toast.an{opacity:1}
+.ladend{opacity:.55;pointer-events:none}
+@media (max-width:640px){ .kpis{gap:14px} td,th{padding:7px 5px} }
+@media print{ header,.btn,#toast{display:none!important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="marke">Wartungs<b>übersicht</b><span class="chip">β.1.0.0 · DB</span></div>
+  <div class="kopfr">
+    <span id="k-wer"></span>
+    <span id="k-ab" onclick="abmelden()" style="display:none">Abmelden</span>
+    <a href="/">kayya.org</a>
+  </div>
+</header>
+<div id="app"><div class="hinweis">Lade …</div></div>
+</div>
+<div id="deck" onclick="if(event.target===this)deckZu()"><div class="glas" id="deck-inhalt"></div></div>
+<div id="toast"></div>
+
+<script>
+var TOK=null; try{ TOK=sessionStorage.getItem('w_tok'); }catch(e){}
+var WER=null;
+var $=function(id){ return document.getElementById(id); };
+function toast(t){ var e=$('toast'); e.textContent=t; e.classList.add('an'); clearTimeout(e._t); e._t=setTimeout(function(){ e.classList.remove('an'); },3800); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function api(body,cb){
+  fetch('/wartung-api.php',{method:'POST',headers:{'Content-Type':'application/json','X-W-Token':TOK||''},body:JSON.stringify(body)})
+    .then(function(r){ return r.json(); })
+    .then(function(j){ if(j&&j.error){ if(/Token|Sitzung/.test(j.error)){ TOK=null; try{sessionStorage.removeItem('w_tok');}catch(e){} route(); } else toast(j.error); cb(null); } else cb(j); })
+    .catch(function(){ toast('Server nicht erreichbar.'); cb(null); });
+}
+function dstr(d){ if(!d) return '—'; var p=String(d).slice(0,10).split('-'); return p.length===3?(p[2]+'.'+p[1]+'.'+p[0]):d; }
+function ampTag(a){
+  if(a==='ueberfaellig') return '<span class="tag rot">überfällig</span>';
+  if(a==='faellig') return '<span class="tag gelb">fällig ≤ 60 Tage</span>';
+  if(a==='offen') return '<span class="tag gelb">kein Datum erfasst</span>';
+  return '<span class="tag gruen">im Plan</span>';
+}
+function deckAuf(html){ $('deck-inhalt').innerHTML=html; $('deck').classList.add('an'); }
+function deckZu(){ $('deck').classList.remove('an'); }
+
+/* ---------- Login ---------- */
+function vLogin(){
+  $('k-wer').textContent=''; $('k-ab').style.display='none';
+  $('app').innerHTML='<div class="karte" style="max-width:420px;margin:60px auto">'
+   +'<h2>Anmelden</h2><div class="hinweis" style="margin-bottom:8px">Konten: <b>gf</b> (Geschäftsführung) · <b>hausmeister</b> (Team)</div>'
+   +'<label>Konto</label><input id="l-u" autocomplete="username">'
+   +'<label>Passwort</label><input id="l-p" type="password" autocomplete="current-password">'
+   +'<div id="l-err" class="hinweis" style="color:var(--rot);min-height:16px;margin-top:6px"></div>'
+   +'<button class="btn voll" style="margin-top:8px" onclick="login()">Anmelden</button></div>';
+  $('l-p').addEventListener('keydown',function(e){ if(e.key==='Enter') login(); });
+}
+function login(){
+  var u=$('l-u').value.trim(), p=$('l-p').value;
+  if(!u||!p){ $('l-err').textContent='Konto und Passwort eingeben.'; return; }
+  api({action:'login',login:u,pass:p},function(j){
+    if(!j||!j.token){ $('l-err').textContent='Anmeldung fehlgeschlagen.'; return; }
+    TOK=j.token; WER=j; try{ sessionStorage.setItem('w_tok',TOK); }catch(e){}
+    location.hash='#/'; route();
+  });
+}
+function abmelden(){ api({action:'logout'},function(){}); TOK=null; WER=null; try{ sessionStorage.removeItem('w_tok'); }catch(e){} route(); }
+function kopf(){ $('k-wer').textContent=WER?WER.name:''; $('k-ab').style.display=WER?'':'none'; }
+
+/* ---------- Ebene 1: Immobilien ---------- */
+function vDash(){
+  api({action:'uebersicht'},function(rows){
+    if(!rows) return;
+    var h='<h1>Immobilien</h1><div class="hinweis" style="margin:4px 0 18px">Ampel aus Prüffristen und offenen Mängeln — das, wofür die Geschäftsführung haftet, auf einen Blick.</div>';
+    rows.forEach(function(i){
+      var rot=(+i.ueberfaellig)>0||(+i.wesentlich_offen)>0;
+      var gelb=!rot&&(+i.faellig)>0;
+      h+='<div class="karte klick" onclick="location.hash=\'#/immo/'+i.id+'\'"><div class="zeile">'
+       +'<div><b style="font-size:16px">'+esc(i.name)+'</b><div class="hinweis">'+esc(i.adresse||'')+' · '+i.anlagen+' Anlagen</div></div>'
+       +'<div style="display:flex;gap:8px;flex-wrap:wrap">'
+       +((+i.ueberfaellig)>0?'<span class="tag rot">'+i.ueberfaellig+'× Prüfung überfällig</span>':'')
+       +((+i.wesentlich_offen)>0?'<span class="tag rot">'+i.wesentlich_offen+'× wesentlicher Mangel</span>':'')
+       +((+i.faellig)>0?'<span class="tag gelb">'+i.faellig+'× fällig ≤ 60 Tage</span>':'')
+       +((+i.maengel_offen)>0&&(+i.wesentlich_offen)===0?'<span class="tag gelb">'+i.maengel_offen+'× Mangel offen</span>':'')
+       +(rot?'':(gelb?'':'<span class="tag gruen">alles im Plan</span>'))
+       +'</div></div></div>';
+    });
+    if(WER&&WER.rolle==='gf') h+='<button class="btn mini" onclick="fImmo()">+ Immobilie anlegen</button>';
+    $('app').innerHTML=h;
+  });
+}
+function fImmo(){
+  deckAuf('<h2>Immobilie anlegen</h2><label>Name</label><input id="fi-n"><label>Adresse</label><input id="fi-a">'
+   +'<div class="mrow"><button class="btn voll" onclick="fImmoOk()">Anlegen</button><button class="btn" onclick="deckZu()">Abbrechen</button></div>');
+}
+function fImmoOk(){
+  api({action:'immobilie_anlegen',name:$('fi-n').value,adresse:$('fi-a').value},function(j){
+    if(j&&j.ok){ deckZu(); toast('Immobilie angelegt.'); vDash(); }
+  });
+}
+
+/* ---------- Ebene 2: Immobilie -> Anlagen-Gruppen ---------- */
+function vImmo(id){
+  api({action:'immobilie',id:+id},function(im){
+    if(!im) return;
+    var grp=function(titel,liste){
+      if(!liste.length) return '<div class="eyebrow">'+titel+'</div><div class="hinweis">Keine Anlagen.</div>';
+      var h='<div class="eyebrow">'+titel+'</div>';
+      liste.forEach(function(a){
+        h+='<div class="karte klick" onclick="location.hash=\'#/anlage/'+a.id+'\'"><div class="zeile">'
+         +'<div><b>'+esc(a.name)+'</b><div class="hinweis">'+esc(a.typ||'')+(a.hersteller?' · '+esc(a.hersteller):'')+(a.baujahr?' · Bj. '+esc(a.baujahr):'')+(a.standort?' · '+esc(a.standort):'')+'</div></div>'
+         +'<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">'
+         +((+a.ueberfaellig)>0?'<span class="tag rot">Prüfung überfällig</span>':'')
+         +((+a.wesentlich_offen)>0?'<span class="tag rot">'+a.wesentlich_offen+'× wesentlich</span>':'')
+         +((+a.maengel_offen)>0&&(+a.wesentlich_offen)===0?'<span class="tag gelb">'+a.maengel_offen+'× Mangel</span>':'')
+         +((+a.ueberfaellig)===0&&(+a.maengel_offen)===0?'<span class="tag gruen">ok</span>':'')
+         +'<span class="hinweis">nächste: '+dstr(a.naechste)+'</span>'
+         +'</div></div></div>';
+      });
+      return h;
+    };
+    var sr=im.anlagen.filter(function(a){ return +a.sicherheitsrelevant===1; });
+    var ns=im.anlagen.filter(function(a){ return +a.sicherheitsrelevant!==1; });
+    $('app').innerHTML='<div class="crumb"><a href="#/">Immobilien</a> › '+esc(im.name)+'</div>'
+     +'<h1>'+esc(im.name)+'</h1><div class="hinweis">'+esc(im.adresse||'')+'</div>'
+     +grp('Sicherheitsrelevante Anlagen',sr)+grp('Nicht sicherheitsrelevante Anlagen',ns)
+     +'<div style="margin-top:16px"><button class="btn mini" onclick="fAnlage('+im.id+')">+ Anlage anlegen</button></div>';
+  });
+}
+function fAnlage(iid){
+  deckAuf('<h2>Anlage anlegen</h2><label>Name</label><input id="fa-n" placeholder="z. B. Personenaufzug Haus B">'
+   +'<label>Typ</label><select id="fa-t"><option>Aufzug</option><option>BMA</option><option>Feuerlöscher</option><option>RWA</option><option>Sicherheitsbeleuchtung</option><option>Elektro</option><option>Heizung</option><option>Trinkwasser</option><option>Spielplatz</option><option>Tore</option><option>Sonstiges</option></select>'
+   +'<label>Sicherheitsrelevant</label><select id="fa-s"><option value="1">ja</option><option value="0">nein</option></select>'
+   +'<label>Hersteller</label><input id="fa-h"><label>Baujahr</label><input id="fa-b"><label>Standort</label><input id="fa-o">'
+   +'<div class="mrow"><button class="btn voll" onclick="fAnlageOk('+iid+')">Anlegen</button><button class="btn" onclick="deckZu()">Abbrechen</button></div>');
+}
+function fAnlageOk(iid){
+  api({action:'anlage_anlegen',immobilie_id:iid,name:$('fa-n').value,typ:$('fa-t').value,sicherheitsrelevant:+$('fa-s').value,hersteller:$('fa-h').value,baujahr:$('fa-b').value,standort:$('fa-o').value},function(j){
+    if(j&&j.ok){ deckZu(); toast('Anlage angelegt — jetzt Prüfpflichten hinterlegen.'); vImmo(iid); }
+  });
+}
+
+/* ---------- Ebene 3: Anlage ---------- */
+var AKT=null;
+function vAnlage(id){
+  api({action:'anlage',id:+id},function(a){
+    if(!a) return; AKT=a;
+    var h='<div class="crumb"><a href="#/">Immobilien</a> › <a href="#/immo/'+a.immobilie_id+'">'+esc(a.immobilie)+'</a> › '+esc(a.name)+'</div>'
+     +'<h1>'+esc(a.name)+' '+(+a.sicherheitsrelevant===1?'<span class="tag akz" style="vertical-align:4px">sicherheitsrelevant</span>':'')+'</h1>'
+     +'<div class="hinweis" style="margin-bottom:16px">'+esc(a.typ||'')+(a.hersteller?' · '+esc(a.hersteller):'')+(a.baujahr?' · Baujahr '+esc(a.baujahr):'')+(a.standort?' · '+esc(a.standort):'')+'</div>';
+
+    h+='<div class="karte"><h2>Prüf- &amp; Wartungspflichten</h2><table><tr><th>Prüfung</th><th>Grundlage</th><th>Turnus</th><th>letzte</th><th>nächste</th><th>Status</th><th></th></tr>';
+    a.pruefarten.forEach(function(p){
+      h+='<tr><td><b>'+esc(p.art)+'</b>'+(p.kategorie==='sv'?' <span class="tag akz">SV</span>':'')+'</td><td class="hinweis">'+esc(p.grundlage||'')+'</td>'
+       +'<td>'+p.turnus_monate+' Mon.</td><td>'+dstr(p.letzte)+'</td><td><b>'+dstr(p.naechste)+'</b></td><td>'+ampTag(p.ampel)+'</td>'
+       +'<td><button class="btn mini" onclick="fErledigt('+p.id+')">erfasst ✓</button></td></tr>';
+    });
+    h+='</table><div style="margin-top:10px"><button class="btn mini" onclick="fPruefart('+a.id+')">+ Prüfpflicht hinzufügen</button></div></div>';
+
+    h+='<div class="karte"><h2>Dokumente · Wartungsberichte &amp; Prüfprotokolle</h2>';
+    if(a.dokumente.length){
+      h+='<table><tr><th>Dokument</th><th>Typ</th><th>hochgeladen</th><th></th></tr>';
+      a.dokumente.forEach(function(d){
+        h+='<tr><td><a href="/wartung-api.php?action=datei&id='+d.id+'&token='+encodeURIComponent(TOK)+'" target="_blank" style="color:var(--akz)">'+esc(d.orig_name)+'</a></td>'
+         +'<td class="hinweis">'+esc(d.typ)+'</td><td class="hinweis">'+esc(d.hochgeladen)+'</td>'
+         +'<td>'+(+d.ausgewertet===1?'<span class="tag gruen">ausgelesen ✓</span>':'<button class="btn mini" id="ausw-'+d.id+'" onclick="auswerten('+d.id+')">✳ Auslesen</button>')+'</td></tr>';
+      });
+      h+='</table>';
+    } else h+='<div class="hinweis">Noch keine Dokumente.</div>';
+    h+='<div style="margin-top:12px;border-top:1px solid var(--line);padding-top:12px"><div class="zeile" style="justify-content:flex-start">'
+     +'<input type="file" id="up-f" accept=".pdf,.jpg,.jpeg,.png,.txt" style="width:auto;flex:1;min-width:200px">'
+     +'<select id="up-t" style="width:auto"><option value="pruefprotokoll">Prüfprotokoll</option><option value="wartungsbericht">Wartungsbericht</option><option value="angebot">Angebot</option><option value="sonstiges">Sonstiges</option></select>'
+     +'<select id="up-p" style="width:auto"><option value="0">— Prüfpflicht zuordnen (optional) —</option>'+a.pruefarten.map(function(p){ return '<option value="'+p.id+'">'+esc(p.art)+'</option>'; }).join('')+'</select>'
+     +'<button class="btn voll mini" id="up-go" onclick="upload('+a.id+')">⬆ Hochladen</button></div>'
+     +'<div class="hinweis" style="margin-top:6px">PDF, Foto oder Text · max. 15 MB. Nach dem Hochladen liest die KI Mängel, Prüfdatum und Fristen aus — zugeordnete Prüfpflichten werden automatisch aktualisiert.</div></div></div>';
+
+    h+='<div class="karte"><h2>Mängel</h2>';
+    if(a.maengel.length){
+      a.maengel.forEach(function(m){
+        var st={offen:'<span class="tag rot">offen</span>',vergeben:'<span class="tag gelb">vergeben</span>',behoben:'<span class="tag gruen">behoben</span>',freigemeldet:'<span class="tag gruen">freigemeldet ✓</span>'}[m.status];
+        h+='<div class="mang'+(+m.wesentlich===1?' wes':'')+'"><div class="zeile">'
+         +'<div style="flex:1"><b>'+(+m.wesentlich===1?'Wesentlicher Mangel':'Unwesentlicher Mangel')+'</b> '+st
+         +(m.frist?' <span class="tag gelb">Frist '+dstr(m.frist)+'</span>':'')+'</div></div>'
+         +'<div style="margin-top:5px">'+esc(m.text)+'</div>'
+         +(m.firma?'<div class="hinweis" style="margin-top:4px">Firma: '+esc(m.firma)+(m.angebot?' · Angebot '+(+m.angebot).toLocaleString('de-DE',{minimumFractionDigits:2})+' €':'')+(m.behoben_am?' · behoben am '+dstr(m.behoben_am):'')+'</div>':'')
+         +(m.bewertung?'<div class="hinweis" style="margin-top:6px;border:1px dashed var(--line);border-radius:8px;padding:8px"><b style="color:var(--akz)">✳ Angebotsbewertung:</b> '+esc(m.bewertung)+'</div>':'')
+         +'<div class="mrow">'
+         +(m.status==='offen'?'<button class="btn mini" onclick="vergabe('+m.id+')">✳ Vergabe vorbereiten</button><button class="btn mini" onclick="fAngebot('+m.id+')">Angebot bewerten</button><button class="btn mini" onclick="setStatus('+m.id+',\'vergeben\')">→ vergeben</button>':'')
+         +(m.status==='vergeben'?'<button class="btn mini" onclick="fAngebot('+m.id+')">Angebot bewerten</button><button class="btn mini" onclick="fBehoben('+m.id+')">✓ behoben</button>':'')
+         +(m.status==='behoben'?'<button class="btn voll mini" onclick="freimeldung('+m.id+')">📄 Mangelfreimeldung erstellen</button><button class="btn mini" onclick="setStatus('+m.id+',\'freigemeldet\')">als freigemeldet markieren</button>':'')
+         +(m.status==='freigemeldet'?'<button class="btn mini" onclick="freimeldung('+m.id+')">📄 Freimeldung erneut erzeugen</button>':'')
+         +'</div></div>';
+      });
+    } else h+='<div class="hinweis">Keine Mängel erfasst. ✓</div>';
+    h+='<div style="margin-top:8px"><button class="btn mini" onclick="fMangel('+a.id+')">+ Mangel manuell erfassen</button></div></div>';
+    $('app').innerHTML=h;
+  });
+}
+function fErledigt(pid){
+  deckAuf('<h2>Prüfung / Wartung erfasst</h2><label>Durchgeführt am</label><input id="fe-d" type="date" value="'+new Date().toISOString().slice(0,10)+'">'
+   +'<div class="mrow"><button class="btn voll" onclick="fErledigtOk('+pid+')">Speichern</button><button class="btn" onclick="deckZu()">Abbrechen</button></div>'
+   +'<div class="hinweis" style="margin-top:8px">Tipp: Lade das Protokoll hoch und lass es auslesen — dann wird das Datum automatisch gesetzt und Mängel werden erfasst.</div>');
+}
+function fErledigtOk(pid){
+  api({action:'pruefung_erfasst',pruefart_id:pid,datum:$('fe-d').value},function(j){ if(j&&j.ok){ deckZu(); toast('Erfasst — Frist läuft neu.'); vAnlage(AKT.id); } });
+}
+function fPruefart(aid){
+  deckAuf('<h2>Prüfpflicht hinzufügen</h2><label>Prüfung / Wartung</label><input id="fp-a" placeholder="z. B. SV-Prüfung, jährliche Wartung">'
+   +'<label>Rechtsgrundlage / Norm</label><input id="fp-g" placeholder="z. B. BetrSichV, DIN 14675, DGUV V3">'
+   +'<label>Turnus (Monate)</label><input id="fp-t" type="number" min="1" value="12">'
+   +'<label>Kategorie</label><select id="fp-k"><option value="sv">SV-Prüfung</option><option value="wartung" selected>Wartung</option><option value="eigen">Eigenkontrolle</option></select>'
+   +'<label>Zuletzt durchgeführt (optional)</label><input id="fp-l" type="date">'
+   +'<div class="mrow"><button class="btn voll" onclick="fPruefartOk('+aid+')">Anlegen</button><button class="btn" onclick="deckZu()">Abbrechen</button></div>');
+}
+function fPruefartOk(aid){
+  api({action:'pruefart_anlegen',anlage_id:aid,art:$('fp-a').value,grundlage:$('fp-g').value,turnus_monate:+$('fp-t').value,kategorie:$('fp-k').value,letzte:$('fp-l').value},function(j){ if(j&&j.ok){ deckZu(); toast('Prüfpflicht angelegt.'); vAnlage(aid); } });
+}
+function upload(aid){
+  var f=$('up-f').files[0];
+  if(!f){ toast('Erst eine Datei wählen.'); return; }
+  var fd=new FormData();
+  fd.append('action','upload'); fd.append('token',TOK); fd.append('anlage_id',aid);
+  fd.append('typ',$('up-t').value); fd.append('pruefart_id',$('up-p').value); fd.append('datei',f);
+  $('up-go').classList.add('ladend'); $('up-go').textContent='lädt …';
+  fetch('/wartung-api.php',{method:'POST',body:fd}).then(function(r){ return r.json(); }).then(function(j){
+    if(j&&j.ok){ toast('Hochgeladen — jetzt „✳ Auslesen" klicken.'); vAnlage(aid); }
+    else toast((j&&j.error)||'Upload fehlgeschlagen.');
+  }).catch(function(){ toast('Upload fehlgeschlagen.'); });
+}
+function auswerten(did){
+  var b=$('ausw-'+did); if(b){ b.classList.add('ladend'); b.textContent='✳ KAȲȲA liest …'; }
+  api({action:'auswerten',dokument_id:did},function(j){
+    if(!j){ if(b){ b.classList.remove('ladend'); b.textContent='✳ Auslesen'; } return; }
+    var a=j.auswertung||{};
+    toast('Ausgelesen: '+(j.neue_maengel||0)+' Mängel erfasst'+(a.pruefdatum?' · Prüfdatum '+dstr(a.pruefdatum):'')+'.');
+    vAnlage(AKT.id);
+  });
+}
+function fMangel(aid){
+  deckAuf('<h2>Mangel erfassen</h2><label>Beschreibung</label><textarea id="fm-t"></textarea>'
+   +'<label>Einstufung</label><select id="fm-w"><option value="1">wesentlich (sicherheitsrelevant / Frist)</option><option value="0" selected>unwesentlich</option></select>'
+   +'<div class="mrow"><button class="btn voll" onclick="fMangelOk('+aid+')">Anlegen</button><button class="btn" onclick="deckZu()">Abbrechen</button></div>');
+}
+function fMangelOk(aid){
+  api({action:'mangel_anlegen',anlage_id:aid,text:$('fm-t').value,wesentlich:+$('fm-w').value},function(j){ if(j&&j.ok){ deckZu(); toast('Mangel erfasst.'); vAnlage(aid); } });
+}
+function setStatus(id,s){
+  api({action:'mangel_status',id:id,status:s},function(j){ if(j&&j.ok){ toast('Status: '+s+'.'); vAnlage(AKT.id); } });
+}
+function fBehoben(id){
+  deckAuf('<h2>Mangel behoben</h2><label>Behoben am</label><input id="fb-d" type="date" value="'+new Date().toISOString().slice(0,10)+'">'
+   +'<label>Ausführende Firma</label><input id="fb-f">'
+   +'<div class="mrow"><button class="btn voll" onclick="fBehobenOk('+id+')">Speichern</button><button class="btn" onclick="deckZu()">Abbrechen</button></div>');
+}
+function fBehobenOk(id){
+  api({action:'mangel_status',id:id,status:'behoben',behoben_am:$('fb-d').value,firma:$('fb-f').value},function(j){ if(j&&j.ok){ deckZu(); toast('Behoben — jetzt die Mangelfreimeldung erstellen.'); vAnlage(AKT.id); } });
+}
+function vergabe(mid){
+  deckAuf('<h2>✳ Vergabe wird vorbereitet …</h2><div class="hinweis">KAȲȲA ordnet das Gewerk zu und entwirft die Angebotsanfrage.</div>');
+  api({action:'vergabe',mangel_id:mid},function(j){
+    if(!j){ deckZu(); return; }
+    deckAuf('<h2>Vergabeempfehlung · Gewerk: '+esc(j.gewerk)+'</h2>'
+     +'<label>Passende Firmen</label><div class="hinweis" style="margin-bottom:8px">'+(j.firmen.length?j.firmen.map(function(f){ return '<b>'+esc(f.name)+'</b> · '+esc(f.kontakt||''); }).join('<br>'):'Noch keine Firma für dieses Gewerk hinterlegt.')+'</div>'
+     +'<label>Angebotsanfrage (KI-Entwurf, editierbar)</label><textarea id="vg-t" style="min-height:200px">'+esc(j.anfrage)+'</textarea>'
+     +'<div class="mrow"><button class="btn voll" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById(\'vg-t\').value).then(function(){toast(\'Anfrage kopiert — per E-Mail an die Firma senden.\')})">Kopieren</button>'
+     +'<button class="btn" onclick="setStatus('+mid+',\'vergeben\');deckZu()">Als vergeben markieren</button>'
+     +'<button class="btn" onclick="deckZu()">Schließen</button></div>');
+  });
+}
+function fAngebot(mid){
+  deckAuf('<h2>Angebot bewerten</h2><label>Firma</label><input id="ag-f"><label>Angebotssumme (€ brutto)</label><input id="ag-b" type="number" step="0.01">'
+   +'<label>Leistungsbeschreibung (kurz)</label><textarea id="ag-t"></textarea>'
+   +'<div class="mrow"><button class="btn voll" onclick="fAngebotOk('+mid+')">✳ Bewerten lassen</button><button class="btn" onclick="deckZu()">Abbrechen</button></div>');
+}
+function fAngebotOk(mid){
+  var f=$('ag-f').value, b=parseFloat($('ag-b').value), t=$('ag-t').value;
+  if(!b||b<=0){ toast('Angebotssumme eingeben.'); return; }
+  deckAuf('<h2>✳ KAȲȲA bewertet …</h2><div class="hinweis">Preisspanne, Einordnung, Empfehlung — dauert einen Moment.</div>');
+  api({action:'angebot_bewerten',mangel_id:mid,betrag:b,firma:f,beschreibung:t},function(j){
+    if(!j){ deckZu(); return; }
+    deckAuf('<h2>Angebotsbewertung</h2><div style="font-size:14px;white-space:pre-wrap">'+esc(j.bewertung)+'</div>'
+     +'<div class="mrow"><button class="btn voll" onclick="deckZu();vAnlage(AKT.id)">Übernehmen</button></div>');
+  });
+}
+function freimeldung(mid){
+  api({action:'freimeldung',mangel_id:mid},function(m){
+    if(!m) return;
+    var heute=new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});
+    var aw=null; try{ aw=JSON.parse(m.auswertung||'null'); }catch(e){}
+    var html='<h1 style="margin-bottom:2px">Mangelfreimeldung · Bestätigung der Mängelbeseitigung</h1>'
+     +'<div style="color:#555;margin-bottom:18px">gemäß Prüfbericht'+(aw&&aw.berichtsnr?' Nr. '+esc(aw.berichtsnr):'')+(aw&&aw.pruefstelle?' · '+esc(aw.pruefstelle):'')+(m.orig_name?' ('+esc(m.orig_name)+')':'')+'</div>'
+     +'<table width="100%" cellpadding="6" style="border-collapse:collapse;font-size:13px" border="1">'
+     +'<tr><td width="30%" style="background:#f2f5f7"><b>Objekt</b></td><td>'+esc(m.immobilie)+' · '+esc(m.adresse||'')+'</td></tr>'
+     +'<tr><td style="background:#f2f5f7"><b>Anlage</b></td><td>'+esc(m.anlage)+' ('+esc(m.typ||'')+(m.hersteller?', '+esc(m.hersteller):'')+(m.baujahr?', Bj. '+esc(m.baujahr):'')+')'+(m.standort?' · '+esc(m.standort):'')+'</td></tr>'
+     +'<tr><td style="background:#f2f5f7"><b>Festgestellter Mangel</b></td><td>'+esc(m.text)+'<br><i>'+(+m.wesentlich===1?'wesentlicher Mangel':'unwesentlicher Mangel')+'</i></td></tr>'
+     +'<tr><td style="background:#f2f5f7"><b>Beseitigung</b></td><td>behoben am <b>'+dstr(m.behoben_am||new Date().toISOString().slice(0,10))+'</b>'+(m.firma?' durch <b>'+esc(m.firma)+'</b>':'')+'</td></tr>'
+     +'</table>'
+     +'<p style="font-size:13px;margin-top:16px">Hiermit wird bestätigt, dass der oben bezeichnete, im Prüfbericht festgestellte Mangel fach- und sachgerecht beseitigt wurde. Die Anlage befindet sich in ordnungsgemäßem Zustand. Nachweise (Rechnung / Arbeitsbericht der ausführenden Firma) liegen vor und können auf Anforderung übermittelt werden.</p>'
+     +'<div style="margin-top:30px;font-size:13px">Berlin, den '+heute
+     +'<div style="margin-top:34px;border-top:1px solid #333;width:280px;padding-top:4px;font-size:12px">Bernhard Krug · Geschäftsführung<br>Betreiber / Hausverwaltung</div></div>';
+    var blob=new Blob(['<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Mangelfreimeldung</title></head><body style="font-family:Segoe UI,Arial,sans-serif;max-width:760px;margin:40px auto;color:#111" onload="window.print()">'+html+'</body></html>'],{type:'text/html'});
+    var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='Mangelfreimeldung-'+m.id+'.html'; a.click(); URL.revokeObjectURL(a.href);
+    toast('Mangelfreimeldung erzeugt — unterschreiben und an die Prüforganisation senden.');
+  });
+}
+
+/* ---------- Router ---------- */
+function route(){
+  if(!TOK){ vLogin(); return; }
+  if(!WER){ api({action:'me'},function(j){ if(j){ WER=j; kopf(); route(); } }); return; }
+  kopf();
+  var h=location.hash.replace('#/','');
+  if(h.indexOf('immo/')===0) vImmo(h.slice(5));
+  else if(h.indexOf('anlage/')===0) vAnlage(h.slice(7));
+  else vDash();
+}
+window.addEventListener('hashchange',route);
+route();
+</script>
+</body>
+</html>

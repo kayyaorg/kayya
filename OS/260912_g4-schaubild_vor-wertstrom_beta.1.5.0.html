@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>KAȲȲA G4</title>
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--ink:#05070D;--glow:#41E8FF;--gold:#FFC24B;--txt:#E8F6F4;--mut:#5E7C86}
+  html,body{height:100%}
+  body{font-family:"Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;background:
+    radial-gradient(1000px 700px at 50% 48%, rgba(65,232,255,.07), transparent 62%),
+    radial-gradient(800px 550px at 80% 50%, rgba(255,194,75,.04), transparent 60%), var(--ink);
+    color:var(--txt);overflow:hidden}
+  #gfoto{position:fixed;left:50%;top:50%;width:130vmax;height:130vmax;background:url('/milchstrasse.jpg') center/cover no-repeat;opacity:.55;pointer-events:none;z-index:-2;will-change:transform;animation:galaxdreh 420s linear infinite}
+  @keyframes galaxdreh{from{transform:translate(-50%,-50%) rotate(62deg)}to{transform:translate(-50%,-50%) rotate(422deg)}}
+  #gdunkel{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 45%, rgba(5,7,13,.05), rgba(5,7,13,.58) 80%);pointer-events:none;z-index:-1}
+  #kopf{position:fixed;top:0;left:0;right:0;display:flex;align-items:baseline;gap:16px;padding:18px 26px;z-index:5}
+  .g4marke{font-family:"Segoe UI Variable Display","Segoe UI Black",system-ui,sans-serif;font-weight:900;font-size:24px;letter-spacing:.1em}
+  .g4marke b{color:#FFFFFF;text-shadow:0 0 10px rgba(255,255,255,.75),0 0 26px rgba(215,240,255,.4);animation:kopfpuls 3.2s ease-in-out infinite}
+  @keyframes kopfpuls{0%,100%{color:#FFFFFF}50%{color:#4D004D}}
+  .g4v{font-family:Consolas,"Cascadia Mono",monospace;font-size:11px;color:var(--mut);border:1px solid rgba(65,232,255,.25);border-radius:99px;padding:2px 10px}
+  .g4claim{font-size:13px;color:var(--mut)}
+  #kopf a{margin-left:auto;color:var(--mut);text-decoration:none;font-size:12.5px;border:1px solid rgba(94,124,134,.4);border-radius:99px;padding:5px 14px;transition:color .2s,border-color .2s}
+  #kopf a:hover{color:var(--txt);border-color:var(--glow)}
+  #buehne{position:fixed;inset:0}
+  svg{width:100%;height:100%;display:block}
+  .stern{fill:#41E8FF}
+  /* linke Quellen-Liste */
+  .qname{font-size:10.5px;font-weight:800;fill:var(--txt);letter-spacing:.02em}
+  .qtop{font-size:9px;font-weight:600;fill:var(--glow);font-family:Consolas,"Cascadia Mono",monospace}
+  .qzahl{font-size:8px;font-weight:700;fill:var(--mut);font-family:Consolas,"Cascadia Mono",monospace}
+  .strich{stroke:rgba(65,232,255,.3);stroke-width:1}
+  .bahn{stroke:rgba(65,232,255,.08);stroke-width:1;fill:none;transition:stroke .25s}
+  .bahn.an{stroke:rgba(65,232,255,.5)}
+  .bahn.ro{stroke-dasharray:4 5}
+  .quelle.an .qname{fill:var(--glow)}
+  /* Nerven: Ȳ zu jeder Rolle */
+  .nerv{stroke:rgba(65,232,255,.06);stroke-width:1;fill:none}
+  /* Hauptader Ȳ <-> Management */
+  .ader{stroke:rgba(65,232,255,.3);stroke-width:2.4;fill:none}
+  /* Rollen-Netz */
+  .netz{stroke:rgba(65,232,255,.2);stroke-width:1.2;fill:none;transition:stroke .25s}
+  .netz.ro{stroke:rgba(65,232,255,.14);stroke-dasharray:4 5}
+  .netz.an{stroke:rgba(65,232,255,.75)}
+  .kfluss{font-size:8.5px;font-weight:700;fill:#9FE6F2;font-family:Consolas,"Cascadia Mono",monospace;opacity:0;transition:opacity .25s;letter-spacing:.03em;paint-order:stroke;stroke:rgba(5,7,13,.85);stroke-width:3px}
+  .kfluss.an{opacity:1}
+  .rolle{cursor:pointer}
+  .rolle rect.kern{fill:url(#kapsel);fill-opacity:.8;stroke:rgba(65,232,255,.5);stroke-width:1.3;transition:stroke .25s}
+  .rolle:hover rect.kern{stroke:var(--glow)}
+  .rolle.gross rect.kern{stroke:rgba(255,194,75,.65);stroke-width:1.8}
+  .rolle.mas rect.kern{stroke:rgba(65,232,255,.8);stroke-width:1.9}
+  .rolle.mas .rsub{letter-spacing:.03em}
+  .rname{font-size:12.5px;font-weight:800;fill:var(--txt)}
+  .rsub{font-size:8.5px;font-weight:700;fill:#7FD9E8;letter-spacing:.09em;text-transform:uppercase}
+  .gross .rname{font-size:17.5px}
+  .gross .rsub{font-size:10px}
+  .klein .rname{font-size:10.5px}
+  .klein .rsub{font-size:7.5px}
+  .rext{font-size:9px;font-weight:800;fill:var(--gold);font-family:Consolas,"Cascadia Mono",monospace;letter-spacing:.03em}
+  .rber{font-size:9px;font-weight:800;fill:#FF7AC6;font-family:Consolas,"Cascadia Mono",monospace;letter-spacing:.03em}
+  .adergold{stroke:rgba(255,194,75,.5);stroke-width:2.6;fill:none}
+  .gpunkt{fill:var(--gold)}
+  .rextlinie{stroke:rgba(255,194,75,.4);stroke-width:1;stroke-dasharray:3 4}
+  .qpunkt{fill:var(--glow)}
+  .livedot{fill:#22DD88}
+  @keyframes livepuls{0%,100%{opacity:1}50%{opacity:.15}}
+  .rpunkt{fill:#FF7AC6}
+  #gpop{position:fixed;display:none;max-width:350px;background:rgba(13,18,32,.92);-webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);border:1px solid rgba(65,232,255,.45);border-radius:14px;padding:14px 17px;z-index:40;pointer-events:none;font-size:12.5px;line-height:1.6;color:var(--txt);box-shadow:0 10px 34px rgba(0,0,0,.55)}
+  #gpop h4{font-size:14px;font-weight:900;margin-bottom:6px;color:#fff}
+  #gpop .gk{margin-top:9px;color:var(--gold);font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+  .ylabel{font-size:9.5px;font-weight:800;fill:var(--mut);font-family:Consolas,"Cascadia Mono",monospace;letter-spacing:.22em}
+  #fuss{position:fixed;left:0;right:0;bottom:0;display:flex;gap:22px;align-items:center;justify-content:center;padding:14px;z-index:5;
+    font-family:Consolas,"Cascadia Mono",monospace;font-size:11px;color:var(--mut);flex-wrap:wrap}
+  #fuss b{color:var(--glow);font-weight:700}
+  #fuss .g{color:var(--gold)}
+  #fuss .leg{display:inline-flex;align-items:center;gap:6px}
+  #fuss .l1{display:inline-block;width:22px;height:0;border-top:2px solid rgba(65,232,255,.6)}
+  #fuss .l2{display:inline-block;width:22px;height:0;border-top:2px dashed rgba(65,232,255,.45)}
+  #fuss .l3{display:inline-block;width:22px;height:0;border-top:2px dashed rgba(255,194,75,.6)}
+  #fuss .l4{display:inline-block;width:22px;height:0;border-top:2px solid rgba(255,194,75,.75)}
+  #fuss .p1{display:inline-block;width:8px;height:8px;border-radius:50%;background:#41E8FF}
+  #fuss .p2{display:inline-block;width:8px;height:8px;border-radius:50%;background:#FF7AC6}
+  @media (max-width:700px){ .g4claim{display:none} }
+  @media (prefers-reduced-motion: reduce){ .teilchen{animation:none !important} #yherz{animation:none !important} }
+  @keyframes atme{0%,100%{transform:scale(1);opacity:.92}50%{transform:scale(1.09);opacity:1}}
+  #yherz{animation:atme 3.2s ease-in-out infinite;transform-origin:center;transform-box:fill-box}
+  #ypfad{filter:drop-shadow(0 0 14px rgba(255,255,255,.95)) drop-shadow(0 0 34px rgba(215,240,255,.55));animation:yfarbe 3.2s ease-in-out infinite}
+  @keyframes yfarbe{0%,100%{stroke:#FFFFFF}50%{stroke:#4D004D}}
+</style>
+</head>
+<body>
+<div id="gfoto"></div><div id="gdunkel"></div>
+<div id="kopf">
+  <span class="g4marke">KA<b class="yy">ȲȲ</b>A <b>G4</b></span>
+  <span class="g4v">G4 β.1.5.0 · ȲȲ</span>
+
+
+</div>
+<div id="buehne"><svg id="szene" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet" aria-label="KAȲȲA G4"></svg></div>
+<div id="gpop"></div>
+
+<script>
+var YX=600, YY=310;
+var QUELLEN=[
+ {n:'BA-Jobsuche',f:'de',q:'jobs',r:'rw',fb:['Pflegefachkraft · Hamburg','Pflegehelfer · Berlin','Stationsleitung · München','Altenpfleger · Köln','PDL · Bremen']},
+ {n:'BA-Ausbildung',f:'de',q:'ausbjobs',r:'rw',fb:['Ausbildung Pflege 2027','Duales Studium Pflege','Generalistische Ausbildung','Pflegehilfe','B.Sc. Pflege']},
+ {n:'TED (EU)',f:'eu',q:'',r:'rw',fb:['Berufl. Bildung CPV 805','Eingliederung · Berlin','Sprachkurse','Bildung · NRW','Arbeitsmarkt · Bund']},
+ {n:'EU Funding & Tenders',f:'eu',q:'',r:'rw',fb:['ESF+ Soziale Innovation','AMIF Integration','Erasmus+ Berufsbildung','CERV','ESF+ Skills']},
+ {n:'Zuwendungen Berlin',f:'be',q:'',r:'rw',fb:['Politikbereich Arbeit','Jugendberufsagentur','Qualifizierung','Integrationsbetriebe','Teilhabe-Programm']},
+ {n:'Transparenz Hamburg',f:'hh',q:'hh',r:'ro',fb:['Zuwendungsvorgänge 2025','Empfängerbericht','Sanierungsfonds','Quartiersprojekte','Weiterbildungsbonus']},
+ {n:'Zuwendungen Bremen',f:'hb',q:'hb',r:'ro',fb:['Globalmittel Stadtteile','Jugendwerkstatt','Sprachförderung','Beschäftigungsträger','Quartiersbildung']},
+ {n:'EFRE NRW',f:'nw',q:'nrwefre',r:'ro',fb:['Tor zum Ruhrtal','Bildungsquartier Annen','Talentkolleg Ruhr','Digitale Teilhabe','Quartiersakademie']},
+ {n:'Kurssuche BW',f:'bw',q:'bw',r:'rw',fb:['Altenpflegehilfe','Anerkennung Pflege','Berufssprache B2','Praxisanleitung','Demenzbegleitung']},
+ {n:'BA Bayern',f:'by',q:'byjobs',r:'rw',fb:['Pflege B.Sc. · Burgau','Duales Studium · FFB','Pflegefachhelfer','Ausbildungsbeauftragte','Stationshilfe']},
+ {n:'mein NOW',f:'de',q:'wb',r:'rw',fb:['Herausforderungen Pflege','Modulares Training','Sterbebegleitung','Pflege Grundlagen','Wundexperte ICW']},
+ {n:'service.bund.de',f:'de',q:'bund',r:'ro',fb:['Offene Jugendwerkstatt','Aktivierung §45','Berufsorientierung','Integrationskurse','Coaching']}];
+/* Groessen: g=gross (Management), m=mittel, k=klein (weniger relevant) */
+/* Zonen-Logik (Bernhard 08.09.): links sammeln, oben steuern, rechts Output, unten Durchfuehrung */
+var ROLLEN=[
+ {k:'M',  n:'Management',s:'Board · Vergabe · Steuerung',x:600,y:124,g:'g',ext:'⇄ eM@w · KURSNET — Vorbereitet',src:[2,3,4,5,6,7,9,11]},
+ {k:'GLD',n:'Kostenträger',s:'Sammelpunkt',x:415,y:350,g:'g',src:[3,4,5,6,7]},
+ {k:'FIB',n:'Buchhaltung',s:'Zahllauf · IKS',x:850,y:268,g:'m',src:[]},
+ {k:'LC', n:'Recht · Compliance · Personal',s:'',x:480,y:552,g:'m',src:[]},
+ {k:'AG', n:'Arbeitsvermittlung',s:'extern',x:1105,y:330,g:'m',src:[0,1,9]},
+ {k:'MAS',n:'Maßnahmen',s:'Eigene Durchführung',x:820,y:440,g:'g',src:[]},
+ {k:'KPI',n:'KPI',s:'live',x:1090,y:440,g:'k',src:[]},
+ {k:'KL', n:'Kursleiter',s:'Cockpit',x:750,y:560,g:'g',src:[8,10]},
+ {k:'TN', n:'Teilnehmer',s:'App · Lernpfad',x:950,y:560,g:'g',src:[0,1]},
+ {k:'MIT',n:'Mitarbeitende',s:'',x:250,y:710,g:'g',src:[8,10]},
+ {k:'EIN',n:'Räume & Einrichtungen',s:'Miete · Verträge',x:900,y:726,g:'k',src:[]},
+ {k:'BGL',n:'Begleitung',s:'',x:950,y:645,g:'g',src:[8,10]},
+ {k:'SAT',n:'Auslands-Campus',s:'Ausbaustufe 3',x:1085,y:115,g:'m',src:[]},
+ {k:'ZGV',n:'Qualifizierung & Zeugnisse',s:'',x:620,y:715,g:'g',src:[]},
+ {k:'VS', n:'Visum & Sprache',s:'',x:1040,y:205,g:'g',src:[]}];
+/* Netz-Kanten: t='rw' Austausch (beide Richtungen), t='ro' nur lesen; w = was fließt */
+/* aus dem App-Audit: 129 belegte Fluesse, verdichtet; ro2 = beidseitig, aber je nur lesen */
+var KANTEN=[
+ {a:'M',b:'GLD',t:'rw',w:'Belege · KPIs ↔ Bescheide · Chancen',o:-40},
+ {a:'M',b:'FIB',t:'rw',w:'Zahllauf-Freigabe · IKS'},
+ {a:'M',b:'MIT',t:'ro2',w:'Orga ↓ · Rechnungen >500 € ↑ · Gehälter nur GF (AG-06)',cx:390,cy:440},
+ {a:'M',b:'AG', t:'rw',w:'Talentpool · Reservierungen',o:60},
+ {a:'M',b:'MAS',t:'rw',w:'Steuerung ↔ Ist-Daten',cx:780,cy:355},
+ {a:'M',b:'SAT',t:'rw',w:'Steuerung · Belegung'},
+
+ {a:'GLD',b:'LC',t:'rw',w:'Bescheide & Verträge ↓ · Widerspruch ↑ · KI-02'},
+ {a:'LC',b:'TN', t:'rw',w:'BGS/AVGS-Bescheide ↓ · Klagen & Beschwerden ↑ · TN-01/03'},
+ {a:'LC',b:'MIT',t:'ro',w:'Arbeitsverträge · Führungszeugnis · AEVO · PE-01'},
+ {a:'LC',b:'FIB',t:'ro',w:'Posteingang: Rechnungen · GoBD · DK-01',cx:620,cy:430},
+ {a:'MAS',b:'KL', t:'rw',w:'Durchführung · Kursbetrieb'},
+ {a:'KL',b:'M', t:'ro',w:'ab 500 €: kumulative Management-Freigabe · darunter zur Info',cx:717,cy:360},
+ {a:'KL',b:'TN', t:'rw',w:'Praxisanleitung · Reha → nur Therapie-Segment · TN-05'},
+ {a:'KL',b:'FIB',t:'rw',w:'Bestellungen · BANF · Freigabe bis 500 € · Budget-Check'},
+ {a:'KL',b:'BGL',t:'rw',w:'Förderpfade · Auffälligkeiten'},
+ {a:'MIT',b:'FIB',t:'rw',w:'Zeitbuchung → LODAS · PE-03/FI-01'},
+ {a:'MIT',b:'BGL',t:'rw',w:'Übergaben · Krisen-Workflow'},
+ {a:'MIT',b:'GLD',t:'ro',w:'Personalkosten-Nachweis → Berichtswesen'},
+ {a:'TN',b:'BGL',t:'rw',w:'Lernstand · vertraulicher Draht · Nachtkanal'},
+ {a:'TN',b:'AG', t:'ro',w:'anonyme Profile · mit Einwilligung',o:70},
+ {a:'BGL',b:'M', t:'ro',w:'Eskalation an Leitung — ohne Fallinhalte',cx:980,cy:520},
+ {a:'BGL',b:'GLD',t:'ro',w:'Eskalations-Meldung · letzte Stufe · AW-03'},
+ {a:'FIB',b:'GLD',t:'rw',w:'Abrechnungen · Personalkosten-Nachweis · Zahlungen',o:70},
+ {a:'FIB',b:'AG', t:'rw',w:'Rechnung ↔ Employer-Pays (Tochter)',o:-40},
+ {a:'MAS',b:'TN', t:'rw',w:'Durchführung'},
+ {a:'MAS',b:'MIT',t:'rw',w:'Einsatzplanung · Konflikt-Check · PE-02/05'},
+ {a:'MAS',b:'BGL',t:'rw',w:'Begleitung im Betrieb'},
+ {a:'MAS',b:'SAT',t:'rw',w:'Durchführung im Ausland'},
+ {a:'MAS',b:'ZGV',t:'rw',w:'Abschlüsse · Siegelung'},
+ {a:'MAS',b:'EIN',t:'rw',w:'Praxisorte · Belegung'},
+ {a:'MAS',b:'KPI',t:'ro',w:'Ist-Daten → Kennzahlen · Echtzeit'},
+ {a:'EIN',b:'ZGV',t:'ro',w:'anerkannte Prüfungsorte'},
+ {a:'EIN',b:'LC', t:'ro',w:'Mietverträge → Vertragsanalyse · KI-02'},
+ {a:'SAT',b:'BGL',t:'rw',w:'Krisenplan · Rückholung'},
+ {a:'SAT',b:'AG', t:'ro',w:'Absolventen · Rückkehrer'},
+ {a:'SAT',b:'FIB',t:'ro',w:'Einsatzzeiten · Personalkosten (Ausland)'},
+ {a:'SAT',b:'VS', t:'rw',w:'Anerkennungs-Workflow · IN-01'},
+ {a:'VS',b:'AG', t:'ro',w:'Status → Starttermin-Prognose · VM-05'},
+ {a:'VS',b:'ZGV',t:'ro',w:'nach Einreise → Kenntnisprüfung'},
+ {a:'ZGV',b:'AG', t:'ro',w:'Echtheitsprüfung · Prüflink'},
+ {a:'ZGV',b:'TN', t:'ro',w:'Zeugnis-Wallet · Open Badges'},
+ {a:'ZGV',b:'GLD',t:'ro',w:'Eingliederungsnachweise · Registerabgleich · ZG-07'},
+ {a:'GLD',b:'MAS',t:'rw',w:'Zuweisungen ↓ · eM@w-Meldungen ↑ · MUSS/MVP'}];
+var FL={
+ de:'<rect width="30" height="20" fill="#000"/><rect y="6.7" width="30" height="6.6" fill="#DD0000"/><rect y="13.3" width="30" height="6.7" fill="#FFCE00"/>',
+ eu:'<rect width="30" height="20" fill="#039"/><circle cx="15" cy="10" r="5.5" fill="none" stroke="#FC0" stroke-width="1.6" stroke-dasharray="1.1 1.7"/>',
+ be:'<rect width="30" height="20" fill="#fff"/><rect width="30" height="4.5" fill="#E4002B"/><rect y="15.5" width="30" height="4.5" fill="#E4002B"/>',
+ hh:'<rect width="30" height="20" fill="#DA121A"/><path d="M10.5 14.5V9l1.5-.8V6.2h1v1.4h1.6V6.2h1v1.4h1.6V6.2h1v1.4l1.5.8v5.5z" fill="#fff"/>',
+ hb:'<rect width="30" height="5" fill="#E4002B"/><rect y="5" width="30" height="5" fill="#fff"/><rect y="10" width="30" height="5" fill="#E4002B"/><rect y="15" width="30" height="5" fill="#fff"/>',
+ nw:'<rect width="30" height="6.7" fill="#009036"/><rect y="6.7" width="30" height="6.6" fill="#fff"/><rect y="13.3" width="30" height="6.7" fill="#E4002B"/>',
+ bw:'<rect width="30" height="10" fill="#000"/><rect y="10" width="30" height="10" fill="#FDCC00"/>',
+ by:'<rect width="30" height="10" fill="#fff"/><rect y="10" width="30" height="10" fill="#0066B3"/>'};
+function el(n,a){ var e=document.createElementNS('http://www.w3.org/2000/svg',n); for(var k in a) e.setAttribute(k,a[k]); return e; }
+function beiK(k){ for(var i=0;i<ROLLEN.length;i++) if(ROLLEN[i].k===k) return ROLLEN[i]; return null; }
+var ZIELE={M:'#/m',GLD:'#/ktr',FIB:'#/fib',LC:'#/fib',KPI:'#/m',AG:'#/ag',MAS:'#/m',KL:'#/kl',TN:'#/tn',MIT:'#/m',EIN:'#/fib',BGL:'#/sl',SAT:'#/sl',VS:'#/ag',ZGV:'#/tn'};
+var INFO={
+ M:{t:'Management-Board',z:'Vergabe-Monitor mit Bieten-Empfehlung, Freigaben im Vier-Augen-Prinzip, Wirtschaftlichkeit je Maßnahme. Das Ȳ entwirft — hier wird unterschrieben.',k:'Klick: Management-Cockpit'},
+ GLD:{t:'Kostenträger · Zuwendung · Förderung',z:'Alle Geldgeber an einem Punkt: SGB-Töpfe, Zuwendungen, Förder-Calls. Rein fließen Mittel und Bescheide — zurück gehen Nachweise, Abrechnungen und eM@w-Meldungen.',k:'Klick: Kostenträger-Echtzeitsicht'},
+ FIB:{t:'Buchhaltung',z:'Zahllauf im Vier-Augen-Prinzip, IKS-Signale, KI-Vorkontierung der Umsätze. Zahlläufe via EBICS (pain.001, S-Firm-Stil), Export an DATEV.',k:'Klick: Buchhaltung'},
+ LC:{t:'Recht · Compliance · Personal',z:'Zentraler Eingang: Bescheide der Kostenträger, Beschwerden sowie Klagen von Teilnehmern und Dritten gehen hier ein und werden revisionssicher gespeichert (GoBD · Append-only). Die KI liest jeden Eingang, überwacht Fristen — auch der Personalakte: Führungszeugnis, AEVO, Impfnachweise (PE-01) — und entwirft Widersprüche und Erwiderungen. Freigabe immer durch Menschen, ab Risikoschwelle an die Kanzlei (KI-02).',k:'Klick: GoBD-Posteingang'},
+ AG:{t:'Arbeitsvermittlung',z:'Anonymer Talentpool mit Einwilligung, verbindliche Reservierung, Live-Matching gegen BA-Stellen. Starttermin-Prognose aus Anerkennungs- und Visumsstatus.',k:'Klick: Arbeitgeber-Portal'},
+ MAS:{t:'Maßnahmen',z:'Die Erlösquelle — hier laufen die aktiven Maßnahmen: FbW/AZAV-Umschulung, Berufssprachkurse, § 45, rehapro. Zuweisungen kommen rein, eM@w-Meldungen gehen zurück — Gold ist der Mittelfluss.',k:'Klick: Management-Cockpit'},
+ KPI:{t:'KPI · live',z:'Die Kennzahlen der laufenden Maßnahmen in Echtzeit: heutige Abrechnung, aktive Teilnehmer, Auslastung, Abschlussquote — direkt aus der Datenbasis, kein Reporting-Lauf.',k:'Klick: Wirtschaftlichkeit'},
+ TN:{t:'Teilnehmer',z:'Die eigene App: Lernpfad, Check-ins, Zeugnis-Wallet, Jobradar live. Jeder sieht den eigenen Stand in Echtzeit.',k:'Klick: Teilnehmer-App'},
+ KL:{t:'Kursleiter',z:'Das Cockpit: Anwesenheit läuft systemseitig, LuV- und Material-Entwürfe kommen von KAȲȲA zur Freigabe, Kompetenz-Matrix der Kohorte, Bestellungen mit Budget-Check. Kosten der Maßnahme bis 500 € gibt der Kursleiter allein frei (Management sieht sie zur Info); ab 500 € zusätzlich kumulative Freigabe durch das Management.',k:'Klick: Kursleiter-Cockpit'},
+ MIT:{t:'Mitarbeitende',z:'Personalakte mit Quali-Fristen (PE-01), Einsatzplanung mit hartem Konflikt-Check, eine Zeitbuchung speist Lohn, Kosten und Nachweis. Das Therapie-Segment hat einen eigenen Datenraum — kein Zugriff für Board und Kostenträger.',k:'Klick: Management-Cockpit'},
+ EIN:{t:'Räume & Einrichtungen',z:'Praxisorte der Prüfungen. Mietverträge laufen in die Vertragsanalyse (KI-02), Kosten in die Buchhaltung.',k:'Klick: Buchhaltung'},
+ BGL:{t:'Begleitung',z:'Selbstlern-Campus, Motivations-Begleitung mit Frühwarnliste (Empfehlung, nie Konsequenz), Krisenhilfe rund um die Uhr mit Rückholplan.',k:'Klick: Selbstlern-Campus'},
+ SAT:{t:'Auslands-Campus',z:'Ausbildung im Ausland, Prüfung in Deutschland (Ausbaustufe 3). Kohortenverwaltung offline-fähig, Krisenplan, Personalkosten fernprüfbar.',k:'Klick: Selbstlern-Campus'},
+ VS:{t:'Visum & Sprache',z:'Vor der Einreise: Visum nach §§ 16d/18a AufenthG, beschleunigt über das § 81a-Verfahren. Deutsch bis B1/B2 (telc) im Herkunftsland, Berufssprachkurse nach Einreise. Der Status speist die Starttermin-Prognose.',k:'Klick: Arbeitgeber-Portal'},
+ ZGV:{t:'Qualifizierung & Zeugnisse',z:'Gleichwertigkeit und Kenntnisprüfung (IHK bzw. Landesbehörde). Zeugnisse werden eIDAS-gesiegelt ausgegeben — mit öffentlichem Prüflink, Wallet und Open Badges.',k:'Klick: Teilnehmer-App'},
+ Y:{t:'KAȲȲA · KI & Datenbasis',z:'Eine Datenbasis für alle — jede Rolle sieht nur, was sie sehen darf. Die KI entwirft, Menschen entscheiden.',k:'Klick: Ȳ'}};
+var gpop=null;
+function gpopEl(){ if(!gpop){ gpop=document.getElementById('gpop'); } return gpop; }
+function gpopShow(e,k){ var I=INFO[k]; if(!I) return; var p=gpopEl(); p.innerHTML='<h4>'+I.t+'</h4>'+I.z+'<div class="gk">'+I.k+'</div>'; p.style.display='block'; gpopMove(e); }
+function gpopMove(e){ var p=gpopEl(); if(!p||p.style.display!=='block') return; var x=e.clientX+18,y=e.clientY+16; if(x+370>innerWidth) x=e.clientX-370; if(y+150>innerHeight) y=e.clientY-150; p.style.left=x+'px'; p.style.top=y+'px'; }
+function gpopHide(){ var p=gpopEl(); if(p) p.style.display='none'; }
+var svg=document.getElementById('szene');
+var defs=el('defs',{});
+defs.innerHTML='<linearGradient id="kapsel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#101B2E"/><stop offset="1" stop-color="#0A1220"/></linearGradient>';
+svg.appendChild(defs);
+for(var s9=0;s9<60;s9++){ svg.appendChild(el('circle',{cx:(Math.random()*1200).toFixed(0),cy:(Math.random()*800).toFixed(0),r:(Math.random()<.85?0.8:1.4),'class':'stern',opacity:(0.07+Math.random()*0.26).toFixed(2)})); }
+/* ---- linke Leiste: Geldgeber & Schnittstellen laufen langsam durch (gruen=live, gelb=beantragt) ---- */
+var KX=315, KY=350;
+var BEANTRAGT=[{n:'eM@w (BA)',f:'de'},{n:'KURSNET',f:'de'},{n:'DATEV',f:'de'},{n:'EBICS · S-Firm',f:'de'},{n:'eIDAS-Siegel',f:'eu'}];
+var topDaten=[], quellGruppen=[], quellBahnen=[];
+for(var i=0;i<QUELLEN.length;i++){
+  var Q=QUELLEN[i];
+  var qy=76+i*45, qx=34;
+  var pid='b'+i;
+  var d='M'+(qx+186)+' '+(qy+2)+' Q'+(((qx+186)+KX)/2).toFixed(1)+' '+((qy+KY)/2+((i%2)?18:-18)).toFixed(1)+' '+KX+' '+KY;
+  var bahn=el('path',{d:d,'class':'bahn'+(Q.r==='ro'?' ro':''),id:pid}); svg.appendChild(bahn); quellBahnen.push(bahn);
+  var qri=(Q.r==='rw')?[0,1]:[0];
+  for(var r8=0;r8<qri.length;r8++){
+    var c=el('circle',{r:(r8?1.7:2.2),'class':(qri[r8]===1?'rpunkt':'qpunkt')+' teilchen',opacity:(r8?.7:.85)});
+    var am=el('animateMotion',{dur:(3.5+((i*1.7+r8*2.1)%4)).toFixed(1)+'s',repeatCount:'indefinite',begin:'-'+((i*0.9+r8*1.8)%5).toFixed(1)+'s'});
+    if(qri[r8]===1){ am.setAttribute('keyPoints','1;0'); am.setAttribute('keyTimes','0;1'); am.setAttribute('calcMode','linear'); }
+    var mp=el('mpath',{}); mp.setAttribute('href','#'+pid); am.appendChild(mp); c.appendChild(am); svg.appendChild(c);
+  }
+  topDaten.push({els:[],zels:[],liste:(Q.fb||[]).slice(),idx:0});
+}
+var ALLE=QUELLEN.length+BEANTRAGT.length, LH=54, GES=ALLE*LH;
+var clipL=el('clipPath',{id:'listclip'}); clipL.appendChild(el('rect',{x:16,y:58,width:284,height:558})); defs.appendChild(clipL);
+var band=el('g',{'clip-path':'url(#listclip)'});
+var roll=el('g',{});
+function baueZeile(idx,off,kopie){
+  var live=(idx<QUELLEN.length);
+  var Q=live?QUELLEN[idx]:BEANTRAGT[idx-QUELLEN.length];
+  var qy=76+idx*54+off, qx=34;
+  var g=el('g',{'class':'quelle'});
+  var ld=el('circle',{cx:qx-9,cy:qy-10,r:3.5,'class':'livedot'});
+  if(live){ ld.style.animation='livepuls 1.6s ease-in-out infinite'; ld.style.animationDelay='-'+((idx*0.35)%1.6).toFixed(2)+'s'; }
+  else { ld.style.fill='#FFC24B'; ld.style.animation='livepuls 2.4s ease-in-out infinite'; ld.style.animationDelay='-'+((idx*0.5)%2.4).toFixed(2)+'s'; }
+  g.appendChild(ld);
+  var fg=el('g',{transform:'translate('+qx+','+(qy-16)+') scale(0.5)'}); fg.innerHTML=FL[Q.f]||'';
+  var tn=el('text',{x:qx+20,y:qy-6,'text-anchor':'start','class':'qname'}); tn.textContent=Q.n;
+  var st=el('line',{x1:qx,y1:qy+2,x2:qx+186,y2:qy+2,'class':'strich'});
+  g.appendChild(fg); g.appendChild(tn); g.appendChild(st);
+  if(live){
+    var tt=el('text',{x:qx,y:qy+14,'text-anchor':'start','class':'qtop'}); tt.textContent='lade …';
+    var tz=el('text',{x:qx+186,y:qy-6,'text-anchor':'end','class':'qzahl'}); tz.textContent='1/5';
+    g.appendChild(tt); g.appendChild(tz);
+    topDaten[idx].els.push(tt); topDaten[idx].zels.push(tz);
+    if(kopie===0) quellGruppen.push(g);
+  } else {
+    var tb=el('text',{x:qx,y:qy+14,'text-anchor':'start','class':'qtop','style':'fill:#FFC24B'}); tb.textContent='beantragt'; g.appendChild(tb);
+  }
+  roll.appendChild(g);
+}
+[0,1].forEach(function(k){ for(var idx=0;idx<ALLE;idx++){ baueZeile(idx,k*GES,k); } });
+var amL=el('animateTransform',{attributeName:'transform',type:'translate',from:'0 -'+GES,to:'0 0',dur:'85s',repeatCount:'indefinite'});
+roll.appendChild(amL); band.appendChild(roll); svg.appendChild(band);
+var gfad=el('linearGradient',{id:'bandfade',x1:'0',y1:'0',x2:'0',y2:'1'});
+gfad.appendChild(el('stop',{offset:'0','stop-color':'#05070D','stop-opacity':'0'}));
+gfad.appendChild(el('stop',{offset:'1','stop-color':'#05070D','stop-opacity':'0.97'}));
+defs.appendChild(gfad);
+svg.appendChild(el('rect',{x:16,y:552,width:284,height:64,fill:'url(#bandfade)','pointer-events':'none'}));
+var gfad2=el('linearGradient',{id:'bandfade2',x1:'0',y1:'0',x2:'0',y2:'1'});
+gfad2.appendChild(el('stop',{offset:'0','stop-color':'#05070D','stop-opacity':'0.97'}));
+gfad2.appendChild(el('stop',{offset:'1','stop-color':'#05070D','stop-opacity':'0'}));
+defs.appendChild(gfad2);
+svg.appendChild(el('rect',{x:16,y:58,width:284,height:48,fill:'url(#bandfade2)','pointer-events':'none'}));
+/* ---- Nerven: Ȳ tauscht mit JEDER Rolle (dünn, beide Richtungen) ---- */
+for(var i=0;i<ROLLEN.length;i++){
+  var R=ROLLEN[i]; if(R.k==='M'||R.k==='MAS') continue;
+  var nid='n'+i;
+  svg.appendChild(el('path',{d:'M'+YX+' '+YY+' L'+R.x+' '+R.y,'class':'nerv',id:nid}));
+  var rN=(i%2===1);
+  var cN=el('circle',{r:1.4,'class':(rN?'rpunkt':'qpunkt')+' teilchen',opacity:.45});
+  var amN=el('animateMotion',{dur:(4.5+((i*1.3)%3)).toFixed(1)+'s',repeatCount:'indefinite',begin:'-'+((i*1.1)%5).toFixed(1)+'s'});
+  if(rN){ amN.setAttribute('keyPoints','1;0'); amN.setAttribute('keyTimes','0;1'); amN.setAttribute('calcMode','linear'); }
+  var mpN=el('mpath',{}); mpN.setAttribute('href','#'+nid); amN.appendChild(mpN); cN.appendChild(amN); svg.appendChild(cN);
+}
+/* ---- Drei Adern: hoch zum Board, links zum Sammelpunkt, runter in die Durchfuehrung ---- */
+var ADERN=[['M',4,'2.4s'],['MAS',4,'2.6s']];
+ADERN.forEach(function(A,ai){
+  var R=beiK(A[0]);
+  var id='ader'+ai;
+  svg.appendChild(el('path',{d:'M'+YX+' '+YY+' L'+R.x+' '+R.y,'class':'ader',id:id}));
+  for(var t3=0;t3<A[1];t3++){
+    var cH=el('circle',{r:2.6,'class':(t3%2===1?'rpunkt':'qpunkt')+' teilchen',opacity:.9});
+    var amH=el('animateMotion',{dur:A[2],repeatCount:'indefinite',begin:'-'+(t3*0.6+ai*0.35).toFixed(2)+'s'});
+    if(t3%2===1){ amH.setAttribute('keyPoints','1;0'); amH.setAttribute('keyTimes','0;1'); amH.setAttribute('calcMode','linear'); }
+    var mpH=el('mpath',{}); mpH.setAttribute('href','#'+id); amH.appendChild(mpH); cH.appendChild(amH); svg.appendChild(cH);
+  }
+});
+/* ---- GOLD-Ader: Mittel fließen vom Geld-Block in die Maßnahmen ---- */
+(function(){
+  var id='geldader';
+  svg.appendChild(el('path',{d:'M415 458 Q420 512 490 538 Q600 570 700 508','class':'adergold',id:id}));
+  for(var t4=0;t4<4;t4++){
+    var rk=(t4%2===1);
+    var cG=el('circle',{r:(rk?2:2.6),'class':(rk?'rpunkt':'gpunkt')+' teilchen',opacity:.9});
+    var amG=el('animateMotion',{dur:'2.2s',repeatCount:'indefinite',begin:'-'+(t4*0.38).toFixed(2)+'s'});
+    if(rk){ amG.setAttribute('keyPoints','1;0'); amG.setAttribute('keyTimes','0;1'); amG.setAttribute('calcMode','linear'); }
+    var mpG=el('mpath',{}); mpG.setAttribute('href','#'+id); amG.appendChild(mpG); cG.appendChild(amG); svg.appendChild(cG);
+  }
+})();
+/* ---- Rollen-NETZ: Kanten bogen sich um das Ȳ, Fluss-Label am Scheitel ---- */
+var kantenElemente={};
+function merken(k,e){ kantenElemente[k]=kantenElemente[k]||[]; kantenElemente[k].push(e); }
+for(var i=0;i<KANTEN.length;i++){
+  var K=KANTEN[i], A=beiK(K.a), B=beiK(K.b);
+  var kid='k'+i;
+  var mx0=(A.x+B.x)/2, my0=(A.y+B.y)/2;
+  var dx=mx0-YX, dy=my0-YY, dl=Math.sqrt(dx*dx+dy*dy)||1;
+  var off=(K.o===undefined)?46:K.o;
+  var mx=mx0+dx/dl*off, my=my0+dy/dl*off;   /* Kontrollpunkt vom Ȳ weg */
+  if(K.cx!==undefined){ mx=K.cx; my=K.cy; }
+  var p=el('path',{d:'M'+A.x+' '+A.y+' Q'+mx.toFixed(1)+' '+my.toFixed(1)+' '+B.x+' '+B.y,'class':'netz'+(K.t==='rw'?'':' ro'),id:kid});
+  svg.appendChild(p); merken(K.a,p); merken(K.b,p);
+  /* Fluss-Label am Bogen-Scheitel (Bezier t=0.5) */
+  var lx=0.25*A.x+0.5*mx+0.25*B.x, ly=0.25*A.y+0.5*my+0.25*B.y;
+  var lt=el('text',{x:lx.toFixed(1),y:(ly-5).toFixed(1),'text-anchor':'middle','class':'kfluss'});
+  lt.textContent=K.w+(K.t==='ro'?' (nur lesen)':'');   /* ro2 traegt die Richtung schon im Text */
+  svg.appendChild(lt); merken(K.a,lt); merken(K.b,lt);
+  var richtungen=(K.t==='ro')?[0]:[0,1];
+  for(var r9=0;r9<richtungen.length;r9++){
+    var cM=el('circle',{r:1.8,'class':(richtungen[r9]===1?'rpunkt':'qpunkt')+' teilchen',opacity:.8});
+    var amM=el('animateMotion',{dur:(3.2+((i*1.1+r9*1.4)%2.6)).toFixed(1)+'s',repeatCount:'indefinite',begin:'-'+((i*0.8+r9*1.6)%4).toFixed(1)+'s'});
+    if(richtungen[r9]===1){ amM.setAttribute('keyPoints','1;0'); amM.setAttribute('keyTimes','0;1'); amM.setAttribute('calcMode','linear'); }
+    var mpM=el('mpath',{}); mpM.setAttribute('href','#'+kid); amM.appendChild(mpM); cM.appendChild(amM); svg.appendChild(cM);
+  }
+}
+/* ---- Ȳ-Herz: DER Mittelpunkt ---- */
+var herz=el('g',{id:'yherz'});
+herz.innerHTML='<circle cx="'+YX+'" cy="'+YY+'" r="98" fill="none" stroke="rgba(65,232,255,.06)" stroke-width="1"/>'+
+ '<circle cx="'+YX+'" cy="'+YY+'" r="66" fill="rgba(5,7,13,.92)" stroke="rgba(160,247,255,.55)" stroke-width="1.6"/>'+
+ '<g id="ypfad" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" fill="none">'+
+ '<path d="M'+(YX-20)+' '+(YY-27)+' L'+YX+' '+(YY+2)+' M'+(YX+20)+' '+(YY-27)+' L'+YX+' '+(YY+2)+' M'+YX+' '+(YY+2)+' V'+(YY+33)+' M'+(YX-13)+' '+(YY-41)+' H'+(YX+13)+'"/></g>';
+svg.appendChild(herz);
+/* ---- Rollen-Kapseln (drei Größen) ---- */
+for(var i=0;i<ROLLEN.length;i++){
+  (function(R){
+    if(R.k==='MAS'){
+      var g8=el('g',{'class':'rolle gross mas','data-k':R.k});
+      var w8=320,h8=140,x8=R.x-w8/2,y8=R.y-h8/2;
+      g8.appendChild(el('rect',{x:x8,y:y8,width:w8,height:h8,rx:22,'class':'kern'}));
+      var tM=el('text',{x:x8+20,y:y8+26,'text-anchor':'start','class':'rname','style':'font-size:17px'}); tM.textContent='Maßnahmen'; g8.appendChild(tM);
+      var tM2=el('text',{x:x8+w8-18,y:y8+25,'text-anchor':'end','class':'rsub','style':'font-size:8px'}); tM2.textContent='aktuell laufend'; g8.appendChild(tM2);
+      g8.appendChild(el('line',{x1:x8+16,y1:y8+36,x2:x8+w8-16,y2:y8+36,stroke:'rgba(65,232,255,.18)','stroke-width':1}));
+      [['Umschulung Pflege · FbW/AZAV','24 TN'],['Berufssprachkurse · BAMF','32 TN'],['Aktivierung & Vermittlung · § 45','18 TN'],['Sucht-Reha & Umschulung · rehapro','12 TN']].forEach(function(Z,zi){
+        var zy=y8+56+zi*22;
+        g8.appendChild(el('circle',{cx:x8+24,cy:zy-4,r:3,fill:'#41E896',style:'animation:livepuls 2.4s ease-in-out infinite;animation-delay:-'+(zi*0.6)+'s'}));
+        var zt=el('text',{x:x8+36,y:zy,'text-anchor':'start','class':'rsub','style':'text-transform:none;font-size:10.5px;letter-spacing:.02em'}); zt.textContent=Z[0]; g8.appendChild(zt);
+        var zn=el('text',{x:x8+w8-18,y:zy,'text-anchor':'end','class':'rsub','style':'font-size:9px'}); zn.textContent=Z[1]; g8.appendChild(zn);
+      });
+      g8.addEventListener('mouseenter',function(){ (kantenElemente[R.k]||[]).forEach(function(p){ p.classList.add('an'); }); });
+      g8.addEventListener('mouseleave',function(){ (kantenElemente[R.k]||[]).forEach(function(p){ p.classList.remove('an'); }); });
+      g8.addEventListener('click',function(){ location.href='g4/'+(ZIELE[R.k]||''); });
+      svg.appendChild(g8);
+      return;
+    }
+    if(R.k==='KPI'){
+      var gK=el('g',{'class':'rolle gross mas','data-k':R.k});
+      var wK=180,hK=140,xK=R.x-wK/2,yK=R.y-hK/2;
+      gK.appendChild(el('rect',{x:xK,y:yK,width:wK,height:hK,rx:22,'class':'kern'}));
+      var kT=el('text',{x:R.x,y:yK+22,'text-anchor':'middle','class':'rname','style':'font-size:12.5px'}); kT.textContent='KPI · live'; gK.appendChild(kT);
+      gK.appendChild(el('line',{x1:xK+14,y1:yK+31,x2:xK+wK-14,y2:yK+31,stroke:'rgba(65,232,255,.18)','stroke-width':1}));
+      var kL=el('text',{x:R.x,y:yK+47,'text-anchor':'middle','class':'rsub','style':'font-size:8px'}); kL.textContent='heute abgerechnet'; gK.appendChild(kL);
+      var kE=el('text',{x:R.x,y:yK+65,'text-anchor':'middle','class':'rname','style':'font-size:14px;fill:#FFC24B'}); kE.textContent='42.318 €'; gK.appendChild(kE);
+      var euro8=42318;
+      if(!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)){
+        setInterval(function(){ euro8+=40+Math.floor(Math.random()*160); kE.textContent=euro8.toLocaleString('de-DE')+' €'; },2600);
+      }
+      [['Teilnehmer aktiv','86'],['Auslastung','91 %'],['Abschlussquote','84 %']].forEach(function(P,pi){
+        var py=yK+88+pi*17;
+        var pl=el('text',{x:xK+16,y:py,'text-anchor':'start','class':'rsub','style':'font-size:8.5px'}); pl.textContent=P[0]; gK.appendChild(pl);
+        var pw=el('text',{x:xK+wK-16,y:py,'text-anchor':'end','class':'rname','style':'font-size:11px'}); pw.textContent=P[1]; gK.appendChild(pw);
+      });
+      gK.addEventListener('mouseenter',function(){ (kantenElemente[R.k]||[]).forEach(function(p){ p.classList.add('an'); }); });
+      gK.addEventListener('mouseleave',function(){ (kantenElemente[R.k]||[]).forEach(function(p){ p.classList.remove('an'); }); });
+      gK.addEventListener('click',function(){ location.href='g4/'+(ZIELE[R.k]||''); });
+      svg.appendChild(gK);
+      return;
+    }    if(R.k==='MIT'){
+      var g6=el('g',{'class':'rolle gross mas','data-k':R.k});
+      var w6=344,h6=84,x6=R.x-w6/2,y6=R.y-h6/2;
+      g6.appendChild(el('rect',{x:x6,y:y6,width:w6,height:h6,rx:26,'class':'kern'}));
+      var tT6=el('text',{x:R.x,y:y6+19,'text-anchor':'middle','class':'rsub'}); tT6.textContent='Mitarbeitende · Verwaltung'; g6.appendChild(tT6);
+      g6.appendChild(el('line',{x1:x6+18,y1:y6+27,x2:x6+w6-18,y2:y6+27,stroke:'rgba(65,232,255,.18)','stroke-width':1}));
+      var segW6=w6/2;
+      [['Personal','Einsatz · Akte · Lohn'],['Therapeut. Team','getrennter Datenraum']].forEach(function(S,si){
+        var cx6=x6+segW6/2+si*segW6;
+        var tA=el('text',{x:cx6,y:y6+51,'text-anchor':'middle','class':'rname'}); tA.textContent=S[0]; g6.appendChild(tA);
+        var tB=el('text',{x:cx6,y:y6+69,'text-anchor':'middle','class':'rsub'}); tB.textContent=S[1]; g6.appendChild(tB);
+        if(si<1){ g6.appendChild(el('line',{x1:x6+segW6,y1:y6+33,x2:x6+segW6,y2:y6+h6-11,stroke:'rgba(65,232,255,.28)','stroke-width':1,'stroke-dasharray':'3 4'})); }
+      });
+      g6.addEventListener('mouseenter',function(){ (kantenElemente[R.k]||[]).forEach(function(p){ p.classList.add('an'); }); (R.src||[]).forEach(function(si){ if(quellGruppen[si]) quellGruppen[si].classList.add('an'); if(quellBahnen[si]) quellBahnen[si].classList.add('an'); }); });
+      g6.addEventListener('mouseleave',function(){ (kantenElemente[R.k]||[]).forEach(function(p){ p.classList.remove('an'); }); (R.src||[]).forEach(function(si){ if(quellGruppen[si]) quellGruppen[si].classList.remove('an'); if(quellBahnen[si]) quellBahnen[si].classList.remove('an'); }); });
+      g6.addEventListener('click',function(){ location.href='g4/'+(ZIELE[R.k]||''); });
+      svg.appendChild(g6);
+      return;
+    }
+    if(R.k==='BGL'){
+      var g5=el('g',{'class':'rolle gross mas','data-k':R.k});
+      var w5=312,h5=56,x5=R.x-w5/2,y5=R.y-h5/2;
+      g5.appendChild(el('rect',{x:x5,y:y5,width:w5,height:h5,rx:36,'class':'kern'}));
+      var segW=w5/3;
+      [['Selbstlernen','Campus'],['Motivation','Prävention'],['Krisenhilfe','24/7 · Härtefall']].forEach(function(S,si){
+        var cx5=x5+segW/2+si*segW;
+        var tA=el('text',{x:cx5,y:R.y-2,'text-anchor':'middle','class':'rname','style':'font-size:11.5px'}); tA.textContent=S[0]; g5.appendChild(tA);
+        var tB=el('text',{x:cx5,y:R.y+13,'text-anchor':'middle','class':'rsub','style':'font-size:7.5px'}); tB.textContent=S[1]; g5.appendChild(tB);
+        if(si<2){ g5.appendChild(el('line',{x1:x5+(si+1)*segW,y1:y5+14,x2:x5+(si+1)*segW,y2:y5+h5-14,stroke:'rgba(65,232,255,.18)','stroke-width':1})); }
+      });
+      g5.addEventListener('mouseenter',function(){ (kantenElemente[R.k]||[]).forEach(function(p){ p.classList.add('an'); }); (R.src||[]).forEach(function(si){ if(quellGruppen[si]) quellGruppen[si].classList.add('an'); if(quellBahnen[si]) quellBahnen[si].classList.add('an'); }); });
+      g5.addEventListener('mouseleave',function(){ (kantenElemente[R.k]||[]).forEach(function(p){ p.classList.remove('an'); }); (R.src||[]).forEach(function(si){ if(quellGruppen[si]) quellGruppen[si].classList.remove('an'); if(quellBahnen[si]) quellBahnen[si].classList.remove('an'); }); });
+      g5.addEventListener('click',function(){ location.href='g4/'+(ZIELE[R.k]||''); });
+      svg.appendChild(g5);
+      return;
+    }
+    if(R.k==='LC'){
+      var gL=el('g',{'class':'rolle gross mas','data-k':R.k});
+      var wL=322,hL=82,xL=R.x-wL/2,yL=R.y-hL/2;
+      gL.appendChild(el('rect',{x:xL,y:yL,width:wL,height:hL,rx:20,'class':'kern'}));
+      var tL1=el('text',{x:R.x,y:yL+22,'text-anchor':'middle','class':'rname','style':'font-size:13.5px'}); tL1.textContent='Recht · Compliance · Personal'; gL.appendChild(tL1);
+      gL.appendChild(el('line',{x1:xL+18,y1:yL+31,x2:xL+wL-18,y2:yL+31,stroke:'rgba(65,232,255,.18)','stroke-width':1}));
+      var tL2=el('text',{x:R.x,y:yL+49,'text-anchor':'middle','class':'rsub','style':'font-size:9px'}); tL2.textContent='Eingang: Bescheide · Beschwerden · Klagen'; gL.appendChild(tL2);
+      var tL3=el('text',{x:R.x,y:yL+66,'text-anchor':'middle','class':'rsub','style':'font-size:8px;opacity:.85'}); tL3.textContent='revisionssicher · GoBD · Append-only'; gL.appendChild(tL3);
+      gL.addEventListener('mouseenter',function(){ (kantenElemente[R.k]||[]).forEach(function(p){ p.classList.add('an'); }); });
+      gL.addEventListener('mouseleave',function(){ (kantenElemente[R.k]||[]).forEach(function(p){ p.classList.remove('an'); }); });
+      gL.addEventListener('click',function(){ location.href='g4/'+(ZIELE[R.k]||''); });
+      svg.appendChild(gL);
+      return;
+    }
+    if(R.k==='ZGV'||R.k==='VS'){
+      var zwei=(R.k==='ZGV')?[['Qualifizierung','Kenntnisprüfung · IHK'],['Zeugnis-Validierung','eIDAS · Prüflink']]:[['Visum','§§ 16d/18a · § 81a-Verf.'],['Sprachkenntnisse','telc B1–B2 · BAMF']];
+      var g9=el('g',{'class':'rolle gross mas','data-k':R.k});
+      var w9=(R.k==='ZGV')?302:292,h9=64,x9=R.x-w9/2,y9=R.y-h9/2;
+      g9.appendChild(el('rect',{x:x9,y:y9,width:w9,height:h9,rx:32,'class':'kern'}));
+      var segW9=w9/2;
+      zwei.forEach(function(S,si){
+        var cx9=x9+segW9/2+si*segW9;
+        var tA=el('text',{x:cx9,y:R.y-3,'text-anchor':'middle','class':'rname','style':'font-size:12.5px'}); tA.textContent=S[0]; g9.appendChild(tA);
+        var tB=el('text',{x:cx9,y:R.y+15,'text-anchor':'middle','class':'rsub'}); tB.textContent=S[1]; g9.appendChild(tB);
+        if(si<1){ g9.appendChild(el('line',{x1:x9+segW9,y1:y9+13,x2:x9+segW9,y2:y9+h9-13,stroke:'rgba(65,232,255,.18)','stroke-width':1})); }
+      });
+      g9.addEventListener('mouseenter',function(){ (kantenElemente[R.k]||[]).forEach(function(p){ p.classList.add('an'); }); });
+      g9.addEventListener('mouseleave',function(){ (kantenElemente[R.k]||[]).forEach(function(p){ p.classList.remove('an'); }); });
+      g9.addEventListener('click',function(){ location.href='g4/'+(ZIELE[R.k]||''); });
+      svg.appendChild(g9);
+      return;
+    }    if(R.k==='GLD'){
+      var g3=el('g',{'class':'rolle gross mas','data-k':R.k});
+      var w2=200,h2=220,x0=R.x-w2/2,y0=R.y-h2/2;
+      g3.appendChild(el('rect',{x:x0,y:y0,width:w2,height:h2,rx:26,'class':'kern'}));
+      [[0,'Kostenträger','SGB · Echtzeit'],[1,'Zuwendung','Nachweis'],[2,'Förderung','Calls · Chancen']].forEach(function(S){
+        var cy=y0+h2/6+S[0]*(h2/3);
+        var tA=el('text',{x:R.x,y:cy+2,'text-anchor':'middle','class':'rname'}); tA.textContent=S[1]; g3.appendChild(tA);
+        var tB=el('text',{x:R.x,y:cy+20,'text-anchor':'middle','class':'rsub'}); tB.textContent=S[2]; g3.appendChild(tB);
+        if(S[0]<2){ g3.appendChild(el('line',{x1:x0+20,y1:y0+(S[0]+1)*(h2/3),x2:x0+w2-20,y2:y0+(S[0]+1)*(h2/3),stroke:'rgba(65,232,255,.18)','stroke-width':1})); }
+      });
+      g3.addEventListener('mouseenter',function(){ (kantenElemente[R.k]||[]).forEach(function(p){ p.classList.add('an'); }); (R.src||[]).forEach(function(si){ if(quellGruppen[si]) quellGruppen[si].classList.add('an'); if(quellBahnen[si]) quellBahnen[si].classList.add('an'); }); });
+      g3.addEventListener('mouseleave',function(){ (kantenElemente[R.k]||[]).forEach(function(p){ p.classList.remove('an'); }); (R.src||[]).forEach(function(si){ if(quellGruppen[si]) quellGruppen[si].classList.remove('an'); if(quellBahnen[si]) quellBahnen[si].classList.remove('an'); }); });
+      g3.addEventListener('click',function(){ location.href='g4/'+(ZIELE[R.k]||''); });
+      svg.appendChild(g3);
+      return;
+    }
+    var gr=R.g||'m';
+    var g2=el('g',{'class':'rolle'+(gr==='g'?' gross':(gr==='k'?' klein':''))+((R.k==='KL'||R.k==='TN')?' mas':''),'data-k':R.k});
+    var fak=(gr==='g')?9.8:((gr==='k')?6.4:7.6);
+    var pad=(gr==='g')?46:((gr==='k')?22:30);
+    var hoch=(gr==='g')?68:((gr==='k')?40:48);
+    var basis=Math.max(R.n.length,R.s.length+2)*fak+pad;
+    g2.appendChild(el('rect',{x:(R.x-basis/2).toFixed(1),y:(R.y-hoch/2).toFixed(1),width:basis.toFixed(1),height:hoch,rx:hoch/2,'class':'kern'}));
+    var t3=el('text',{x:R.x,y:R.y-2,'text-anchor':'middle','class':'rname'}); t3.textContent=R.n;
+    var t4=el('text',{x:R.x,y:R.y+(gr==='g'?19:(gr==='k'?12:14)),'text-anchor':'middle','class':'rsub'}); t4.textContent=R.s;
+    g2.appendChild(t3); g2.appendChild(t4);
+    g2.addEventListener('mouseenter',function(){
+      (kantenElemente[R.k]||[]).forEach(function(p){ p.classList.add('an'); });
+      (R.src||[]).forEach(function(si){ if(quellGruppen[si]) quellGruppen[si].classList.add('an'); if(quellBahnen[si]) quellBahnen[si].classList.add('an'); });
+    });
+    g2.addEventListener('mouseleave',function(){
+      (kantenElemente[R.k]||[]).forEach(function(p){ p.classList.remove('an'); });
+      (R.src||[]).forEach(function(si){ if(quellGruppen[si]) quellGruppen[si].classList.remove('an'); if(quellBahnen[si]) quellBahnen[si].classList.remove('an'); });
+    });
+    g2.addEventListener('click',function(){ location.href='g4/'+(ZIELE[R.k]||''); });
+    svg.appendChild(g2);
+  })(ROLLEN[i]);
+}
+/* ---- Output-Logos unter der FiBu (DATEV · Bank/EBICS) ---- */
+(function(){
+  var FB=beiK('FIB');
+  var lg=el('g',{});
+  lg.innerHTML='<line x1="'+(FB.x-14)+'" y1="'+(FB.y+26)+'" x2="'+(FB.x-14)+'" y2="'+(FB.y+54)+'" class="rextlinie"/>'+
+   '<line x1="'+(FB.x+14)+'" y1="'+(FB.y+26)+'" x2="'+(FB.x+14)+'" y2="'+(FB.y+54)+'" class="rextlinie"/>'+
+   '<g transform="translate('+(FB.x-66)+','+(FB.y+56)+')">'+
+   '<rect width="62" height="24" rx="6" fill="#A6CE39"/><text x="31" y="16.5" text-anchor="middle" style="font:800 11px Consolas,monospace" fill="#122A00">DATEV</text>'+
+   '<g transform="translate(70,0)"><rect width="62" height="24" rx="6" fill="#E30613"/><text x="31" y="16.5" text-anchor="middle" style="font:800 10.5px Consolas,monospace" fill="#fff">S-Firm</text></g></g>';
+  svg.appendChild(lg);})();
+/* ---- Human-in-the-Loop an der Board-Ader ---- */
+(function(){
+  var t1=el('text',{x:YX+14,y:184,'text-anchor':'start','class':'ylabel','style':'letter-spacing:.08em'}); t1.textContent='Ȳ entwirft ↑'; svg.appendChild(t1);
+  var t2=el('text',{x:YX+14,y:200,'text-anchor':'start','class':'ylabel','style':'letter-spacing:.08em'}); t2.textContent='Board entscheidet ↓'; svg.appendChild(t2);
+})();
+/* ---- Satelliten-Orbit um den Auslands-Campus ---- */
+['SAT','AG'].forEach(function(kk,ki){
+  var SA=beiK(kk); if(!SA) return;
+  var gS=el('g',{});
+  gS.appendChild(el('ellipse',{cx:SA.x,cy:SA.y,rx:112,ry:44,fill:'none',stroke:'rgba(65,232,255,.18)','stroke-width':1,'stroke-dasharray':'3 7'}));
+  var gO=el('g',{'class':'teilchen'});
+  gO.appendChild(el('circle',{cx:SA.x+112,cy:SA.y,r:2.2,fill:'#9FF4FF',opacity:.8}));
+  var at=el('animateTransform',{attributeName:'transform',type:'rotate',from:'0 '+SA.x+' '+SA.y,to:'360 '+SA.x+' '+SA.y,dur:(12+ki*5)+'s',repeatCount:'indefinite'});
+  gO.appendChild(at); gS.appendChild(gO);
+  svg.appendChild(gS);
+});
+/* ---- Hover-Overlays fuer alle Bubbles + das Ȳ ---- */
+svg.querySelectorAll('[data-k]').forEach(function(gg){
+  var kk=gg.getAttribute('data-k');
+  gg.addEventListener('mouseenter',function(e){ gpopShow(e,kk); });
+  gg.addEventListener('mousemove',gpopMove);
+  gg.addEventListener('mouseleave',gpopHide);
+});
+herz.addEventListener('mouseenter',function(e){ gpopShow(e,'Y'); });
+herz.addEventListener('mousemove',gpopMove);
+herz.addEventListener('mouseleave',gpopHide);
+herz.style.cursor='pointer';
+/* ---- Top-5 aus den echten APIs ---- */
+function kurz(s){ s=String(s||''); return s.length>24?s.slice(0,23)+'…':s; }
+function lade(i){
+  var Q=QUELLEN[i]; if(!Q.q) return;
+  var url='foerder-proxy.php?q='+({jobs:'jobs',ausbjobs:'jobs',byjobs:'jobs',wb:'wb',bund:'bund',hh:'hh',hb:'hb',nrwefre:'nrwefre',bw:'bw'})[Q.q];
+  if(Q.q==='ausbjobs') url+='&art=4&was=Pflege'; if(Q.q==='byjobs') url+='&wo=Bayern&was=Pflege'; if(Q.q==='jobs') url+='&was=Pflege';
+  url+='&size=5';
+  fetch(url).then(function(r){return r.json();}).then(function(j){
+    var t=[];
+    if(j.ergebnisliste){ j.ergebnisliste.forEach(function(x){ if(x.stellenangebotsTitel) t.push(x.stellenangebotsTitel); }); }
+    else if(j.items){ j.items.forEach(function(x){ if(x.titel) t.push(x.titel); }); }
+    if(t.length){ topDaten[i].liste=t.slice(0,5); topDaten[i].idx=0; }
+  }).catch(function(){});
+}
+if(/^https?:$/.test(location.protocol)){ for(var i=0;i<QUELLEN.length;i++){ (function(i){ setTimeout(function(){ lade(i); }, i*350); })(i); } }
+topDaten.forEach(function(T,i){
+  function tick(){ if(T.liste.length){ var tx=kurz(T.liste[T.idx%T.liste.length])+' ▌'; var zx=((T.idx%Math.min(5,T.liste.length))+1)+'/'+Math.min(5,T.liste.length); T.els.forEach(function(e){ e.textContent=tx; }); T.zels.forEach(function(e){ e.textContent=zx; }); T.idx++; } }
+  setTimeout(function(){ tick(); if(!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)) setInterval(tick,2800); }, 400+i*230);
+});
+</script>
+</body>
+</html>

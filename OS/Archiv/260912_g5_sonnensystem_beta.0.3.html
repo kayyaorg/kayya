@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>KAȲȲA G5</title>
+<style>
+  :root{--glow:#41E8FF;--gold:#FFC24B;--gruen:#41E896;--cyan:#41D2FF;--txt:#EAF6FF;--mut:#7FA2AD}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:#05070D;color:var(--txt);font-family:"Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;overflow:hidden}
+  #gfoto{position:fixed;left:50%;top:50%;width:130vmax;height:130vmax;background:url('/milchstrasse.jpg') center/cover no-repeat;opacity:.44;pointer-events:none;z-index:-2;will-change:transform;animation:galaxdreh 420s linear infinite}
+  @keyframes galaxdreh{from{transform:translate(-50%,-50%) rotate(62deg)}to{transform:translate(-50%,-50%) rotate(422deg)}}
+  #gdunkel{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 46%, rgba(5,7,13,.1), rgba(5,7,13,.7) 82%);pointer-events:none;z-index:-1}
+  #kopf{position:fixed;top:0;left:0;right:0;display:flex;align-items:baseline;gap:16px;padding:18px 26px;z-index:5}
+  .marke{font-family:"Segoe UI Variable Display","Segoe UI Black",system-ui,sans-serif;font-weight:900;font-size:24px;letter-spacing:.1em}
+  .marke b{color:#FFFFFF;text-shadow:0 0 10px rgba(255,255,255,.75),0 0 26px rgba(215,240,255,.4);animation:kopfpuls 3.2s ease-in-out infinite}
+  @keyframes kopfpuls{0%,100%{color:#FFFFFF}50%{color:#4D004D}}
+  .chip{font:700 11px Consolas,monospace;letter-spacing:.1em;color:var(--mut);border:1px solid rgba(94,124,134,.4);border-radius:99px;padding:4px 12px}
+  #buehne{position:fixed;inset:0}
+  svg{width:100%;height:100%;display:block}
+  .bahn{fill:none;stroke:rgba(160,220,240,.13);stroke-width:1}
+  .bahnzieh{animation:ziehen 1.6s ease-out forwards}
+  @keyframes ziehen{from{stroke-dashoffset:var(--u)}to{stroke-dashoffset:0}}
+  .mondbahn{fill:none;stroke:rgba(160,220,240,.16);stroke-width:.8;stroke-dasharray:2 5;transition:stroke .25s}
+  .sys.an .mondbahn{stroke:rgba(65,232,255,.55)}
+  .speiche{stroke:rgba(65,210,255,.10);stroke-width:1;transition:stroke .25s}
+  .speiche.an{stroke:rgba(65,232,255,.7)}
+  .arcgold{fill:none;stroke:rgba(255,194,75,.42);stroke-width:4}
+  .arccyan{fill:none;stroke:rgba(65,210,255,.4);stroke-width:2.5}
+  .planet,.mond{cursor:pointer}
+  .planet .pk{fill:rgba(11,16,28,.92);transition:stroke-width .2s}
+  .planet:hover .pk{stroke-width:2.6}
+  .mond .mk{fill:rgba(11,16,28,.95);stroke:rgba(160,220,240,.5);stroke-width:1;transition:stroke-width .2s,stroke .2s}
+  .mond:hover .mk{stroke:#41E8FF;stroke-width:2}
+  .pname{font:800 12.5px "Segoe UI";fill:#EAF6FF;text-anchor:middle}
+  .psub{font:700 7px Consolas,monospace;letter-spacing:.1em;fill:#7FA2AD;text-anchor:middle;text-transform:uppercase}
+  .pic{font-size:17px;text-anchor:middle;dominant-baseline:central}
+  .mic{font-size:10px;text-anchor:middle;dominant-baseline:central}
+  .mname{font:700 7.5px Consolas,monospace;letter-spacing:.06em;fill:#B9CDD4;text-anchor:middle;text-transform:uppercase}
+  .flusslabel{font:700 8.5px Consolas,monospace;letter-spacing:.14em;text-anchor:middle;text-transform:uppercase}
+  .zahlzeile{font:700 11px Consolas,monospace;letter-spacing:.1em;fill:#9FB9C4;text-anchor:middle}
+  .akt{opacity:0;animation:auftauchen .9s ease-out forwards}
+  #ypfad{animation:yfarbe 3.2s ease-in-out infinite}
+  @keyframes yfarbe{0%,100%{stroke:#FFFFFF}50%{stroke:#4D004D}}
+  #yherz{filter:drop-shadow(0 0 14px rgba(255,255,255,.85)) drop-shadow(0 0 36px rgba(180,120,255,.5))}
+  @keyframes auftauchen{to{opacity:1}}
+  #gpop{position:fixed;display:none;max-width:330px;background:rgba(10,15,26,.96);border:1px solid rgba(65,232,255,.4);border-radius:14px;padding:13px 16px;z-index:9;pointer-events:none;box-shadow:0 18px 50px -18px rgba(0,0,0,.9)}
+  #gpop h4{font-size:13.5px;margin-bottom:5px}
+  #gpop p{font-size:11.5px;line-height:1.55;color:#B9CDD4}
+  #gpop .k{display:block;margin-top:7px;font:700 9px Consolas,monospace;letter-spacing:.1em;color:var(--glow);text-transform:uppercase}
+  @media (prefers-reduced-motion: reduce){ .akt{animation:none;opacity:1} #gfoto{animation:none} .bahnzieh{animation:none;stroke-dashoffset:0!important} }
+</style>
+</head>
+<body>
+<div id="gfoto"></div><div id="gdunkel"></div>
+<div id="kopf">
+  <span class="marke">KA<b>ȲȲ</b>A <b>G5</b></span>
+  <span class="chip">G5 β.0.3 · ȲȲ</span>
+</div>
+<div id="buehne"><svg id="szene" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet" aria-label="KAȲȲA G5"></svg></div>
+<div id="gpop"><h4 id="gpt"></h4><p id="gpz"></p><span class="k" id="gpk"></span></div>
+<script>
+var svg=document.getElementById('szene');
+function el(t,a){ var e=document.createElementNS('http://www.w3.org/2000/svg',t); for(var k in a) e.setAttribute(k,a[k]); return e; }
+var CX=600, CY=396;
+function P(a,r){ var w=a*Math.PI/180; return [CX+r*Math.cos(w), CY+r*Math.sin(w)]; }
+for(var s=0;s<46;s++){ svg.appendChild(el('circle',{cx:(Math.random()*1200).toFixed(0),cy:(Math.random()*800).toFixed(0),r:(Math.random()<.85?0.8:1.4),fill:'#CFE9F2',opacity:(0.06+Math.random()*0.2).toFixed(2)})); }
+/* Sonnenbahnen */
+[150,235,318].forEach(function(r,i){
+  var u=(2*Math.PI*r).toFixed(0);
+  var b=el('circle',{cx:CX,cy:CY,r:r,'class':'bahn bahnzieh'});
+  b.setAttribute('stroke-dasharray',u); b.setAttribute('style','--u:'+u+';animation-delay:'+(i*0.25)+'s');
+  svg.appendChild(b);
+});
+/* Kreislauf: Gold unten (Geld), Cyan oben (Belege zurueck) */
+function pt(a,r){ var q=P(a,r); return q[0].toFixed(1)+' '+q[1].toFixed(1); }
+var dGold='M'+pt(180,318)+' A300 300 0 0 0 '+pt(128,235)+' A235 235 0 0 0 '+pt(20,235)+' A300 300 0 0 0 '+pt(0,318);
+var dCyan='M'+pt(0,318)+' A300 300 0 0 0 '+pt(-52,235)+' A235 235 0 0 0 '+pt(-160,235)+' A300 300 0 0 0 '+pt(180,318);
+svg.appendChild(el('path',{id:'gold',d:dGold,'class':'arcgold akt',style:'animation-delay:1.2s'}));
+svg.appendChild(el('path',{id:'cyanr',d:dCyan,'class':'arccyan akt',style:'animation-delay:2s'}));
+/* Bahn-Bedeutung */
+[['STEUERUNG',200,150],['DURCHFÜHRUNG · EIGENER BETRIEB',340,235],['AUSSENWELT · PARTNER',150,318]].forEach(function(B){
+  var q=P(B[1],B[2]);
+  var t=el('text',{x:q[0].toFixed(0),y:q[1].toFixed(0),'class':'flusslabel akt',style:'animation-delay:.9s;font-size:7px'});
+  t.setAttribute('fill','#5E7C86'); t.textContent=B[0]; svg.appendChild(t);
+});
+
+var fl2=el('text',{x:CX+150,y:CY-252,'class':'flusslabel akt',fill:'#9FE8FF',style:'animation-delay:2.2s'}); fl2.textContent='Belege · Nachweise · Transparenz — zurück zum Kostenträger'; svg.appendChild(fl2);
+function komet(pid,farbe,r,dur,beg){ var c=el('circle',{r:r,fill:farbe,opacity:.95}); var am=el('animateMotion',{dur:dur,repeatCount:'indefinite',begin:beg}); var mp=el('mpath',{}); mp.setAttribute('href','#'+pid); am.appendChild(mp); c.appendChild(am); svg.appendChild(c); }
+komet('gold','#FFE9B8',4.5,'7s','-1s'); komet('gold','#FFD98F',3.5,'8.2s','-4s'); komet('gold','#FFE9B8',3,'7.6s','-6.2s');
+komet('cyanr','#9FE8FF',2.6,'8.4s','-2s'); komet('cyanr','#9FE8FF',2.2,'9.4s','-5.5s'); komet('cyanr','#BFF0FF',2,'8.8s','-7.7s');
+/* Planeten (Masse = Groesse) und ihre MONDE (Abhaengigkeit = Umlaufbahn) */
+var PLANETEN=[
+ {k:'m',  a:-90,r:150,pr:38,ic:'🎯',n:'Management',s:'Board · entscheidet',gold:1,z:'#/m',
+  info:'Das Board entscheidet — das Ȳ entwirft. Vergabe, kumulative Freigaben ab 500 €, Steuerung. Geld fließt hier nicht durch: Es wird gelenkt.'},
+ {k:'ktr',a:180,r:318,pr:34,ic:'🏛️',n:'Kostenträger',s:'Geld rein · Echtzeit',gold:1,z:'#/ktr',
+  info:'Hier kommt das Geld herein — und hierher kehrt jeder Beleg in Echtzeit zurück. In seinem Orbit: Zuwendungen und Förder-Calls, die Quellen seiner Gravitation.'},
+ {k:'kl', a:128,r:235,pr:32,ic:'🎓',n:'Kursleiter',s:'verdienen gut',gold:1,z:'#/kl',
+  info:'Der goldene Strom fließt zuerst hierher: rund 80 % der Mittel in die Durchführung. Kursleiter verdienen gut — weil kein Wasserkopf mitisst.'},
+ {k:'tn', a:70,r:235,pr:34,ic:'📱',n:'Teilnehmer',s:'App · Lernpfad',z:'#/tn',
+  info:'Der massereichste Planet — um ihn kreist, was ihn trägt: Selbstlernen, Motivation, 24/7-Hilfe. Jede Meldung steht in Sekunden beim Kursleiter.'},
+ {k:'ag', a:0,r:318,pr:32,ic:'🤝',n:'Vermittlung',s:'Ergebnisse raus',z:'#/ag',
+  info:'Hier kommt das Ergebnis heraus: 312 in Arbeit vermittelt. In seinem Orbit: die eIDAS-gesiegelten Zeugnisse — der Beweis, der die Vermittlung trägt.'},
+ {k:'fib',a:-52,r:235,pr:28,ic:'💶',n:'Buchhaltung',s:'Zahllauf · IKS',z:'#/fib',
+  info:'Auf dem Rückweg der Belege: Zahllauf mit IKS, GoBD-Posteingang, DATEV vorbereitet. Der Euro-Zähler unten läuft live.'},
+ {k:'cp', a:-148,r:318,pr:27,ic:'🌏',n:'Campus',s:'Manila',z:'#/cp',
+  info:'Der äußere Planet: Auslands-Campus mit Wohncampus und Zeitzonen-Uhren. Sein Mond: die Visum-&-Sprache-Pipeline, ohne die er nicht existiert.'}];
+var MONDE=[
+ {p:'ktr',ph:210,mr:57,ms:26,ic:'📜',n:'Zuwendung',z:'#/zuw',info:'Zuwendungen mit Verwendungsnachweis — kreist um den Kostenträger, denn ohne ihn gibt es sie nicht. Klick: Fördermittel-Sicht.'},
+ {p:'ktr',ph:30,mr:57,ms:30,ic:'🧭',n:'Förder-Calls',z:'#/zuw',info:'Ausschreibungen und Chancen-Radar — die zweite Geldquelle im Orbit des Kostenträgers.'},
+ {p:'tn',ph:-90,mr:62,ms:24,ic:'📚',n:'Lernen',z:'#/sl',info:'Selbstlernen · Campus 24/7 — kreist um den Teilnehmer: Katalog, Einheiten, Prüfungssimulation.'},
+ {p:'tn',ph:30,mr:62,ms:24,ic:'💬',n:'Motivation',z:'#/mot',info:'Begleitung mit Frühwarnliste und Eskalationskette — hält den Teilnehmer auf der Bahn, wenn die Anziehung nachlässt.'},
+ {p:'tn',ph:150,mr:62,ms:22,ic:'🌙',n:'24/7',z:'#/s24',info:'Härtefall und Nachtkanal mit Krisenerkennung — die Gravitation, die nachts trägt. Management sieht nur Aggregate.'},
+ {p:'ag',ph:-70,mr:55,ms:26,ic:'📜',n:'Zeugnisse',z:'#/ag',info:'284 Abschlüsse, eIDAS-gesiegelt, per Prüflink in Sekunden verifizierbar — der Trabant, der der Vermittlung Gewicht gibt.'},
+ {p:'cp',ph:100,mr:47,ms:22,ic:'🛂',n:'Visa',z:'#/cp',info:'Visum & Sprache — §§ 16d/18a, telc B1–B2, Kenntnisprüfung: der Mond, ohne den der Campus nicht kreist.'}];
+var pop=document.getElementById('gpop');
+function zeigPop(e,t,info,klick){ document.getElementById('gpt').textContent=t; document.getElementById('gpz').textContent=info; document.getElementById('gpk').textContent=klick; pop.style.display='block'; movePop(e); }
+function movePop(e){ var x=e.clientX+18,y=e.clientY+14; if(x>innerWidth-350)x=e.clientX-348; if(y>innerHeight-170)y=e.clientY-160; pop.style.left=x+'px'; pop.style.top=y+'px'; }
+/* Speichen: nur die 7 Planeten haengen direkt an der Ȳ-Gravitation */
+var speichen={};
+PLANETEN.forEach(function(R,i){
+  var p=P(R.a,R.r);
+  var vx=p[0]-CX, vy=p[1]-CY, d=Math.sqrt(vx*vx+vy*vy);
+  var x1=CX+vx/d*78, y1=CY+vy/d*78, x2=p[0]-vx/d*(R.pr+4), y2=p[1]-vy/d*(R.pr+4);
+  var L=el('line',{x1:x1.toFixed(1),y1:y1.toFixed(1),x2:x2.toFixed(1),y2:y2.toFixed(1),'class':'speiche'});
+  svg.appendChild(L); speichen[R.k]=L;
+  var dp=el('circle',{r:1.6,fill:'#9FE8FF',opacity:.7});
+  var am=el('animateMotion',{dur:(3.5+i*0.4).toFixed(1)+'s',repeatCount:'indefinite',begin:'-'+(i*0.9).toFixed(1)+'s',path:'M'+x1.toFixed(1)+' '+y1.toFixed(1)+' L'+x2.toFixed(1)+' '+y2.toFixed(1)});
+  if(i%2){ am.setAttribute('keyPoints','1;0'); am.setAttribute('keyTimes','0;1'); am.setAttribute('calcMode','linear'); }
+  dp.appendChild(am); svg.appendChild(dp);
+});
+/* Ȳ — die Sonne */
+var herz=el('g',{id:'yherz'});
+herz.appendChild(el('circle',{cx:CX,cy:CY,r:70,fill:'rgba(5,7,13,.95)',stroke:'#B478FF','stroke-width':2}));
+var yp=el('g',{id:'ypfad',stroke:'#FFFFFF','stroke-width':6.5,'stroke-linecap':'round',fill:'none'});
+yp.appendChild(el('path',{d:'M'+(CX-21)+' '+(CY-26)+' L'+CX+' '+(CY+3)+' M'+(CX+21)+' '+(CY-26)+' L'+CX+' '+(CY+3)+' M'+CX+' '+(CY+3)+' V'+(CY+33)+' M'+(CX-13)+' '+(CY-40)+' H'+(CX+13)}));
+herz.appendChild(yp);
+herz.setAttribute('style','cursor:pointer');
+herz.addEventListener('click',function(){ location.href='g4/'; });
+herz.addEventListener('mouseenter',function(e){ zeigPop(e,'KAȲȲA · KI & Datenbasis','Die Sonne dieses Systems — reine Daten-Gravitation. Kein Euro fließt hier durch: Das Ȳ liest, entwirft, überwacht, siegelt — und hält alle Bahnen zusammen. Verwaltungsapparat? Erledigt. −80 % Aufwand.','Klick: App öffnen (11 Ansichten)'); });
+herz.addEventListener('mousemove',movePop);
+herz.addEventListener('mouseleave',function(){ pop.style.display='none'; });
+svg.appendChild(herz);
+/* Planeten-Systeme: Planet + Mondbahn + kreisende Monde */
+var systeme={};
+PLANETEN.forEach(function(R,i){
+  var p=P(R.a,R.r);
+  var sys=el('g',{'class':'sys akt',style:'animation-delay:'+(0.9+i*0.15)+'s'});
+  var meine=MONDE.filter(function(M){ return M.p===R.k; });
+  if(meine.length){ sys.appendChild(el('circle',{cx:p[0],cy:p[1],r:meine[0].mr,'class':'mondbahn'})); }
+  var g=el('g',{'class':'planet'});
+  g.appendChild(el('circle',{cx:p[0],cy:p[1],r:R.pr,'class':'pk',stroke:(R.gold?'rgba(255,194,75,.75)':'rgba(65,232,255,.55)'),'stroke-width':1.6}));
+  var ic=el('text',{x:p[0],y:p[1]-2,'class':'pic'}); ic.textContent=R.ic; g.appendChild(ic);
+  var ly=p[1]+(meine.length?meine[0].mr+30:R.pr+16);
+  var nm=el('text',{x:p[0],y:ly,'class':'pname'}); nm.textContent=R.n; g.appendChild(nm);
+  var sb=el('text',{x:p[0],y:ly+13,'class':'psub'}); sb.textContent=R.s; g.appendChild(sb);
+  g.addEventListener('mouseenter',function(e){ zeigPop(e,R.n,R.info,'Klick: '+R.n+' öffnen'); if(speichen[R.k])speichen[R.k].classList.add('an'); sys.classList.add('an'); });
+  g.addEventListener('mousemove',movePop);
+  g.addEventListener('mouseleave',function(){ pop.style.display='none'; if(speichen[R.k])speichen[R.k].classList.remove('an'); sys.classList.remove('an'); });
+  g.addEventListener('click',function(){ location.href='g4/'+R.z; });
+  sys.appendChild(g);
+  svg.appendChild(sys); systeme[R.k]=sys;
+});
+/* Monde: kreisen um ihren Planeten, Beschriftung bleibt aufrecht */
+MONDE.forEach(function(M,i){
+  var R=null; PLANETEN.forEach(function(x){ if(x.k===M.p) R=x; });
+  var p=P(R.a,R.r);
+  var mx=p[0]+M.mr, my=p[1];
+  var orbit=el('g',{'class':'akt',style:'animation-delay:'+(2.2+i*0.12)+'s'});
+  var dreh=el('animateTransform',{attributeName:'transform',type:'rotate',from:M.ph+' '+p[0]+' '+p[1],to:(M.ph+360)+' '+p[0]+' '+p[1],dur:M.ms+'s',repeatCount:'indefinite'});
+  orbit.appendChild(dreh);
+  var mond=el('g',{'class':'mond'});
+  var gegen=el('animateTransform',{attributeName:'transform',type:'rotate',from:(-M.ph)+' '+mx+' '+my,to:(-M.ph-360)+' '+mx+' '+my,dur:M.ms+'s',repeatCount:'indefinite'});
+  mond.appendChild(gegen);
+  mond.appendChild(el('circle',{cx:mx,cy:my,r:13,'class':'mk'}));
+  var ic=el('text',{x:mx,y:my,'class':'mic'}); ic.textContent=M.ic; mond.appendChild(ic);
+  var nm=el('text',{x:mx,y:my+24,'class':'mname'}); nm.textContent=M.n; mond.appendChild(nm);
+  mond.addEventListener('mouseenter',function(e){ zeigPop(e,M.n,M.info,'Klick: öffnen'); if(systeme[M.p])systeme[M.p].classList.add('an'); });
+  mond.addEventListener('mousemove',movePop);
+  mond.addEventListener('mouseleave',function(){ pop.style.display='none'; if(systeme[M.p])systeme[M.p].classList.remove('an'); });
+  mond.addEventListener('click',function(){ location.href='g4/'+M.z; });
+  orbit.appendChild(mond);
+  svg.appendChild(orbit);
+});
+/* Kennzahlen */
+var kz=el('text',{x:CX,y:775,'class':'zahlzeile akt',style:'animation-delay:2.6s'});
+kz.innerHTML='VERMITTELT <tspan id="z1" style="fill:#41E896;font-weight:800">0</tspan>   ·   ABSCHLÜSSE <tspan id="z2" style="fill:#41E896;font-weight:800">0</tspan>   ·   HEUTE <tspan id="z3" style="fill:#FFC24B;font-weight:800">0 €</tspan>   ·   VERWALTUNG <tspan style="fill:#8B96A4">−80 % — ERLEDIGT DAS Ȳ</tspan>';
+svg.appendChild(kz);
+function countup(id,ziel,dauer,fmt,delay){ setTimeout(function(){ var e=document.getElementById(id),t0=null; function s(ts){ if(!t0)t0=ts; var p2=Math.min(1,(ts-t0)/dauer); e.textContent=fmt(Math.round(ziel*(1-Math.pow(1-p2,3)))); if(p2<1)requestAnimationFrame(s); } requestAnimationFrame(s); },delay); }
+function deN(v){ return v.toLocaleString('de-DE'); }
+if(!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)){
+  countup('z1',312,1300,deN,2800); countup('z2',284,1300,deN,3000);
+  countup('z3',43216,1500,function(v){return deN(v)+' €';},3200);
+  var eu=43216; setTimeout(function(){ setInterval(function(){ eu+=40+Math.floor(Math.random()*160); document.getElementById('z3').textContent=deN(eu)+' €'; },2600); },5000);
+} else { document.getElementById('z1').textContent='312'; document.getElementById('z2').textContent='284'; document.getElementById('z3').textContent='43.216 €'; }
+</script>
+</body>
+</html>

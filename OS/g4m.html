@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#05070D">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>KAȲȲA G4</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  :root{--ink:#05070D;--glow:#41E8FF;--gold:#FFC24B;--mag:#FF7AC6;--txt:#E8F6F4;--mut:#5E7C86}
+  html{background:var(--ink);overscroll-behavior:none}
+  body{font-family:-apple-system,"SF Pro Text","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
+    background:radial-gradient(420px 480px at 50% 38%, rgba(65,232,255,.08), transparent 65%), var(--ink);
+    color:var(--txt);height:100dvh;display:flex;flex-direction:column;overflow:hidden;touch-action:manipulation;
+    padding-top:env(safe-area-inset-top)}
+  /* Kopf */
+  #kopf{display:flex;align-items:center;gap:10px;padding:14px 16px 8px}
+  .marke{font-weight:900;font-size:19px;letter-spacing:.09em}
+  .marke b{color:var(--glow)}
+  .chip{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:10px;color:var(--mut);border:1px solid rgba(65,232,255,.25);border-radius:99px;padding:2px 9px}
+  #kopf a{margin-left:auto;color:var(--mut);text-decoration:none;font-size:11.5px;border:1px solid rgba(94,124,134,.4);border-radius:99px;padding:4px 11px}
+  /* Quellen-Chips (Stories) */
+  #stories{display:flex;gap:10px;overflow-x:auto;padding:10px 16px 14px;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;flex:none}
+  #stories::-webkit-scrollbar{display:none}
+  .story{flex:none;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;gap:5px;width:64px}
+  .sring{width:52px;height:52px;border-radius:50%;padding:3px;background:conic-gradient(from 210deg, rgba(65,232,255,.9), rgba(255,122,198,.55), rgba(65,232,255,.15), rgba(65,232,255,.9));position:relative}
+  .story.ro .sring{background:conic-gradient(from 210deg, rgba(94,124,134,.8), rgba(94,124,134,.2), rgba(94,124,134,.8))}
+  .skern{width:100%;height:100%;border-radius:50%;background:#0B1322;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .skern svg{width:30px;height:20px;border-radius:3px}
+  .sdot{position:absolute;right:1px;top:1px;width:11px;height:11px;border-radius:50%;background:#22DD88;border:2px solid var(--ink);animation:puls 1.6s ease-in-out infinite}
+  @keyframes puls{0%,100%{opacity:1}50%{opacity:.35}}
+  .sname{font-size:8.5px;font-weight:700;color:var(--mut);text-align:center;line-height:1.15;max-width:64px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* Buehne */
+  #buehne{flex:1;min-height:0;position:relative}
+  #buehne svg{width:100%;height:100%;display:block}
+  .stern{fill:#41E8FF}
+  .nerv{stroke:rgba(65,232,255,.08);stroke-width:1;fill:none}
+  .ader{stroke:rgba(65,232,255,.32);stroke-width:2.2;fill:none}
+  .strom{stroke:rgba(65,232,255,.1);stroke-width:1;fill:none}
+  .mnetz{stroke:rgba(65,232,255,.65);stroke-width:1.4;fill:none;filter:drop-shadow(0 0 6px rgba(65,232,255,.5))}
+  .mnetz.ro{stroke-dasharray:4 5;stroke:rgba(65,232,255,.45)}
+  .qp{fill:var(--glow)} .rp{fill:var(--mag)}
+  .bub{cursor:pointer}
+  .bub circle.k{fill:#0D1626;stroke:rgba(65,232,255,.45);stroke-width:1.2;filter:drop-shadow(0 4px 12px rgba(0,0,0,.6))}
+  .bub.gross circle.k{stroke:rgba(255,194,75,.7);stroke-width:1.8;filter:drop-shadow(0 0 14px rgba(65,232,255,.3))}
+  .bub.an circle.k{stroke:var(--glow);filter:drop-shadow(0 0 12px rgba(65,232,255,.7))}
+  .bico{font-size:19px;text-anchor:middle;dominant-baseline:central}
+  .gross .bico{font-size:26px}
+  .bname{font-size:8.5px;font-weight:800;fill:var(--txt);text-anchor:middle;letter-spacing:.02em}
+  .gross .bname{font-size:10px}
+  #yherz{cursor:pointer}
+  .ytick{font-size:8.5px;font-weight:700;fill:#7FD9E8;text-anchor:middle;font-family:"SF Mono",Menlo,Consolas,monospace}
+  .ylab{font-size:7.5px;font-weight:800;fill:var(--mut);text-anchor:middle;font-family:"SF Mono",Menlo,Consolas,monospace;letter-spacing:.2em}
+  @keyframes atme{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+  #ykern{animation:atme 4.5s ease-in-out infinite;transform-origin:center;transform-box:fill-box}
+  /* Fuss */
+  #fuss{flex:none;display:flex;gap:14px;justify-content:center;align-items:center;padding:8px 12px calc(10px + env(safe-area-inset-bottom));
+    font-family:"SF Mono",Menlo,Consolas,monospace;font-size:9.5px;color:var(--mut);flex-wrap:wrap}
+  #fuss b{color:var(--glow)} #fuss .g{color:var(--gold)}
+  .pkt{display:inline-block;width:7px;height:7px;border-radius:50%;vertical-align:-1px}
+  /* Sheet (iOS) */
+  #scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .3s;z-index:8}
+  #scrim.auf{opacity:1;pointer-events:auto}
+  #sheet{position:fixed;left:0;right:0;bottom:0;max-height:78dvh;background:rgba(13,18,32,.78);
+    -webkit-backdrop-filter:blur(22px) saturate(1.5);backdrop-filter:blur(22px) saturate(1.5);
+    border-radius:22px 22px 0 0;border-top:1px solid rgba(65,232,255,.25);z-index:9;
+    transform:translateY(105%);transition:transform .46s cubic-bezier(.32,1.25,.32,1);
+    display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}
+  #sheet.auf{transform:translateY(0)}
+  #grab{flex:none;padding:10px 0 4px;display:flex;justify-content:center}
+  #grab i{display:block;width:38px;height:5px;border-radius:3px;background:rgba(232,246,244,.28)}
+  #shead{flex:none;display:flex;align-items:center;gap:12px;padding:6px 18px 12px}
+  #shead .ic{width:44px;height:44px;border-radius:50%;background:#0D1626;border:1.5px solid rgba(65,232,255,.5);display:flex;align-items:center;justify-content:center;font-size:22px;flex:none}
+  #shead .ic.gold{border-color:rgba(255,194,75,.75)}
+  #shead h2{font-size:17px;font-weight:800}
+  #shead .cockpit{margin-left:auto;flex:none;color:#04222A;background:linear-gradient(135deg,#0FB8D8,#41E8FF);border-radius:12px;padding:8px 13px;font-size:12px;font-weight:800;text-decoration:none;box-shadow:0 4px 14px rgba(65,232,255,.3)}
+  #shead .sub{font-size:10.5px;color:#7FD9E8;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  #sbody{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 16px 18px}
+  .absch{font-size:10px;font-weight:800;color:var(--mut);letter-spacing:.14em;margin:14px 2px 8px;text-transform:uppercase}
+  .zeile{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:14px;background:rgba(65,232,255,.05);margin-bottom:7px}
+  .zeile .zic{width:34px;height:34px;border-radius:50%;background:#0D1626;border:1px solid rgba(65,232,255,.35);display:flex;align-items:center;justify-content:center;font-size:16px;flex:none}
+  .zeile .zt{min-width:0;flex:1}
+  .zeile .zn{font-size:13px;font-weight:800}
+  .zeile .zf{font-size:10.5px;color:#9FE6F2;font-family:"SF Mono",Menlo,Consolas,monospace;margin-top:2px;line-height:1.35}
+  .tag{flex:none;font-size:9px;font-weight:800;font-family:"SF Mono",Menlo,Consolas,monospace;border-radius:99px;padding:3px 8px;white-space:nowrap}
+  .tag.rw{color:var(--glow);border:1px solid rgba(65,232,255,.4)}
+  .tag.ro{color:var(--mut);border:1px solid rgba(94,124,134,.5)}
+  .tag.ex{color:var(--gold);border:1px dashed rgba(255,194,75,.55)}
+  .zeile.ex{background:rgba(255,194,75,.06)}
+  .zeile.ex .zic{border-color:rgba(255,194,75,.5);font-size:13px}
+  .fl{display:inline-flex;gap:6px;flex-wrap:wrap;padding:2px}
+  .fl svg{width:27px;height:18px;border-radius:3px;box-shadow:0 0 0 1px rgba(232,246,244,.15)}
+  .top5{list-style:none}
+  .top5 li{display:flex;gap:9px;align-items:baseline;padding:8px 10px;border-radius:11px;background:rgba(65,232,255,.05);margin-bottom:6px;font-size:12.5px;font-weight:600}
+  .top5 li b{color:var(--glow);font-family:"SF Mono",Menlo,Consolas,monospace;font-size:10px;flex:none}
+  .hinweis{font-size:10.5px;color:var(--mut);line-height:1.5;margin-top:10px}
+  .pfeile{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:11px;flex:none}
+  .ph{color:var(--glow)} .pz{color:var(--mag)}
+  @media (prefers-reduced-motion: reduce){ .teil{animation:none !important} #ykern{animation:none} .sdot{animation:none} }
+</style>
+</head>
+<body>
+<div id="kopf">
+  <span class="marke">KA<b>ȲȲ</b>A <b>G4</b></span>
+  <span class="chip">β.1.0.2 · iOS</span>
+  <a href="g4/" style="color:var(--glow);border-color:rgba(65,232,255,.5)">▶ App</a>
+</div>
+<div id="stories"></div>
+<div id="buehne"><svg id="sz" viewBox="0 0 390 480" preserveAspectRatio="xMidYMid meet" aria-label="KAȲȲA G4 mobil"></svg></div>
+<div id="fuss">
+  <span><b>12</b> QUELLEN</span><span><b class="g">10</b> ROLLEN</span>
+  <span><i class="pkt" style="background:#41E8FF"></i> hin</span>
+  <span><i class="pkt" style="background:#FF7AC6"></i> zurück</span>
+  <span>Antippen = Verbindungen</span>
+</div>
+<div id="scrim" onclick="zu()"></div>
+<div id="sheet">
+  <div id="grab"><i></i></div>
+  <div id="shead"></div>
+  <div id="sbody"></div>
+</div>
+<script>
+var QUELLEN=[
+ {n:'BA-Jobsuche',kn:'BA-Jobs',f:'de',q:'jobs',r:'rw',fb:['Pflegefachkraft · Hamburg','Pflegehelfer · Berlin','Stationsleitung · München','Altenpfleger · Köln','PDL · Bremen']},
+ {n:'BA-Ausbildung',kn:'Ausbildung',f:'de',q:'ausbjobs',r:'rw',fb:['Ausbildung Pflege 2027','Duales Studium Pflege','Generalistische Ausbildung','Pflegehilfe','B.Sc. Pflege']},
+ {n:'TED (EU)',kn:'TED',f:'eu',q:'',r:'rw',fb:['Berufl. Bildung CPV 805','Eingliederung · Berlin','Sprachkurse','Bildung · NRW','Arbeitsmarkt · Bund']},
+ {n:'EU Funding & Tenders',kn:'EU-Calls',f:'eu',q:'',r:'rw',fb:['ESF+ Soziale Innovation','AMIF Integration','Erasmus+ Berufsbildung','CERV','ESF+ Skills']},
+ {n:'Zuwendungen Berlin',kn:'Berlin',f:'be',q:'',r:'rw',fb:['Politikbereich Arbeit','Jugendberufsagentur','Qualifizierung','Integrationsbetriebe','Teilhabe-Programm']},
+ {n:'Transparenz Hamburg',kn:'Hamburg',f:'hh',q:'hh',r:'ro',fb:['Zuwendungsvorgänge 2025','Empfängerbericht','Sanierungsfonds','Quartiersprojekte','Weiterbildungsbonus']},
+ {n:'Zuwendungen Bremen',kn:'Bremen',f:'hb',q:'hb',r:'ro',fb:['Globalmittel Stadtteile','Jugendwerkstatt','Sprachförderung','Beschäftigungsträger','Quartiersbildung']},
+ {n:'EFRE NRW',kn:'NRW',f:'nw',q:'nrwefre',r:'ro',fb:['Tor zum Ruhrtal','Bildungsquartier Annen','Talentkolleg Ruhr','Digitale Teilhabe','Quartiersakademie']},
+ {n:'Kurssuche BW',kn:'BW',f:'bw',q:'bw',r:'rw',fb:['Altenpflegehilfe','Anerkennung Pflege','Berufssprache B2','Praxisanleitung','Demenzbegleitung']},
+ {n:'BA Bayern',kn:'Bayern',f:'by',q:'byjobs',r:'rw',fb:['Pflege B.Sc. · Burgau','Duales Studium · FFB','Pflegefachhelfer','Ausbildungsbeauftragte','Stationshilfe']},
+ {n:'mein NOW',kn:'mein NOW',f:'de',q:'wb',r:'rw',fb:['Herausforderungen Pflege','Modulares Training','Sterbebegleitung','Pflege Grundlagen','Wundexperte ICW']},
+ {n:'service.bund.de',kn:'Bund',f:'de',q:'bund',r:'ro',fb:['Offene Jugendwerkstatt','Aktivierung §45','Berufsorientierung','Integrationskurse','Coaching']}];
+var ROLLEN=[
+ {k:'M',  n:'Management',s:'Vergabe · Steuerung',ic:'🎯',x:195,y:398,g:'g',ext:['eM@w (BA)','KURSNET','eIDAS-Siegel'],src:[2,3,4,5,6,7,9,11]},
+ {k:'KTR',n:'Kostenträger',s:'Echtzeit · liest',ic:'🏛️',x:75,y:64,src:[4,5,6,7]},
+ {k:'ZUW',n:'Zuwendung',s:'Nachweis',ic:'📜',x:195,y:44,src:[4,5,6,7]},
+ {k:'FIB',n:'FiBu',s:'IKS',ic:'💶',x:315,y:64,ext:['DATEV','EBICS'],src:[]},
+ {k:'KL', n:'Kursleiter',s:'Cockpit',ic:'🎓',x:46,y:150,src:[8,10]},
+ {k:'AG', n:'Arbeitgeber',s:'Matching',ic:'🤝',x:344,y:150,src:[0,1,9]},
+ {k:'MOT',n:'Motivation',s:'Begleitung',ic:'💬',x:46,y:262,src:[]},
+ {k:'SL', n:'Selbstlernen',s:'Campus',ic:'📚',x:344,y:262,src:[8,10]},
+ {k:'TN', n:'Teilnehmer',s:'App',ic:'📱',x:104,y:354,src:[0,1]},
+ {k:'S24',n:'24/7',s:'Härtefall',ic:'🌙',x:286,y:354,src:[]}];
+var KANTEN=[
+ {a:'M',b:'KTR',t:'rw',w:'Belege · KPIs ↔ Bescheide'},
+ {a:'M',b:'FIB',t:'rw',w:'Zahllauf-Freigabe · IKS'},
+ {a:'M',b:'KL', t:'ro2',w:'Orga ↓ · Rechnungen >500 € ↑'},
+ {a:'M',b:'AG', t:'rw',w:'Talentpool · Reservierungen'},
+ {a:'ZUW',b:'M',t:'ro',w:'Förderaufrufe · Chancen'},
+ {a:'M',b:'TN', t:'ro',w:'Zeugnisse · Bescheinigungen'},
+ {a:'KL',b:'TN', t:'rw',w:'Check-ins · Reha-Werte'},
+ {a:'KL',b:'FIB',t:'rw',w:'Bestellungen · Zeitbuchungen'},
+ {a:'KL',b:'MOT',t:'rw',w:'Auffälligkeiten · Status'},
+ {a:'TN',b:'SL', t:'rw',w:'Quiz · Lernfortschritt'},
+ {a:'TN',b:'MOT',t:'rw',w:'vertraulicher Draht · Ansprache'},
+ {a:'TN',b:'S24',t:'rw',w:'Nachtkanal · Krisenhilfe'},
+ {a:'MOT',b:'S24',t:'rw',w:'Übergabe · Rückholplan'},
+ {a:'SL',b:'MOT',t:'ro',w:'Frühwarnsignal Lernaktivität'},
+ {a:'FIB',b:'ZUW',t:'rw',w:'Spenden · Bestätigungen · De-minimis'},
+ {a:'ZUW',b:'KTR',t:'ro',w:'Verwendungsnachweis'},
+ {a:'TN',b:'AG', t:'ro',w:'anonyme Profile'},
+ {a:'S24',b:'M', t:'ro',w:'nur aggregierte Daten'},
+ {a:'FIB',b:'KTR',t:'rw',w:'Monatsabrechnungen · Zahlungseingänge'},
+ {a:'KL',b:'SL', t:'rw',w:'Förderpfade · Kompetenzraster'},
+ {a:'MOT',b:'M', t:'ro',w:'Eskalation (aggregiert)'},
+ {a:'FIB',b:'AG', t:'rw',w:'Rechnung ↔ Employer-Pays (Tochter)'}];
+var FL={
+ de:'<rect width="30" height="20" fill="#000"/><rect y="6.7" width="30" height="6.6" fill="#DD0000"/><rect y="13.3" width="30" height="6.7" fill="#FFCE00"/>',
+ eu:'<rect width="30" height="20" fill="#039"/><circle cx="15" cy="10" r="5.5" fill="none" stroke="#FC0" stroke-width="1.6" stroke-dasharray="1.1 1.7"/>',
+ be:'<rect width="30" height="20" fill="#fff"/><rect width="30" height="4.5" fill="#E4002B"/><rect y="15.5" width="30" height="4.5" fill="#E4002B"/>',
+ hh:'<rect width="30" height="20" fill="#DA121A"/><path d="M10.5 14.5V9l1.5-.8V6.2h1v1.4h1.6V6.2h1v1.4h1.6V6.2h1v1.4l1.5.8v5.5z" fill="#fff"/>',
+ hb:'<rect width="30" height="5" fill="#E4002B"/><rect y="5" width="30" height="5" fill="#fff"/><rect y="10" width="30" height="5" fill="#E4002B"/><rect y="15" width="30" height="5" fill="#fff"/>',
+ nw:'<rect width="30" height="6.7" fill="#009036"/><rect y="6.7" width="30" height="6.6" fill="#fff"/><rect y="13.3" width="30" height="6.7" fill="#E4002B"/>',
+ bw:'<rect width="30" height="10" fill="#000"/><rect y="10" width="30" height="10" fill="#FDCC00"/>',
+ by:'<rect width="30" height="10" fill="#fff"/><rect y="10" width="30" height="10" fill="#0066B3"/>'};
+var YX=195, YY=215;
+function el(n,a){ var e=document.createElementNS('http://www.w3.org/2000/svg',n); for(var k in a) e.setAttribute(k,a[k]); return e; }
+function beiK(k){ for(var i=0;i<ROLLEN.length;i++) if(ROLLEN[i].k===k) return ROLLEN[i]; return null; }
+function flagSvg(f){ return '<svg viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg">'+(FL[f]||'')+'</svg>'; }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+/* ---------- Quellen-Chips ---------- */
+var topDaten=[];
+var stEl=document.getElementById('stories');
+QUELLEN.forEach(function(Q,i){
+  topDaten.push({liste:(Q.fb||[]).slice(),live:false});
+  var d=document.createElement('div');
+  d.className='story'+(Q.r==='ro'?' ro':'');
+  d.innerHTML='<div class="sring"><div class="skern">'+flagSvg(Q.f)+'</div><div class="sdot"></div></div><div class="sname">'+esc(Q.kn)+'</div>';
+  d.addEventListener('click',function(){ quelleOffen(i); });
+  stEl.appendChild(d);
+});
+/* ---------- Buehne ---------- */
+var svg=document.getElementById('sz');
+for(var s9=0;s9<44;s9++){ svg.appendChild(el('circle',{cx:(Math.random()*390).toFixed(0),cy:(Math.random()*480).toFixed(0),r:(Math.random()<.85?0.7:1.2),'class':'stern',opacity:(0.06+Math.random()*0.24).toFixed(2)})); }
+/* Datenstrom von den Quellen (oben) ins Ȳ */
+[[120,-8],[195,-8],[270,-8]].forEach(function(p,i){
+  var pid='st'+i;
+  svg.appendChild(el('path',{d:'M'+p[0]+' '+p[1]+' Q'+((p[0]+YX)/2)+' '+((YY-140))+' '+YX+' '+(YY-44),'class':'strom',id:pid}));
+  for(var r=0;r<2;r++){
+    var c=el('circle',{r:(r?1.4:1.9),'class':(r?'rp':'qp')+' teil',opacity:(r?.55:.8)});
+    var am=el('animateMotion',{dur:(2.8+i*0.7+r*1.1).toFixed(1)+'s',repeatCount:'indefinite',begin:'-'+(i*0.9+r*1.4).toFixed(1)+'s'});
+    if(r===1){ am.setAttribute('keyPoints','1;0'); am.setAttribute('keyTimes','0;1'); am.setAttribute('calcMode','linear'); }
+    var mp=el('mpath',{}); mp.setAttribute('href','#'+pid); am.appendChild(mp); c.appendChild(am); svg.appendChild(c);
+  }
+});
+/* Nerven + Ader */
+var netzLage=el('g',{});  /* Tap-Netz liegt unter den Bubbles */
+svg.appendChild(netzLage);
+ROLLEN.forEach(function(R,i){
+  var dick=(R.k==='M');
+  var nid='nv'+i;
+  svg.appendChild(el('path',{d:'M'+YX+' '+YY+' L'+R.x+' '+R.y,'class':(dick?'ader':'nerv'),id:nid}));
+  var anz=dick?4:2;
+  for(var r=0;r<anz;r++){
+    var rueck=(r%2===1);
+    var c=el('circle',{r:(dick?2.2:1.4),'class':(rueck?'rp':'qp')+' teil',opacity:(dick?.9:.5)});
+    var am=el('animateMotion',{dur:(dick?2.4:(4+((i*1.3)%2.5))).toFixed(1)+'s',repeatCount:'indefinite',begin:'-'+((i*1.1+r*1.3)%4).toFixed(1)+'s'});
+    if(rueck){ am.setAttribute('keyPoints','1;0'); am.setAttribute('keyTimes','0;1'); am.setAttribute('calcMode','linear'); }
+    var mp=el('mpath',{}); mp.setAttribute('href','#'+nid); am.appendChild(mp); c.appendChild(am); svg.appendChild(c);
+  }
+});
+/* Ȳ-Herz */
+var herz=el('g',{id:'yherz'});
+herz.innerHTML='<g id="ykern"><circle cx="'+YX+'" cy="'+YY+'" r="44" fill="rgba(5,7,13,.94)" stroke="rgba(65,232,255,.45)" stroke-width="1.3"/>'+
+ '<circle cx="'+YX+'" cy="'+YY+'" r="55" fill="none" stroke="rgba(65,232,255,.12)" stroke-width="1"/>'+
+ '<g stroke="#41E8FF" stroke-width="4.2" stroke-linecap="round" fill="none" filter="drop-shadow(0 0 9px rgba(65,232,255,.85))">'+
+ '<path d="M'+(YX-14)+' '+(YY-18)+' L'+YX+' '+(YY+2)+' M'+(YX+14)+' '+(YY-18)+' L'+YX+' '+(YY+2)+' M'+YX+' '+(YY+2)+' V'+(YY+23)+' M'+(YX-9)+' '+(YY-28)+' H'+(YX+9)+'"/></g></g>';
+svg.appendChild(herz);
+var yt=el('text',{x:YX,y:YY+72,'class':'ytick'}); yt.textContent='…'; svg.appendChild(yt);
+var yl=el('text',{x:YX,y:YY+85,'class':'ylab'}); yl.textContent='KAȲȲA · KI & DATENBASIS'; svg.appendChild(yl);
+herz.addEventListener('click',function(){ yOffen(); });
+/* Rollen-Bubbles */
+var bubbles={};
+ROLLEN.forEach(function(R){
+  var gross=(R.k==='M');
+  var g=el('g',{'class':'bub'+(gross?' gross':'')});
+  var r=gross?32:23;
+  g.appendChild(el('circle',{cx:R.x,cy:R.y,r:r,'class':'k'}));
+  var ic=el('text',{x:R.x,y:R.y+1,'class':'bico'}); ic.textContent=R.ic; g.appendChild(ic);
+  var nm=el('text',{x:R.x,y:R.y+r+11,'class':'bname'}); nm.textContent=R.n; g.appendChild(nm);
+  g.addEventListener('click',function(){ offen(R.k); });
+  svg.appendChild(g); bubbles[R.k]=g;
+});
+/* ---------- Tap-Netz ---------- */
+var netzTmp=[];
+function netzZeigen(k){
+  netzWeg();
+  KANTEN.forEach(function(K,i){
+    if(K.a!==k&&K.b!==k) return;
+    var A=beiK(K.a),B=beiK(K.b);
+    var mx0=(A.x+B.x)/2,my0=(A.y+B.y)/2;
+    var dx=mx0-YX,dy=my0-YY,dl=Math.sqrt(dx*dx+dy*dy)||1;
+    var p=el('path',{d:'M'+A.x+' '+A.y+' Q'+(mx0+dx/dl*30).toFixed(1)+' '+(my0+dy/dl*30).toFixed(1)+' '+B.x+' '+B.y,'class':'mnetz'+(K.t==='rw'?'':' ro')});
+    netzLage.appendChild(p); netzTmp.push(p);
+    var andere=(K.a===k?K.b:K.a);
+    if(bubbles[andere]) bubbles[andere].classList.add('an');
+  });
+  if(bubbles[k]) bubbles[k].classList.add('an');
+}
+function netzWeg(){
+  netzTmp.forEach(function(p){ p.remove(); }); netzTmp=[];
+  ROLLEN.forEach(function(R){ if(bubbles[R.k]) bubbles[R.k].classList.remove('an'); });
+}
+/* ---------- Sheet ---------- */
+var sheet=document.getElementById('sheet'), scrim=document.getElementById('scrim');
+var shead=document.getElementById('shead'), sbody=document.getElementById('sbody');
+function auf(){ sheet.classList.add('auf'); scrim.classList.add('auf'); }
+function zu(){ sheet.classList.remove('auf'); scrim.classList.remove('auf'); netzWeg(); }
+function pfeile(K,ich){
+  if(K.t==='rw') return '<span class="pfeile"><span class="ph">→</span><span class="pz">←</span></span>';
+  if(K.t==='ro2') return '<span class="pfeile"><span class="ph">⇢</span><span class="pz">⇠</span></span>';
+  return '<span class="pfeile">'+(K.a===ich?'<span class="ph">→</span>':'<span class="pz">←</span>')+'</span>';
+}
+function tagFuer(K){
+  if(K.t==='rw') return '<span class="tag rw">⇄ Austausch</span>';
+  if(K.t==='ro2') return '<span class="tag ro">je nur lesen</span>';
+  return '<span class="tag ro">nur lesen</span>';
+}
+function offen(k){
+  var R=beiK(k);
+  shead.innerHTML='<div class="ic'+(k==='M'?' gold':'')+'">'+R.ic+'</div><div><h2>'+esc(R.n)+'</h2><div class="sub">'+esc(R.s)+'</div></div><a class="cockpit" href="g4/#/'+k.toLowerCase()+'">▶ Cockpit</a>';
+  var html='<div class="absch">Verbindungen im ȲȲ</div>';
+  KANTEN.forEach(function(K){
+    if(K.a!==k&&K.b!==k) return;
+    var andere=beiK(K.a===k?K.b:K.a);
+    html+='<div class="zeile"><div class="zic">'+andere.ic+'</div><div class="zt"><div class="zn">'+esc(andere.n)+' '+pfeile(K,k)+'</div><div class="zf">'+esc(K.w)+'</div></div>'+tagFuer(K)+'</div>';
+  });
+  if(R.ext&&R.ext.length){
+    html+='<div class="absch">Externe Systeme</div>';
+    R.ext.forEach(function(e){
+      html+='<div class="zeile ex"><div class="zic">⇄</div><div class="zt"><div class="zn">'+esc(e)+'</div><div class="zf">Anbindung vorbereitet</div></div><span class="tag ex">Vorbereitet</span></div>';
+    });
+  }
+  if(R.src&&R.src.length){
+    html+='<div class="absch">Speist sich aus diesen Quellen</div><div class="fl">';
+    R.src.forEach(function(si){ html+=flagSvg(QUELLEN[si].f); });
+    html+='</div><div class="hinweis">'+R.src.map(function(si){return QUELLEN[si].n;}).join(' · ')+'</div>';
+  }
+  sbody.innerHTML=html; sbody.scrollTop=0;
+  netzZeigen(k); auf();
+}
+function quelleOffen(i){
+  var Q=QUELLEN[i], T=topDaten[i];
+  shead.innerHTML='<div class="ic" style="padding:9px">'+flagSvg(Q.f)+'</div><div><h2>'+esc(Q.n)+'</h2><div class="sub">'+(Q.r==='rw'?'Austausch · live':'nur lesen · live')+'</div></div>';
+  var html='<div class="absch">Top 5 · '+(T.live?'echte API-Daten':'Beispieldaten, API lädt …')+'</div><ol class="top5">';
+  T.liste.slice(0,5).forEach(function(t,j){ html+='<li><b>'+(j+1)+'</b><span>'+esc(t)+'</span></li>'; });
+  html+='</ol>';
+  var nutzer=ROLLEN.filter(function(R){ return (R.src||[]).indexOf(i)>-1; });
+  if(nutzer.length){
+    html+='<div class="absch">Fließt in diese Rollen</div>';
+    nutzer.forEach(function(R){ html+='<div class="zeile"><div class="zic">'+R.ic+'</div><div class="zt"><div class="zn">'+esc(R.n)+'</div><div class="zf">'+esc(R.s)+'</div></div></div>'; });
+  }
+  html+='<div class="hinweis">'+(Q.r==='rw'?'Austausch: Daten kommen herein (cyan), Bewerbungen/Anträge/Veröffentlichungen gehen zurück (magenta).':'Transparenz-Export: KAȲȲA liest diese Quelle, es fließt nichts zurück.')+'</div>';
+  sbody.innerHTML=html; sbody.scrollTop=0;
+  netzWeg(); auf();
+}
+function yOffen(){
+  shead.innerHTML='<div class="ic gold" style="font-size:26px;color:#41E8FF;font-weight:900">Ȳ</div><div><h2>KAȲȲA</h2><div class="sub">KI & Datenbasis · das Herz</div></div>';
+  var html='<div class="hinweis" style="font-size:12.5px;color:var(--txt)">Alles fließt durch das Ȳ: <b style="color:#41E8FF">12 Quellen</b> speisen es live, <b style="color:#FFC24B">10 Rollen</b> tauschen darüber ihre Daten – jede sieht nur, was sie sehen darf. Die KI entwirft, Menschen entscheiden.</div>';
+  html+='<div class="absch">Was die KI je Rolle beiträgt</div>';
+  [['🎯','Management','Vergabe-Bewertung · Chancen-Radar · Entwürfe'],
+   ['🎓','Kursleiter','LuV- und Material-Entwürfe'],
+   ['📱','Teilnehmer','Lernhilfe-Chat rund um die Uhr'],
+   ['💶','FiBu','Vorkontierung · Umsatz-Zuordnung'],
+   ['💬','Motivation','Frühwarn-Scoring (nie Konsequenz)'],
+   ['🏛️','Kostenträger','Belegketten-Auskünfte · Prüfpakete']].forEach(function(z){
+    html+='<div class="zeile"><div class="zic">'+z[0]+'</div><div class="zt"><div class="zn">'+z[1]+'</div><div class="zf">'+z[2]+'</div></div></div>';
+  });
+  html+='<div class="hinweis">Live-Ticker unter dem Herz: echte Titel aus den 12 Quellen, alle 2,8 Sekunden.</div>';
+  sbody.innerHTML=html; sbody.scrollTop=0;
+  netzWeg(); auf();
+}
+/* Swipe-down zum Schließen */
+(function(){
+  var y0=null;
+  sheet.addEventListener('touchstart',function(e){ if(sbody.scrollTop<=0||e.target.closest('#grab,#shead')) y0=e.touches[0].clientY; else y0=null; },{passive:true});
+  sheet.addEventListener('touchmove',function(e){ if(y0===null) return; var d=e.touches[0].clientY-y0; if(d>70){ y0=null; zu(); } },{passive:true});
+})();
+/* ---------- Live-Daten ---------- */
+function lade(i){
+  var Q=QUELLEN[i]; if(!Q.q) return;
+  var url='foerder-proxy.php?q='+({jobs:'jobs',ausbjobs:'jobs',byjobs:'jobs',wb:'wb',bund:'bund',hh:'hh',hb:'hb',nrwefre:'nrwefre',bw:'bw'})[Q.q];
+  if(Q.q==='ausbjobs') url+='&art=4&was=Pflege'; if(Q.q==='byjobs') url+='&wo=Bayern&was=Pflege'; if(Q.q==='jobs') url+='&was=Pflege';
+  url+='&size=5';
+  fetch(url).then(function(r){return r.json();}).then(function(j){
+    var t=[];
+    if(j.ergebnisliste){ j.ergebnisliste.forEach(function(x){ if(x.stellenangebotsTitel) t.push(x.stellenangebotsTitel); }); }
+    else if(j.items){ j.items.forEach(function(x){ if(x.titel) t.push(x.titel); }); }
+    if(t.length){ topDaten[i].liste=t.slice(0,5); topDaten[i].live=true; }
+  }).catch(function(){});
+}
+if(/^https?:$/.test(location.protocol)){ for(var i=0;i<QUELLEN.length;i++){ (function(i){ setTimeout(function(){ lade(i); }, i*300); })(i); } }
+/* Herz-Ticker */
+var tq=0,ti=0;
+function kurz(s,n){ s=String(s||''); return s.length>n?s.slice(0,n-1)+'…':s; }
+function herzTick(){
+  var Q=QUELLEN[tq%QUELLEN.length], T=topDaten[tq%QUELLEN.length];
+  var titel=T.liste[ti%T.liste.length]||'';
+  yt.textContent=kurz(titel,34)+' — '+Q.kn+' ▌';
+  tq++; if(tq%QUELLEN.length===0) ti++;
+}
+herzTick();
+if(!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)) setInterval(herzTick,2800);
+</script>
+</body>
+</html>

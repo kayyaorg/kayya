@@ -1,0 +1,15 @@
+# KAYYA: Zugangsdaten und Schluessel bleiben lokal, nie ins Repository
+OS/kayya-key.php
+OS/kayya-db.php
+**/kayya-key.php
+**/kayya-db.php
+# Einmal-Skripte mit Tokens (nach Gebrauch loeschen)
+OS/kayya-setup.php
+OS/kayya-upgrade1.php
+# Pakete und Word-Sperrdateien
+*.zip
+~$*
+# System
+Thumbs.db
+desktop.ini
+OS/wartung-setup.php

@@ -1,0 +1,144 @@
+﻿================================================================================
+KAȲȲA – DOKUMENTE-UPDATE (alle Unterlagen auf Software-Stand v1.0 heben)
+Stand: 22.08.2026 · Diesen Text im Cowork-Chat einfügen und anhängen:
+  1) 260723_V2_KAYYA_Lastenheft.docx        4) 260721_V1_KAYYA_Foerderfahrplan.docx
+  2) 260721_V1_KAYYA_Ideenpapier.docx       5) 260721_V1_KAYYA_Einschaetzung.docx
+  3) 260721_V1_KAYYA_Investorendeck.pptx    6) Lastenheft-Delta-Prompt.txt
+================================================================================
+
+Du bist mein Dokumentenmanager für das Projekt „KAȲȲA“. Die Software ist dem
+Papierstand weit voraus – bringe ALLE angehängten Dokumente auf den Stand des
+Prototyps v1.0. Erhalte je Dokument Formatvorlagen, Tonalität und Struktur;
+ändere Inhalte nur dort, wo der Änderungskatalog es verlangt, und ergänze je
+Dokument ein kurzes Änderungsblatt (V→V+1). Ausgabe jeweils mit Datumspräfix von heute – NUR als DOCX/PPTX, KEINE PDFs. (Die Anhänge liegen im Projektordner KAYYA unter „Arbeitsdokumente“.)
+
+--------------------------------------------------------------------------------
+ÄNDERUNGSKATALOG – WAS SEIT JULI ERREICHT WURDE (Prototyp „KAȲȲA OS“ v1.0)
+--------------------------------------------------------------------------------
+PRODUKT & MARKE
+- SCHREIBWEISE: Marke und Produkt immer „KAȲȲA“ / „KAȲȲA OS“ (U+0232, wie in allen
+  Unterlagen); ASCII „KAYYA“ nur in Dateinamen, Pfaden und URLs.
+- Rechtsform steht: KAȲȲA GmbH ist angemeldet (22.08.2026) – überall
+  „KAȲȲA GmbH“ statt „Arbeitstitel/i. G./gUG“; Geschäftsführer Bernhard Krug.
+  Ob Gemeinnützigkeit (gGmbH) beantragt wird, ist offen – Spenden-/Sphären-
+  Passagen entsprechend als „optional bei Gemeinnützigkeit“ kennzeichnen.
+- Website hat Impressum, Datenschutzerklärung und Einwilligung vor Echt-KI.
+- Produkt-KI heißt in allen Oberflächen „KAȲȲA“ („KAȲȲA empfiehlt …“); die
+  Engine wird transparent ausgewiesen: „powered by Claude (Anthropic)“.
+- Domain kayya.de ist registriert (Host Europe); Upload-Paket liegt bereit.
+- Einstiegsseite heißt „Einblick je Nutzer“ (statt Rollenauswahl).
+
+KLICKBARER PROTOTYP (eine Datei, 10 Rollen-Frontends, je eigene Farbwelt)
+- Kostenträger-Dashboard: Echtzeit-KPIs, Ampeln, Trend-Chart, Beleg-Drilldown
+  über 3 Ebenen bis zur Zeitbuchung, Zeugnisse als Eingliederungsnachweis mit
+  Online-Verifikation.
+- Teilnehmer-App: Stundenplan, QR-Check-in, Lernstand, Self-Learning-Quiz,
+  KAȲȲA-Lernhilfe, Krankmeldung (läuft live ins Kursleiter-Cockpit),
+  REHA-Profil mit Vitalwerten (Selbst- + Fachkraft-Eingabe), Einwilligungs-
+  management, Zertifikat-Teilen (LinkedIn/Open Badge/Prüflink).
+- Kursleiter-Cockpit: Einstieg auf Maßnahmen-Ebene, Anwesenheit, LuV-Freigabe,
+  Kompetenz-Matrix, eigene Einsätze/Zeiten, Rechnungsfreigabe des Fachbereichs,
+  Bestellwesen (BANF) mit Echtzeit-Budget-Sperre.
+- Motivationsbegleitung, Therapeutisches Team (strikt getrennter Datenraum,
+  Krisen-Workflow), Einsatzplanung & Personal (harter Qualifikations-/
+  Fristen-Konflikt-Check), Auslandscampus Manila (Kohorten, Visa-Pipeline,
+  Wohncampus), Arbeitgeberportal (Talentpool + Reservierung), öffentliche
+  Zeugnis-Validierung (Prüfcode, QR, animierte 4-Schritte-Verifikation).
+- Management-Cockpit mit 7 Bereichen: Übersicht (News-Stream mit KI-Einordnung,
+  Chancen-Radar), Vergabe-Monitor, Finanzen, Compliance, Personal, Archiv,
+  KI-Vorgangsliste.
+
+VERGABE („Bewerten → Verdienen → Bewerben“)
+- 12 Demo-Ausschreibungen mit KI-Passung, gelernter Rentabilität aus
+  gewonnenen/verlorenen Losen, Ertragsvorschau in € (DB, Marge, €/Monat),
+  vorausgefüllte Angebotsunterlage, Zuschlag = Statuswechsel zur Maßnahme.
+- NEU & ECHT: Import realer TED-Ausschreibungen (EU-Amtsblatt, CPV 805xx,
+  Deutschland) mit Importstempel und Ein-Klick-Übernahme in die Pipeline.
+- Fristen berechnen sich dynamisch – die Demo ist nie „abgelaufen“.
+
+FINANZEN (FIBU komplett erlebbar)
+- Bankkonten live-artig (EBICS/S-Firm-Logik, camt.053-Umsätze mit KI-Zuordnung),
+  Zahllauf pain.001 mit Vier-Augen-Freigabe, DATEV/LODAS-Exporte, Sphären-
+  trennung, Spenden/Zuwendungsbestätigungen (FI-09).
+- Rechnungs-Workflow 3-stufig: digitaler Eingang + kaufmännische Prüfung
+  (Dubletten, Pflichtfeld Maßnahmen-ID) → fachlich (Kursleiter) → ab 500 €
+  Management. IKS-Missbrauchserkennung: Durchklick-Verdacht, Debitoren-
+  Häufung, Signalboard.
+
+ERSTER ECHTER ONLINE-BAUSTEIN (bereits live in der Demo!)
+- BA-Jobsuche-API der Bundesagentur: echte Stellenangebote, live abgerufen,
+  gematcht gegen Teilnehmerprofile (Pflege, Lager/Logistik, Hotellerie,
+  Gastronomie, internationale Kohorte) mit Score + Begründung + Originallink.
+
+WEITERES
+- Personal-Cockpit (Gehälter vollbelastet, Kosten-Allokation, Anwesenheit),
+  Recruiting (Stellenbedarf aus Maßnahmen, Ein-Klick-Multiposting-Konzept,
+  Bewerbungspipeline, interne Talente/Absolventen-Bindung).
+- Archiv „aufbewahrungspflichtige Dokumente“ (§ 147 AO/§ 257 HGB u. a.) mit
+  Fristen und menschlich freigegebenen Löschvorschlägen.
+- Ereignisprotokoll (append-only) live erlebbar; Präsentations-Tour (10
+  Stationen); 6 Sprachen (de/en/tr/tl/pl/ar) inkl. Arabisch/RTL; Hell-/Dunkelmodus.
+- API-Anbindungsfahrplan erstellt (API-Anbindungen.html): eM@w, DATEV, EBICS,
+  eIDAS-Fernsiegel, KURSNET/mein NOW, TED, Anthropic – mit Registrierungs-
+  links und Antragstexten.
+
+--------------------------------------------------------------------------------
+NEUER MASSSTAB FÜR ALLE DOKUMENTE: SELBSTBAU STATT EINKAUF
+--------------------------------------------------------------------------------
+Strategiewechsel: KAȲȲA wird NICHT als Gesamtprojekt an einen Auftragnehmer
+vergeben. Gründer + KI (Claude) bauen selbst; fremde Arbeitsleistung wird nur
+noch punktuell eingekauft, wenn Echtbetrieb mit Personendaten sie erzwingt
+(Server-Betrieb/Sicherheit, eM@w-Produktivzulassung, Datenschutz-Prüfung).
+Bereits real: Prototyp v1.1 · BA-Jobbörse live · TED-Echtdaten · KAȲȲA-KI
+per Claude-API (Proxy fertig, nur Key nötig) · kayya.de. Jedes Dokument ist
+an diesem Maßstab auszurichten: Was erledigen Gründer+KI selbst, wofür wird
+(später, aus Erlösen) gezielt zugekauft?
+
+--------------------------------------------------------------------------------
+AUFTRÄGE JE DOKUMENT
+--------------------------------------------------------------------------------
+1) LASTENHEFT → V3, UMGEWIDMET ZUR PRODUKT-SPEZIFIKATION
+   Wende den beiliegenden „Lastenheft-Delta-Prompt.txt“ (Blöcke A–N, Punkte
+   1–35) vollständig auf V2 an. ZUSÄTZLICH: Titel/Einleitung umwidmen von
+   „Ausschreibungsunterlage / Aufforderung zur Angebotsabgabe“ zu
+   „Produkt-Spezifikation KAȲȲA OS (Grundlage für Eigenentwicklung,
+   Zulassungen und punktuelle Vergaben)“. Kapitel 13–15 (Bietervorgaben)
+   in einen Anhang „Optional: Vorlage für punktuelle Fremdvergaben“
+   verschieben. Je Modul kurz kennzeichnen: [SELBST = Gründer+KI] /
+   [ZUKAUF bei Echtbetrieb]. Änderungsverzeichnis V2→V3 anfügen.
+
+2) IDEENPAPIER → V2
+   Neues Kapitel „Stand der Umsetzung (August 2026)“ mit dem Änderungskatalog
+   in Prosa; Umsetzungsstrategie-Kapitel auf Selbstbau-Modus umschreiben
+   (Gründer+KI, Bootstrap, Zukauf nur für Betrieb/Sicherheit bei Echtdaten);
+   USPs schärfen: Echtzeit-Nachweisführung, IKS, Live-Matching, KAȲȲA-KI
+   powered by Claude; kayya.de nennen.
+
+3) INVESTORENDECK → V2 ALS „PARTNER- & KOSTENTRÄGER-PITCH“
+   Zielgruppe wechseln: statt Investoren jetzt Jobcenter/REZ, Kommunen und
+   Arbeitgeberverbünde. Kapitalbedarfs-Folien ersetzen durch „Was Sie heute
+   schon sehen können“ (Live-Demo kayya.de), „Echtzeit-Transparenz für Sie
+   als Kostenträger“, „Fahrplan bis zur ersten gemeinsamen Maßnahme“.
+   Neue Slides: Prototyp v1.1 (10 Frontends) · Live-Belege (BA/TED) ·
+   KAȲȲA-KI powered by Claude · Roadmap eM@w/AZAV. Eine optionale
+   Schluss-Folie „Finanzierung (falls Skalierung)“ darf bleiben.
+
+4) FÖRDERFAHRPLAN → V2 ALS BOOTSTRAP-FAHRPLAN
+   Meilenstein „klickbarer Prototyp“ = ERREICHT (22.08.2026). Neuer Pfad
+   in 3 Phasen mit realen Kosten: A) <50 €/Monat (Hosting+Claude-API) bis
+   zum Kundeninteresse; B) Gründung gUG (~300–800 €), AZAV (~3–8 T€,
+   fördbar), eM@w-Antrag (0 €, Vorlauf!); C) nach erster gewonnener
+   Maßnahme: Betrieb/Sicherheit + eM@w-Endspurt (~10–20 T€ einmalig,
+   ~300–600 €/Monat) aus Erlösen. Förderprogramme nur noch als
+   Beschleuniger einordnen, nicht als Voraussetzung.
+
+5) EINSCHÄTZUNG → V2
+   Reifegrad: Kernprozesse durch Prototyp validiert, zwei Echtquellen
+   angebunden, KI-Assistenz produktiv schaltbar. Neue Risikoachse:
+   Einzelgründer+KI-Modell (Bus-Faktor, Betriebspflichten bei Echtdaten,
+   eM@w-Zulassungsdauer, AZAV-Vorlauf) mit Gegenmaßnahmen (Zukauf-Punkte
+   aus dem Maßstab oben, klare Phasengrenze vor Echtdaten). Empfehlung
+   auf den Selbstbau-Pfad anpassen.
+
+Frage bei Unklarheiten nach, statt zu raten.
+================================================================================

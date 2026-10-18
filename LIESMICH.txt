@@ -1,0 +1,62 @@
+================================================================
+KAȲȲA - PROJEKTORDNER                      Stand: 23.08.2026
+Traeger: KAȲȲA GmbH (angemeldet) · Modus: SELBSTBAU (Gruender + KI)
+================================================================
+ZUERST LESEN
+  AUFGABEN-BERNHARD.txt ...... Deine naechsten Schritte (15 Min
+      bis kayya.de live ist, 10 Min bis die KI echt antwortet)
+  STRATEGIE-BUDGET.txt ....... Antworten: Was brauchen wir noch?
+      Wofuer Geld? Lastenheft/Deck wozu? 4-Wochen-Plan.
+
+WERKZEUGE (aktuell)
+  API-Anbindungen.html ....... Alle Registrierungen mit Links,
+      Stammdaten und kopierfertigen Antragstexten
+  Dokumente-Update-Prompt.txt  Cowork-Lauf: widmet ALLE Unterlagen
+      auf den Selbstbau-Massstab um (Lastenheft -> Produktspez.,
+      Deck -> Kostentraeger-Pitch, Fahrplan -> Bootstrap)
+  Lastenheft-Delta-Prompt.txt  Fachliche Bloecke A-N fuer V3
+  260823_KAYYA_Gesamtpaket.zip  Alles zum Weitergeben
+
+OS\  - DAS PRODUKT (β.1.6.0)
+  260824_KAYYA OS β.1.6.0.html  Doppelklick = Demo
+  260824_KAYYA OS β.1.6.0.zip   Zum Verschicken
+  index.html                   Upload-Kopie fuer kayya.de / kayya.org
+  ZUGAENGE (Vorschaltseite, je Passwort erscheint der Name ueberall im OS):
+      LILA!!  -> Bernhard      Hanna$$ -> Johanna      INVEST!! -> Reinhold
+      (Sichtschutz fuer Gaeste; echter Schutz auf kayya.de: cPanel ->
+      Verzeichnisschutz). Abmelden/Wechsel: Klick auf den Namens-Chip
+      im Banner oder Strg+K -> "Sperren". Rechtstexte bleiben auf
+      Bernhard Krug (GF).
+  RECHTLICHES: Impressum + Datenschutzerklaerung (Art. 13) sind
+      eingebaut (vor und hinter der Tuer erreichbar); Einwilligung
+      vor erster Echt-KI-Nutzung. Platzhalter [[...]] fuellen!
+  kayya-ki.php                 MACHT DIE KAȲȲA-KI ECHT: liest den
+      Anthropic-Key aus der separaten Datei kayya-key.php auf dem
+      Server (<?php return 'sk-ant-...';) -> alle "Frag KAȲȲA"-Felder
+      antworten live ueber Claude (Auto-Erkennung). .htaccess
+      schuetzt die Key-Datei.
+  ted-proxy.php                Macht TED-Ausschreibungen voll
+      live auf kayya.de (kein Key noetig, 30-Min-Cache)
+  docs\                       Unterlagen-Bereich der Webseite:
+      docs.html (Uebersicht im KAYYA-Look) + 6 Dokumente fuer
+      Dritte (One-Pager, Ideenpapier, Foerderfahrplan, Einschaetzung,
+      Deck, Produkt-Spezifikation). Erreichbar nur per Direktlink /docs/docs.html (Sichtschutz wie die Tuer).
+      Gespraechspaket + Drehbuch bleiben bewusst INTERN (nicht im Web).
+  KAYYA-Deploy.ps1             Laedt index.html + Proxys + .htaccess
+      auf kayya.org (IONOS, SFTP) und kayya.de (Host Europe, FTPS)
+      und prueft von aussen. Zugangsdaten liegen AUSSERHALB des
+      Projekts in C:\Users\BKRG\KAYYA-Zugang\ (ZUGANG-EINRICHTEN.txt).
+      Claude fuehrt das Skript nach jeder Aenderung aus.
+
+Arbeitsdokumente\  - DOKUMENT-STAENDE (nur DOCX/PPTX)
+  Lastenheft V2 + die vier V1-Unterlagen; werden per
+  Dokumente-Update-Prompt in Cowork aktualisiert.
+  NEU 23.08.: 260823_V1_KAYYA_Kostentraeger-Gespraechspaket.docx
+  (Leitfaden, Einwaende/FAQ, Fahrplan, offene Entscheidungen),
+  260823_V1_KAYYA_One-Pager_Kostentraeger.docx (1 Seite, zum
+  Mitgeben), 260823_V1_KAYYA_Live-Demo-Drehbuch.docx (Klick fuer
+  Klick auf kayya.org, Kurz-/Langfassung, Pannenplan).
+
+Quellcode der KI-Session: Desktop\KAYYA OS\index.html
+Konvention: Builds/Pakete tragen das Tagesdatum (JJMMTT).
+================================================================

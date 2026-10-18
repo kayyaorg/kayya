@@ -1,0 +1,184 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KAȲȲA – API-Anbindungen &amp; Registrierungen</title>
+<style>
+:root{--p:#7C3AED;--a:#C026D3;--ink:#241B3A;--soft:#6E6785;--line:#E7E0F9;--bg:#FAF9FF;--ok:#16A34A;--warn:#D97706}
+*{box-sizing:border-box}body{margin:0;font-family:"Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+header{background:linear-gradient(120deg,#5B21B6,var(--p) 55%,var(--a));color:#fff;padding:30px 24px}
+header h1{margin:0 0 6px;font-size:26px;letter-spacing:-.02em}header p{margin:0;opacity:.92;max-width:900px}
+.wrap{max-width:1000px;margin:0 auto;padding:22px}
+.stamm{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:22px;box-shadow:0 10px 30px -18px rgba(124,58,237,.35)}
+.stamm b{color:var(--p)}
+.kv{display:grid;grid-template-columns:220px 1fr;gap:4px 14px;font-size:14px;margin-top:8px}
+.kv .k{color:var(--soft)}
+h2{font-size:15px;color:var(--p);margin:26px 0 10px;text-transform:uppercase;letter-spacing:1px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:14px;box-shadow:0 8px 26px -20px rgba(124,58,237,.4)}
+.card h3{margin:0 0 4px;font-size:16px}
+.badge{display:inline-block;font-size:11px;font-weight:700;border-radius:99px;padding:2px 10px;margin-left:8px;vertical-align:middle}
+.b-ok{background:#DCFCE7;color:var(--ok)}.b-reg{background:#FEF3C7;color:var(--warn)}.b-partner{background:#E0E7FF;color:#4338CA}.b-portal{background:#F1F5F9;color:#475569}
+.z{color:var(--soft);font-size:13.5px;margin:2px 0 8px}
+a.btn{display:inline-block;background:linear-gradient(135deg,var(--p),var(--a));color:#fff;text-decoration:none;font-size:13px;font-weight:650;border-radius:99px;padding:7px 16px;margin:2px 8px 2px 0}
+a.lnk{color:var(--p);font-size:13.5px;word-break:break-all}
+.tpl{position:relative;background:#F6F3FE;border:1px dashed var(--p);border-radius:12px;padding:12px 46px 12px 14px;font-size:12.5px;white-space:pre-wrap;margin-top:10px;font-family:Consolas,monospace}
+.copy{position:absolute;top:8px;right:8px;font-size:11px;border:none;background:var(--p);color:#fff;border-radius:99px;padding:4px 12px;cursor:pointer}
+.fill{background:#FDF4FF;border-left:3px solid var(--a);border-radius:0 10px 10px 0;padding:8px 12px;font-size:13px;margin-top:10px}
+footer{color:var(--soft);font-size:12px;text-align:center;padding:24px}
+@media print{a.btn{border:1px solid var(--p);color:var(--p);background:none}.copy{display:none}}
+</style></head><body>
+<header><h1>KAȲȲA – API-Anbindungen &amp; Registrierungen</h1>
+<p>Alle Schnittstellen aus dem Lastenheft (Kap. 7/7.2) mit Registrierungsweg, vorausgefüllten Stammdaten und kopierfertigen Antragstexten. Links am 22.08.2026 live geprüft.</p></header>
+<div class="wrap">
+
+<div class="stamm"><b>Stammdaten für alle Anmeldungen (kopieren &amp; einfügen)</b>
+<div class="kv">
+<span class="k">Organisation / Projekt</span><span>Bernhard Krug, Bildungs- und Eingliederungsträger</span>
+<span class="k">Ansprechpartner</span><span>Bernhard Krug</span>
+<span class="k">E-Mail</span><span>b@kayya.org</span>
+<span class="k">Website / Domains</span><span>https://kayya.de (Host Europe) · https://kayya.org (IONOS)</span>
+<span class="k">Fachverfahren / Software</span><span>KAȲȲA OS (Eigenentwicklung, KI-Engine: Anthropic Claude)</span>
+<span class="k">Einsatzzweck</span><span>Maßnahmen-Lebenszyklus, Abrechnung, Vermittlung, Zeugnis-Validierung</span>
+</div></div>
+
+<h2>Sofort nutzbar – ohne Anmeldung (bereits in KAȲȲA OS v1.0 aktiv)</h2>
+
+<div class="card"><h3>BA Jobsuche-API <span class="badge b-ok">frei · LIVE in KAȲȲA</span></h3>
+<div class="z">Echte Stellenangebote für das Teilnehmer-Matching (VM-03). Auth: Header X-API-Key = jobboerse-jobsuche.</div>
+<a class="btn" href="https://jobsuche.api.bund.dev" target="_blank">Doku öffnen</a>
+<a class="lnk" href="https://rest.arbeitsagentur.de/jobboerse/jobsuche-service/pc/v6/jobs?was=Pflegehelfer&amp;wo=Hamburg&amp;size=3" target="_blank">Beispiel-Endpoint /pc/v6/jobs</a></div>
+
+<div class="card"><h3>TED – Tenders Electronic Daily (EU) <span class="badge b-ok">Suche frei · Import in KAȲȲA</span></h3>
+<div class="z">Echte Ausschreibungen für den Vergabe-Monitor (MZ-01). Suche ohne Key; für höhere Limits &amp; Push-Dienste: kostenloser API-Key.</div>
+<a class="btn" href="https://developer.ted.europa.eu" target="_blank">Developer-Portal / Key anlegen</a>
+<div class="fill">Eintragen: Stammdaten oben · Use case: „Procurement monitoring for a German education provider (CPV 805xx)“.</div></div>
+
+<div class="card"><h3>Datenservice Öffentlicher Einkauf <span class="badge b-ok">frei (OpenData)</span></h3>
+<div class="z">Deutsche Bekanntmachungen (eForms-DE/OCDS) – nationale Ergänzung zu TED für MZ-01.</div>
+<a class="btn" href="https://www.oeffentlichevergabe.de" target="_blank">Portal &amp; Swagger-Doku</a></div>
+
+<div class="card"><h3>bund.dev – API-Katalog des Bundes <span class="badge b-ok">frei</span></h3>
+<div class="z">Weitere BA-APIs (Berufenet, Entgeltatlas, Weiterbildungssuche) für Matching &amp; Marktdaten.</div>
+<a class="btn" href="https://bund.dev" target="_blank">Katalog öffnen</a></div>
+
+<h2>Fördermittel & öffentliche Gelder – seit 23.08.2026 in KAȲȲA OS (alle keyfrei)</h2>
+<div class="card"><h3>UPDATE 30.08.2026 · Länder-Vollprüfung: 67 Schnittstellen getestet <span class="badge b-warn">alle 16 Bundesländer</span></h3>
+<div class="z">NEU LIVE (foerder-proxy.php): <b>q=hh</b> Transparenzportal Hamburg (CKAN, Zuwendungen), <b>q=hb</b> Zuwendungsdatenbank Bremen (ZEBRA-Quartals-CSV via GovData aufgelöst), <b>q=nrwefre</b> EFRE/JTF-Vorhabenliste NRW, <b>q=bw</b> Kurssuche fortbildung-bw.de, <b>q=jobs&amp;wo=Bayern</b> BA regional (21.000+ Stellen, 1.500+ Ausbildungsplätze Bayern). VORBEREITET mit verifizierten öffentlichen Keys: BA-Berufssprachkurse (infosysbub-spraf), AVGS-Coaching (infosysbub-avgs), Entgeltatlas (infosysbub-ega, regionId je Land) – die bei bund.dev dokumentierten UUID-Keys sind tot! Größter Fund: <b>oeffentlichevergabe.de</b> – täglicher OCDS/eForms-Export ALLER deutschen Vergabe-Bekanntmachungen, keyfrei, je Bundesland per NUTS filterbar (DE2*=Bayern). Keine offene API (geprüft &amp; verworfen): Förderdatenbank Bund, HAD Hessen, Vergabeportale BY/SN/ST/NI/HB, WISY-Portale, Bayern-Landesportale (nur Katalog/Auth). DEINE AKTION: keine – optional 4f GENESIS-Bayern-Kennung.</div></div>
+<div class="card"><h3>UPDATE 28.08.2026 · BA-Jobsuche + Ausbildungsstellen <span class="badge b-warn">frei · über Server-Proxy</span></h3>
+<div class="z">Die BA hat den Browser-Direktabruf (CORS) der Jobsuche-API abgeschaltet. Alle BA-Abrufe laufen jetzt über foerder-proxy.php auf kayya.org: <b>q=jobs</b> (Stellen bundesweit, v6), <b>q=jobs&amp;art=4</b> (echte Ausbildungs- und duale Studienplätze bundesweit, im Vergabe-Monitor → Fördermittel), <b>q=wb</b> (NOW/KURSNET, jetzt bundesweit statt Berlin), <b>q=bund</b> (service.bund.de). Nebeneffekt: Die IP der Besucher geht nicht mehr an die BA (Datenschutzerklärung 4a angepasst). DEINE AKTION: keine – läuft.</div></div>
+
+<div class="card"><h3>EU Funding & Tenders Portal (SEDIA) <span class="badge b-ok">frei · LIVE in KAȲȲA</span></h3>
+<div class="z">Offene EU-Förderaufrufe (ESF+, AMIF, Erasmus+, CERV) mit Frist und Budget – direkt aus dem Browser (CORS offen, apiKey=SEDIA ist der öffentliche Portal-Key). Sichtbar: Management → Vergabe-Monitor → Fördermittel. DEINE AKTION: keine – für spätere ANTRÄGE braucht der Träger ein EU-Login + Registrierung im Participant Register (PIC-Nummer).</div>
+<a class="btn" href="https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/calls-for-proposals" target="_blank">Portal öffnen</a>
+<a class="lnk" href="https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/how-to-participate/participant-register" target="_blank">Participant Register (PIC beantragen – für Anträge)</a></div>
+
+<div class="card"><h3>Zuwendungsdatenbank Berlin <span class="badge b-ok">frei · LIVE in KAȲȲA</span></h3>
+<div class="z">Alle Zuwendungen des Landes Berlin (Empfänger, Zweck, Betrag; CC BY-SA) – zeigt, wer im Politikbereich Arbeit/Bildung öffentliche Gelder erhält. Direkt aus dem Browser. DEINE AKTION: keine.</div>
+<a class="btn" href="https://www.berlin.de/sen/finanzen/service/zuwendungsdatenbank/" target="_blank">Datenbank öffnen</a></div>
+
+<div class="card"><h3>BA-Weiterbildungssuche (NOW/KURSNET) <span class="badge b-warn">frei · über Server-Proxy</span></h3>
+<div class="z">Der geförderte Weiterbildungsmarkt (AZAV-Anbieter, Bildungsgutschein-Kurse) – Marktblick auf Wettbewerber und Preisspannen. Kein CORS → läuft über foerder-proxy.php auf kayya.org. DEINE AKTION: foerder-proxy.php mit hochladen (liegt in KAYYA\OS\). Für die EIGENE Listung als Anbieter: Registrierung als KURSNET-/mein-NOW-Datenlieferant (siehe Abschnitt unten).</div>
+<a class="btn" href="https://mein-now.de/weiterbildungssuche" target="_blank">mein NOW öffnen</a></div>
+
+<div class="card"><h3>service.bund.de – nationale Ausschreibungen <span class="badge b-warn">frei · über Server-Proxy</span></h3>
+<div class="z">Ausschreibungen der öffentlichen Hand unterhalb der EU-Schwelle (RSS) – ergänzt TED um Jobcenter-/Kommunal-Vergaben wie § 45 SGB III-Maßnahmen. Kein CORS → über foerder-proxy.php. DEINE AKTION: foerder-proxy.php mit hochladen; optional Bieter-Konten auf e-Vergabe/DTVP anlegen (für Angebotsabgabe).</div>
+<a class="btn" href="https://www.service.bund.de/Content/DE/Ausschreibungen/Suche/Formular.html" target="_blank">Ausschreibungssuche öffnen</a>
+<a class="lnk" href="https://www.evergabe-online.de" target="_blank">e-Vergabe (Bieter-Konto für Angebote)</a></div>
+
+<div class="card"><h3>Förderdatenbank des Bundes <span class="badge b-info">kein API – manuell</span></h3>
+<div class="z">Bund/Länder/EU-Förderprogramme (foerderdatenbank.de) – keine maschinenlesbare Schnittstelle; als manueller Rechercheweg im Fahrplan. DEINE AKTION: keine (gelegentlich manuell prüfen).</div>
+<a class="btn" href="https://www.foerderdatenbank.de" target="_blank">Förderdatenbank öffnen</a></div>
+<h2>Registrierung erforderlich – Pflicht für den Echtbetrieb</h2>
+
+<div class="card"><h3>Anthropic Claude API <span class="badge b-reg">Registrierung ~10 Min.</span></h3>
+<div class="z">Die Engine hinter der KAȲȲA-KI (KI-01…KI-06): Konto anlegen, API-Key erzeugen, AVV/kein-Training sichern (KI-08/KI-10).</div>
+<a class="btn" href="https://console.anthropic.com" target="_blank">Konto anlegen</a>
+<a class="btn" href="https://docs.anthropic.com" target="_blank">Dokumentation</a>
+<a class="lnk" href="https://www.anthropic.com/legal/commercial-terms" target="_blank">Commercial Terms / Datenverarbeitung</a>
+<div class="fill">Eintragen: E-Mail b@kayya.org · Organization „KAȲȲA“ · Zahlungsmittel hinterlegen · API-Key benennen: „kayya-os-prod“.</div></div>
+
+<div class="card"><h3>eM@w – elektronische Maßnahmeabwicklung (BA) <span class="badge b-reg">Herstellerzulassung · Vorlauf Wochen!</span></h3>
+<div class="z">Die einzige Pflicht-Schnittstelle des Lastenhefts (MUSS, MVP): Anmeldung, Anwesenheit/Fehlzeit, LuV, Austritt als XML-Nachrichten. Früh starten – Antragslaufzeiten einplanen (SN-01).</div>
+<a class="btn" href="https://www.arbeitsagentur.de/bildungstraeger/emaw" target="_blank">eM@w-Infoseite (Kontaktweg dort)</a>
+<div class="tpl" id="t-emaw">Betreff: Anfrage Schnittstellenbeschreibung eM@w und Zulassung als Softwarehersteller
+
+Sehr geehrte Damen und Herren,
+
+wir entwickeln als Bildungs- und Eingliederungstraeger (Bernhard Krug) das
+Fachverfahren "KAȲȲA OS" und moechten die eM@w-Schnittstelle anbinden.
+Bitte senden Sie uns die aktuelle Schnittstellenbeschreibung fuer
+Softwarehersteller sowie die Unterlagen zur Teilnahmevereinbarung und zum
+Zulassungsverfahren des Fachverfahrens.
+
+Organisation: Bernhard Krug - Ansprechpartner: Bernhard Krug
+E-Mail: b@kayya.org - Web: https://kayya.de
+Software: KAȲȲA OS (Eigenentwicklung)
+
+Mit freundlichen Gruessen
+Bernhard Krug<button class="copy" onclick="cp('t-emaw')">Kopieren</button></div></div>
+
+<div class="card"><h3>DATEV Entwicklerportal <span class="badge b-reg">Kommunikationspartner-Registrierung</span></h3>
+<div class="z">Buchungsdatenservice/EXTF, Belegbilder, Lohnimport (FI-06) – Freischaltung in Abstimmung mit der Steuerkanzlei.</div>
+<a class="btn" href="https://developer.datev.de" target="_blank">developer.datev.de</a>
+<div class="fill">Eintragen: Stammdaten oben · Services: Buchungsdatenservice, Belegbilderservice, Lohnimportdatenservice · Vermerk: „Abstimmung mit betreuender Kanzlei folgt“.</div></div>
+
+<div class="card"><h3>KURSNET / mein NOW – Datenlieferant <span class="badge b-reg">Registrierung als Datenlieferant</span></h3>
+<div class="z">Automatisierte Kurs- und Terminveröffentlichung (SOLL).</div>
+<a class="btn" href="https://www.arbeitsagentur.de/bildungstraeger/kursnet" target="_blank">KURSNET für Träger</a>
+<a class="btn" href="https://mein-now.de" target="_blank">mein NOW</a></div>
+
+<div class="card"><h3>Vertrauensdienst – eIDAS-Fernsiegel <span class="badge b-reg">Anbieterwahl + Vertrag</span></h3>
+<div class="z">Digitale Siegel für Zeugnisse &amp; Berichte (ZG-05). Zwei Kandidaten – Angebot anfordern:</div>
+<a class="btn" href="https://www.d-trust.net" target="_blank">D-Trust (Bundesdruckerei)</a>
+<a class="btn" href="https://trustservices.swisscom.com" target="_blank">Swisscom Trust Services</a>
+<div class="tpl" id="t-siegel">Betreff: Angebot qualifiziertes Fernsiegel (API) fuer Bildungszertifikate
+
+Sehr geehrte Damen und Herren,
+
+fuer unsere Plattform "KAȲȲA OS" (Bildungstraeger) suchen wir einen
+API-basierten qualifizierten Fernsiegel-Dienst (eIDAS) zum Siegeln von
+Zeugnissen und Berichten (geschaetzt 200-500 Siegel/Monat, wachsend).
+Bitte senden Sie uns Angebot, API-Dokumentation und AVV-Unterlagen.
+
+Bernhard Krug - b@kayya.org - https://kayya.de<button class="copy" onclick="cp('t-siegel')">Kopieren</button></div></div>
+
+<h2>Über Partner anzubinden (Bank / Kanzlei)</h2>
+
+<div class="card"><h3>EBICS – Bankanbindung <span class="badge b-partner">Teilnehmervereinbarung Hausbank</span></h3>
+<div class="z">Kontoumsätze camt.053 + Zahlläufe pain.001 mit Vier-Augen-Freigabe (FI-07) – kompatibel zur S-Firm-Welt der Sparkassen.</div>
+<a class="btn" href="https://www.ebics.de" target="_blank">EBICS-Standard</a>
+<div class="tpl" id="t-ebics">Betreff: EBICS-Teilnehmervereinbarung fuer Firmenkonto
+
+Sehr geehrte Damen und Herren,
+
+fuer unser Geschaeftskonto moechten wir EBICS aktivieren (Abruf camt.053,
+Einreichung pain.001 mit Vier-Augen-Freigabe/VEU) zur Anbindung unseres
+Fachverfahrens "KAȲȲA OS". Bitte senden Sie uns die
+EBICS-Teilnehmervereinbarung und die Zugangsparameter.
+
+Bernhard Krug - b@kayya.org<button class="copy" onclick="cp('t-ebics')">Kopieren</button></div></div>
+
+<div class="card"><h3>Lohn: LODAS / Lohn &amp; Gehalt <span class="badge b-partner">über DATEV-Kanzlei</span></h3>
+<div class="z">Bewegungsdaten monatlich automatisiert übergeben; Rückweg Lohnjournal (FI-06). Mit der Kanzlei klären, welche DATEV-Services freigeschaltet werden.</div></div>
+
+<h2>Recruiting-Multiposting (Modul „Ein-Klick-Stellenausschreibung“)</h2>
+
+<div class="card"><h3>BA-Jobbörse (Arbeitgeberkonto) <span class="badge b-reg">Registrierung frei</span></h3>
+<a class="btn" href="https://www.arbeitsagentur.de/unternehmen" target="_blank">Arbeitgeberbereich der BA</a></div>
+<div class="card"><h3>LinkedIn Talent · StepStone · Indeed <span class="badge b-reg">Partnerprogramme</span></h3>
+<div class="z">Für echtes Multiposting später Partner-/ATS-Zugänge beantragen (Indeed blockt automatisierte Abrufe – Seite im Browser öffnen):</div>
+<a class="btn" href="https://developer.linkedin.com" target="_blank">LinkedIn Developer</a>
+<a class="btn" href="https://www.stepstone.de" target="_blank">StepStone</a>
+<a class="btn" href="https://de.indeed.com/hire" target="_blank">Indeed for Employers</a></div>
+
+<h2>Kein API – Portalprozesse (Fallback SN-02: KAȲȲA erzeugt die Formate)</h2>
+<div class="card"><h3>BAMF (Berufssprach-/Integrationskurse) <span class="badge b-portal">Trägerportal</span></h3>
+<a class="btn" href="https://www.bamf.de" target="_blank">bamf.de → Trägerbereich</a></div>
+<div class="card"><h3>DMW – Department of Migrant Workers (Philippinen) <span class="badge b-portal">über Partneragentur</span></h3>
+<a class="btn" href="https://dmw.gov.ph" target="_blank">dmw.gov.ph</a></div>
+<div class="card"><h3>telc · IHK/HWK · DRV/Kommunen <span class="badge b-portal">Formulare/Portale</span></h3>
+<a class="btn" href="https://www.telc.net" target="_blank">telc.net</a>
+<div class="z">KAȲȲA erzeugt prüffähige Abrechnungen/Nachweise (PDF/CSV/XML) und führt durch die Übertragung; betroffenen Stellen aktiv die eigene Abruf-API anbieten (RP-02-Prinzip).</div></div>
+
+<footer>KAȲȲA – API-Dossier · erstellt 22.08.2026 · Links live geprüft · KI-Engine: Claude (Anthropic)</footer>
+</div>
+<script>function cp(id){var el=document.getElementById(id);var t=el.innerText.replace(/Kopieren\s*$/,'').trim();navigator.clipboard.writeText(t).then(function(){alert('Antragstext kopiert – einfach in E-Mail/Formular einfügen.')})}</script>
+</body></html>

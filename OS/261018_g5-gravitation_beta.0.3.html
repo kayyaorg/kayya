@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="light dark">
+<title>KAȲȲA G 0.5</title>
+<style>
+  :root{
+    --bg:#FFFFFF; --ink:#111111; --mute:#6B6B6B; --line:#E4E4E4; --hover:#F6F6F6;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){ --bg:#121212; --ink:#F2F2F2; --mute:#9A9A9A; --line:#2A2A2A; --hover:#1B1B1B; }
+  }
+  :root[data-theme="dark"]{ --bg:#121212; --ink:#F2F2F2; --mute:#9A9A9A; --line:#2A2A2A; --hover:#1B1B1B; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink)}
+  body{font-family:-apple-system,"Segoe UI",system-ui,Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  main{max-width:1120px;margin:0 auto;padding:48px 16px 56px}
+  header{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+  .marke{font-weight:700;font-size:20px;letter-spacing:.02em}
+  .marke span{font-weight:400;color:var(--mute);margin-left:10px;font-size:14px}
+  .stand{font-size:13px;color:var(--mute)}
+  .intro{padding:36px 0 28px;max-width:640px}
+  .intro h1{font-size:28px;line-height:1.2;font-weight:600;letter-spacing:-.01em}
+  .intro p{margin-top:12px;color:var(--mute);font-size:16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:0;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+  .stelle{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:24px 24px 22px;transition:background .15s}
+  .haupt{display:block}
+  .stelle:hover{background:var(--hover)}
+  .haupt:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+  .skizze{display:block;width:100%;height:auto;color:var(--ink);opacity:.9}
+  .skizze *{vector-effect:non-scaling-stroke}
+  .stelle h2{font-size:17px;font-weight:600;margin-top:18px}
+  .stelle p{font-size:14.5px;color:var(--mute);margin-top:6px;min-height:3.2em}
+  .sub{margin-top:12px;font-size:13px;color:var(--mute)}
+  .sub a{border-bottom:1px solid var(--line);padding-bottom:1px;margin-right:12px}
+  .sub a:hover{border-color:var(--ink);color:var(--ink)}
+  .alle{display:inline-block;margin-top:36px;font-size:15px;border-bottom:1px solid var(--ink);padding-bottom:2px}
+  footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--mute);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  footer button{background:none;border:0;color:var(--mute);font:inherit;cursor:pointer;padding:0;border-bottom:1px solid transparent}
+  footer button:hover{border-color:var(--mute)}
+
+  /* Zugang (Sichtschutz, Hash im Code) */
+  body.zu main{display:none}
+  #tor{display:none;min-height:100vh;align-items:center;justify-content:center;padding:16px}
+  body.zu #tor{display:flex}
+  #tor form{width:100%;max-width:320px}
+  #tor .marke{margin-bottom:28px}
+  #tor label{display:block;font-size:13px;color:var(--mute);margin-bottom:8px}
+  #tor .reihe{display:flex;gap:8px}
+  #tor input{flex:1;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--ink);min-width:0}
+  #tor input:focus{outline:2px solid var(--ink);outline-offset:1px;border-color:var(--ink)}
+  #tor button{font:inherit;font-size:15px;padding:10px 16px;border:1px solid var(--ink);border-radius:4px;background:var(--ink);color:var(--bg);cursor:pointer}
+  #tor .nein{margin-top:10px;font-size:13px;color:var(--mute);min-height:1.4em}
+  @media (max-width:420px){ .intro h1{font-size:24px} .stelle{padding:20px 18px 18px} }
+</style>
+</head>
+<body class="zu">
+<div id="tor">
+  <form id="torform" autocomplete="off">
+    <div class="marke">KAȲȲA OS <span>G 0.5</span></div>
+    <label for="torpw">Zugang</label>
+    <div class="reihe"><input id="torpw" type="password" autocomplete="current-password" aria-label="Zugangswort"><button type="submit">Öffnen</button></div>
+    <div class="nein" id="tornein" aria-live="polite"></div>
+  </form>
+</div>
+<main>
+  <header>
+    <div class="marke">KAȲȲA OS <span>G 0.5</span></div>
+    <div class="stand">Oktober 2026</div>
+  </header>
+
+  <section class="intro">
+    <h1>Einblick je Nutzer.</h1>
+    <p>Eine Datenbasis, elf Ansichten. Jede Person sieht nur den Ausschnitt, den sie für ihre Arbeit braucht, und alle sehen dieselben Daten.</p>
+  </section>
+
+  <section class="grid" aria-label="Ansichten">
+
+    <article class="stelle">
+      <a class="haupt" href="g4/#/ktr">
+      <svg class="skizze" viewBox="0 0 320 180" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <rect x="8" y="8" width="304" height="164" rx="6"/>
+        <line x1="8" y1="40" x2="312" y2="40"/>
+        <rect x="24" y="56" width="120" height="100" rx="3"/>
+        <line x1="40" y1="140" x2="40" y2="96"/><line x1="64" y1="140" x2="64" y2="78"/><line x1="88" y1="140" x2="88" y2="110"/><line x1="112" y1="140" x2="112" y2="66"/>
+        <line x1="164" y1="64" x2="296" y2="64"/><line x1="164" y1="84" x2="296" y2="84"/><line x1="164" y1="104" x2="296" y2="104"/><line x1="164" y1="124" x2="296" y2="124"/><line x1="164" y1="144" x2="260" y2="144"/>
+        <circle cx="286" cy="144" r="4"/>
+      </svg>
+      <h2>Kostenträger</h2>
+      <p>Sieht in Echtzeit, wohin das Geld fließt, und jeden Beleg, der zurückkommt. Dazu Zuwendungen mit Verwendungsnachweis und offene Förderaufrufe.</p>
+      </a>
+      <div class="sub"><a href="g4/#/zuw">Zuwendungen</a><a href="g4/#/zuw">Förderaufrufe</a></div>
+    </article>
+
+    <article class="stelle">
+      <a class="haupt" href="g4/#/kl">
+      <svg class="skizze" viewBox="0 0 320 180" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <rect x="8" y="8" width="304" height="164" rx="6"/>
+        <line x1="8" y1="40" x2="312" y2="40"/>
+        <g>
+          <circle cx="36" cy="66" r="8"/><line x1="56" y1="66" x2="180" y2="66"/><rect x="268" y="60" width="24" height="12" rx="2"/>
+          <circle cx="36" cy="94" r="8"/><line x1="56" y1="94" x2="200" y2="94"/><rect x="268" y="88" width="24" height="12" rx="2"/>
+          <circle cx="36" cy="122" r="8"/><line x1="56" y1="122" x2="160" y2="122"/><rect x="268" y="116" width="24" height="12" rx="2"/>
+          <circle cx="36" cy="150" r="8"/><line x1="56" y1="150" x2="190" y2="150"/><rect x="268" y="144" width="24" height="12" rx="2"/>
+        </g>
+      </svg>
+      <h2>Kursleiter</h2>
+      <p>Anwesenheit, Lernstände und Freigaben für die eigene Maßnahme. Meldungen der Teilnehmer kommen in Sekunden an.</p>
+      </a>
+      
+    </article>
+
+    <article class="stelle">
+      <a class="haupt" href="g4/#/tn">
+      <svg class="skizze" viewBox="0 0 320 180" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <rect x="118" y="6" width="84" height="168" rx="12"/>
+        <line x1="146" y1="18" x2="174" y2="18"/>
+        <rect x="130" y="34" width="60" height="28" rx="3"/>
+        <line x1="130" y1="78" x2="190" y2="78"/><line x1="130" y1="94" x2="176" y2="94"/><line x1="130" y1="110" x2="184" y2="110"/>
+        <rect x="130" y="126" width="60" height="10" rx="5"/><rect x="130" y="126" width="38" height="10" rx="5" fill="currentColor" stroke="none" opacity=".35"/>
+        <circle cx="160" cy="158" r="6"/>
+      </svg>
+      <h2>Teilnehmer</h2>
+      <p>Stundenplan, Lernpfad und eigener Fortschritt in der App. Eine Krankmeldung ist ein Tipp in der App, mehr nicht.</p>
+      </a>
+      <div class="sub"><a href="g4/#/sl">Lernen</a><a href="g4/#/mot">Motivation</a><a href="g4/#/s24">Rund um die Uhr</a></div>
+    </article>
+
+    <article class="stelle">
+      <a class="haupt" href="g4/#/m">
+      <svg class="skizze" viewBox="0 0 320 180" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <rect x="8" y="8" width="304" height="164" rx="6"/>
+        <line x1="8" y1="40" x2="312" y2="40"/>
+        <line x1="24" y1="68" x2="200" y2="68"/><circle cx="284" cy="68" r="5" fill="currentColor" stroke="none" opacity=".35"/>
+        <line x1="24" y1="96" x2="170" y2="96"/><circle cx="284" cy="96" r="5" fill="currentColor" stroke="none" opacity=".35"/>
+        <line x1="24" y1="124" x2="220" y2="124"/><circle cx="284" cy="124" r="5"/>
+        <line x1="24" y1="152" x2="150" y2="152"/><circle cx="284" cy="152" r="5"/>
+      </svg>
+      <h2>Management</h2>
+      <p>Entscheidet und gibt frei: Vergabe, Freigaben ab 500 Euro, Steuerung über alle Maßnahmen. Die KI entwirft, der Mensch unterschreibt.</p>
+      </a>
+      
+    </article>
+
+    <article class="stelle">
+      <a class="haupt" href="g4/#/ag">
+      <svg class="skizze" viewBox="0 0 320 180" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <rect x="8" y="8" width="304" height="164" rx="6"/>
+        <line x1="8" y1="40" x2="312" y2="40"/>
+        <rect x="24" y="56" width="128" height="100" rx="3"/>
+        <line x1="40" y1="76" x2="136" y2="76"/><line x1="40" y1="96" x2="120" y2="96"/><line x1="40" y1="116" x2="128" y2="116"/>
+        <rect x="168" y="56" width="128" height="100" rx="3"/>
+        <polyline points="186,104 204,122 240,84"/>
+        <line x1="184" y1="140" x2="280" y2="140"/>
+      </svg>
+      <h2>Vermittlung</h2>
+      <p>Offene Stellen, passende Teilnehmer und das Ergebnis, das zählt: in Arbeit vermittelt. Zeugnisse sind per Prüflink in Sekunden verifizierbar.</p>
+      </a>
+      <div class="sub"><a href="g4/#/ag">Zeugnisse</a></div>
+    </article>
+
+    <article class="stelle">
+      <a class="haupt" href="g4/#/fib">
+      <svg class="skizze" viewBox="0 0 320 180" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <rect x="8" y="8" width="304" height="164" rx="6"/>
+        <line x1="8" y1="40" x2="312" y2="40"/>
+        <line x1="24" y1="66" x2="180" y2="66"/><line x1="240" y1="66" x2="296" y2="66"/>
+        <line x1="24" y1="92" x2="160" y2="92"/><line x1="250" y1="92" x2="296" y2="92"/>
+        <line x1="24" y1="118" x2="196" y2="118"/><line x1="236" y1="118" x2="296" y2="118"/>
+        <line x1="24" y1="144" x2="150" y2="144"/><line x1="228" y1="144" x2="296" y2="144" stroke-width="2.5"/>
+      </svg>
+      <h2>Buchhaltung</h2>
+      <p>Zahllauf mit Vier-Augen-Freigabe, digitaler Posteingang, Export zur Steuerkanzlei. Jeder Betrag hängt an einer Maßnahme.</p>
+      </a>
+      
+    </article>
+
+    <article class="stelle">
+      <a class="haupt" href="g4/#/cp">
+      <svg class="skizze" viewBox="0 0 320 180" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <rect x="8" y="8" width="304" height="164" rx="6"/>
+        <line x1="8" y1="40" x2="312" y2="40"/>
+        <circle cx="90" cy="106" r="40"/>
+        <path d="M50 106 Q90 86 130 106 M50 106 Q90 126 130 106 M90 66 Q74 106 90 146 M90 66 Q106 106 90 146"/>
+        <circle cx="104" cy="96" r="3" fill="currentColor" stroke="none"/>
+        <line x1="164" y1="76" x2="296" y2="76"/><line x1="164" y1="100" x2="270" y2="100"/><line x1="164" y1="124" x2="286" y2="124"/><line x1="164" y1="148" x2="250" y2="148"/>
+      </svg>
+      <h2>Campus</h2>
+      <p>Der Auslandscampus mit Kohorten, Wohncampus und der Pipeline aus Visum und Sprache, ohne die niemand ankommt.</p>
+      </a>
+      <div class="sub"><a href="g4/#/cp">Visum und Sprache</a></div>
+    </article>
+
+  </section>
+
+  <a class="alle" href="g4/">Die App öffnen</a>
+
+  <footer>
+    <span>Bernhard Krug</span>
+    <button type="button" id="theme" aria-label="Hell oder dunkel">Dunkel</button>
+  </footer>
+</main>
+<script>
+(function(){
+  var OK=5863493, b=document.body, f=document.getElementById('torform'), i=document.getElementById('torpw'), n=document.getElementById('tornein');
+  function h(s){ var x=5381; for(var k=0;k<s.length;k++){ x=((x<<5)+x+s.charCodeAt(k))>>>0; } return x; }
+  var offen=false; try{ offen=sessionStorage.getItem('kayya_g05')==='offen'; }catch(e){}
+  if(offen){ b.classList.remove('zu'); } else { setTimeout(function(){ i.focus(); },50); }
+  f.addEventListener('submit',function(ev){
+    ev.preventDefault();
+    if(h(i.value||'')===OK){ try{ sessionStorage.setItem('kayya_g05','offen'); }catch(e){} b.classList.remove('zu'); }
+    else { n.textContent='Das war es nicht.'; i.select(); setTimeout(function(){ n.textContent=''; },2500); }
+  });
+})();
+</script>
+<script>
+(function(){
+  var b=document.getElementById('theme'), r=document.documentElement;
+  function label(){ var dark=r.getAttribute('data-theme')==='dark' || (!r.getAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches); b.textContent=dark?'Hell':'Dunkel'; }
+  b.addEventListener('click',function(){ var dark=b.textContent==='Dunkel'; r.setAttribute('data-theme',dark?'dark':'light'); label(); });
+  label();
+})();
+</script>
+</body>
+</html>
