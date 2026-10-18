@@ -10,9 +10,11 @@
 :root{ --bg:#FAFAF7; --ink:#141414; --mut:#6B6B66; --line:#E3E1DA; --card:#FFFFFF;
   --akz:#4D004D; --rot:#B3261E; --gelb:#9A6A00; --gruen:#1E7B4D; }
 @media (prefers-color-scheme:dark){
-  :root{ --bg:#131312; --ink:#ECEAE4; --mut:#95938C; --line:#2B2B28; --card:#1A1A18;
+  :root:not([data-theme="light"]){ --bg:#131312; --ink:#ECEAE4; --mut:#95938C; --line:#2B2B28; --card:#1A1A18;
     --akz:#D9A8D9; --rot:#FF7A70; --gelb:#E8B94A; --gruen:#4CC98A; }
 }
+:root[data-theme="dark"]{ --bg:#131312; --ink:#ECEAE4; --mut:#95938C; --line:#2B2B28; --card:#1A1A18;
+  --akz:#D9A8D9; --rot:#FF7A70; --gelb:#E8B94A; --gruen:#4CC98A; }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--ink)}
 body{font:15px/1.5 "Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
@@ -23,6 +25,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:20p
 .chip{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--mut);border:1px solid var(--line);border-radius:99px;padding:2px 9px;margin-left:8px;vertical-align:2px}
 .kopfr{display:flex;gap:14px;align-items:center;font-size:13px;color:var(--mut)}
 .kopfr a:hover,.kopfr span[onclick]:hover{color:var(--ink);cursor:pointer}
+.kopfr select{width:auto;padding:3px 6px;font-size:12px;border-radius:7px;background:var(--bg);color:var(--mut);border:1px solid var(--line);cursor:pointer}
 h1{font-size:24px;font-weight:800;letter-spacing:-.01em}
 h2{font-size:17px;font-weight:700;margin-bottom:10px}
 .crumb{font-size:13px;color:var(--mut);margin-bottom:6px}
@@ -72,10 +75,12 @@ tr:last-child td{border-bottom:none}
 <div id="immobg"></div>
 <div class="wrap">
 <header>
-  <div class="marke">Wartungs<b>übersicht</b><span class="chip">β.1.0.0 · DB</span></div>
+  <div class="marke">Wartungs<b>übersicht</b><span class="chip">β.1.1.0 · DB</span></div>
   <div class="kopfr">
     <span id="k-wer"></span>
     <span id="k-ab" onclick="abmelden()" style="display:none">Abmelden</span>
+    <select id="k-sp" onchange="sprache(this.value)"><option value="de">DE</option><option value="en">EN</option><option value="pl">PL</option></select>
+    <span id="k-th" onclick="themaWechsel()" title="Hell / Dunkel">🌓</span>
     <a href="/">kayya.org</a>
   </div>
 </header>
@@ -88,20 +93,101 @@ tr:last-child td{border-bottom:none}
 var TOK=null; try{ TOK=sessionStorage.getItem('w_tok'); }catch(e){}
 var WER=null;
 var $=function(id){ return document.getElementById(id); };
-function toast(t){ var e=$('toast'); e.textContent=t; e.classList.add('an'); clearTimeout(e._t); e._t=setTimeout(function(){ e.classList.remove('an'); },3800); }
+
+/* ---------- Thema (hell/dunkel): manuell übersteuerbar, sonst Systemeinstellung ---------- */
+try{ var _th=localStorage.getItem('w_theme'); if(_th) document.documentElement.setAttribute('data-theme',_th); }catch(e){}
+function themaWechsel(){
+  var r=document.documentElement, akt=r.getAttribute('data-theme');
+  var dunkelSys=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches;
+  var neu=akt?(akt==='dark'?'light':'dark'):(dunkelSys?'light':'dark');
+  r.setAttribute('data-theme',neu);
+  try{ localStorage.setItem('w_theme',neu); }catch(e){}
+}
+
+/* ---------- Sprache: DE (Standard) · EN · PL ---------- */
+var LANG='de'; try{ LANG=localStorage.getItem('w_lang')||'de'; }catch(e){}
+var L={
+en:{'Abmelden':'Log out','Anmelden':'Sign in','Konten:':'Accounts:','Geschäftsführung':'Management','Team':'Team','Konto':'Account','Passwort':'Password',
+'Konto und Passwort eingeben.':'Enter account and password.','Anmeldung fehlgeschlagen.':'Sign-in failed.','Server nicht erreichbar.':'Server unreachable.','Lade …':'Loading …',
+'Immobilien':'Properties','Ampel aus Prüffristen und offenen Mängeln — das, wofür die Geschäftsführung haftet, auf einen Blick.':'Traffic light based on inspection deadlines and open defects — what management is liable for, at a glance.',
+'Anlagen':'systems','Prüfung überfällig':'inspection overdue','wesentlicher Mangel':'serious defect','fällig ≤ 60 Tage':'due ≤ 60 days','Mangel offen':'defect open','alles im Plan':'all on track',
+'+ Immobilie anlegen':'+ Add property','Immobilie anlegen':'Add property','Name':'Name','Adresse':'Address','Anlegen':'Create','Abbrechen':'Cancel','Immobilie angelegt.':'Property created.',
+'← Zurück':'← Back','Keine Anlagen.':'No systems.','Sicherheitsrelevante Anlagen':'Safety-relevant systems','Nicht sicherheitsrelevante Anlagen':'Other systems',
+'× wesentlich':'× serious','× Mangel':'× defect','nächste:':'next:','+ Anlage anlegen':'+ Add system','Anlage anlegen':'Add system','Typ':'Type','Sicherheitsrelevant':'Safety-relevant',
+'ja':'yes','nein':'no','Hersteller':'Manufacturer','Baujahr':'Year built','Standort':'Location','Anlage angelegt — jetzt Prüfpflichten hinterlegen.':'System created — now add inspection duties.',
+'sicherheitsrelevant':'safety-relevant','Prüf- &amp; Wartungspflichten':'Inspection &amp; maintenance duties','Prüfung':'Inspection','Grundlage':'Basis','Turnus':'Interval','letzte':'last','nächste':'next','Status':'Status','Mon.':'mo.',
+'erfasst ✓':'done ✓','+ Prüfpflicht hinzufügen':'+ Add duty','Dokumente · Wartungsberichte &amp; Prüfprotokolle':'Documents · maintenance &amp; inspection reports','Dokument':'Document','hochgeladen':'uploaded',
+'ausgelesen ✓':'analysed ✓','✳ Auslesen':'✳ Analyse','Noch keine Dokumente.':'No documents yet.','Prüfprotokoll':'Inspection report','Wartungsbericht':'Maintenance report','Angebot':'Quote','Sonstiges':'Other',
+'— Prüfpflicht zuordnen (optional) —':'— assign to a duty (optional) —','⬆ Hochladen':'⬆ Upload',
+'PDF, Foto oder Text · max. 15 MB. Nach dem Hochladen liest die KI Mängel, Prüfdatum und Fristen aus — zugeordnete Prüfpflichten werden automatisch aktualisiert.':'PDF, photo or text · max. 15 MB. After upload the AI extracts defects, inspection date and deadlines — assigned duties are updated automatically.',
+'Mängel':'Defects','offen':'open','vergeben':'assigned','behoben':'fixed','freigemeldet ✓':'cleared ✓','Wesentlicher Mangel':'Serious defect','Unwesentlicher Mangel':'Minor defect','Frist':'deadline','Firma:':'Company:','behoben am':'fixed on',
+'✳ Angebotsbewertung:':'✳ Quote assessment:','✳ Vergabe vorbereiten':'✳ Prepare assignment','Angebot bewerten':'Assess quote','→ vergeben':'→ assign','✓ behoben':'✓ fixed',
+'📄 Mangelfreimeldung erstellen':'📄 Create clearance letter','als freigemeldet markieren':'mark as cleared','📄 Freimeldung erneut erzeugen':'📄 Regenerate clearance letter',
+'Keine Mängel erfasst. ✓':'No defects recorded. ✓','+ Mangel manuell erfassen':'+ Record defect manually','überfällig':'overdue','kein Datum erfasst':'no date recorded','im Plan':'on track',
+'Prüfung / Wartung erfasst':'Inspection / maintenance done','Durchgeführt am':'Performed on','Speichern':'Save',
+'Tipp: Lade das Protokoll hoch und lass es auslesen — dann wird das Datum automatisch gesetzt und Mängel werden erfasst.':'Tip: upload the report and let it be analysed — the date is set automatically and defects are recorded.',
+'Erfasst — Frist läuft neu.':'Recorded — interval restarted.','Prüfpflicht hinzufügen':'Add duty','Prüfung / Wartung':'Inspection / maintenance','Rechtsgrundlage / Norm':'Legal basis / standard','Turnus (Monate)':'Interval (months)','Kategorie':'Category',
+'SV-Prüfung':'Expert inspection','Wartung':'Maintenance','Eigenkontrolle':'Self-check','Zuletzt durchgeführt (optional)':'Last performed (optional)','Prüfpflicht angelegt.':'Duty created.',
+'Erst eine Datei wählen.':'Choose a file first.','lädt …':'uploading …','Hochgeladen — jetzt „✳ Auslesen" klicken.':'Uploaded — now click "✳ Analyse".','Upload fehlgeschlagen.':'Upload failed.',
+'✳ KAȲȲA liest …':'✳ KAȲȲA is reading …','Ausgelesen:':'Analysed:','Mängel erfasst':'defects recorded','Prüfdatum':'inspection date',
+'Mangel erfassen':'Record defect','Beschreibung':'Description','Einstufung':'Classification','wesentlich (sicherheitsrelevant / Frist)':'serious (safety-relevant / deadline)','unwesentlich':'minor','Mangel erfasst.':'Defect recorded.','Status:':'Status:',
+'Mangel behoben':'Defect fixed','Behoben am':'Fixed on','Ausführende Firma':'Executing company','Behoben — jetzt die Mangelfreimeldung erstellen.':'Fixed — now create the clearance letter.',
+'✳ Vergabe wird vorbereitet …':'✳ Preparing assignment …','KAȲȲA ordnet das Gewerk zu und entwirft die Angebotsanfrage.':'KAȲȲA assigns the trade and drafts the request for quote.',
+'Vergabeempfehlung · Gewerk:':'Assignment recommendation · trade:','Passende Firmen':'Suitable companies','Noch keine Firma für dieses Gewerk hinterlegt.':'No company stored for this trade yet.',
+'Angebotsanfrage (KI-Entwurf, editierbar)':'Request for quote (AI draft, editable)','Kopieren':'Copy','Anfrage kopiert — per E-Mail an die Firma senden.':'Request copied — send it to the company by e-mail.',
+'Als vergeben markieren':'Mark as assigned','Schließen':'Close','Firma':'Company','Angebotssumme (€ brutto)':'Quote amount (€ gross)','Leistungsbeschreibung (kurz)':'Scope of work (short)',
+'✳ Bewerten lassen':'✳ Assess','Angebotssumme eingeben.':'Enter the quote amount.','✳ KAȲȲA bewertet …':'✳ KAȲȲA is assessing …','Preisspanne, Einordnung, Empfehlung — dauert einen Moment.':'Price range, context, recommendation — one moment.',
+'Angebotsbewertung':'Quote assessment','Übernehmen':'Apply','Mangelfreimeldung erzeugt — unterschreiben und an die Prüforganisation senden.':'Clearance letter created — sign it and send it to the inspection body.'},
+pl:{'Abmelden':'Wyloguj','Anmelden':'Zaloguj','Konten:':'Konta:','Geschäftsführung':'Zarząd','Team':'Zespół','Konto':'Konto','Passwort':'Hasło',
+'Konto und Passwort eingeben.':'Podaj konto i hasło.','Anmeldung fehlgeschlagen.':'Logowanie nie powiodło się.','Server nicht erreichbar.':'Brak połączenia z serwerem.','Lade …':'Ładowanie …',
+'Immobilien':'Nieruchomości','Ampel aus Prüffristen und offenen Mängeln — das, wofür die Geschäftsführung haftet, auf einen Blick.':'Sygnalizacja na podstawie terminów przeglądów i otwartych usterek — to, za co odpowiada zarząd, na pierwszy rzut oka.',
+'Anlagen':'instalacje','Prüfung überfällig':'przegląd zaległy','wesentlicher Mangel':'istotna usterka','fällig ≤ 60 Tage':'termin ≤ 60 dni','Mangel offen':'otwarta usterka','alles im Plan':'wszystko w terminie',
+'+ Immobilie anlegen':'+ Dodaj nieruchomość','Immobilie anlegen':'Dodaj nieruchomość','Name':'Nazwa','Adresse':'Adres','Anlegen':'Utwórz','Abbrechen':'Anuluj','Immobilie angelegt.':'Nieruchomość utworzona.',
+'← Zurück':'← Wstecz','Keine Anlagen.':'Brak instalacji.','Sicherheitsrelevante Anlagen':'Instalacje istotne dla bezpieczeństwa','Nicht sicherheitsrelevante Anlagen':'Pozostałe instalacje',
+'× wesentlich':'× istotne','× Mangel':'× usterka','nächste:':'następny:','+ Anlage anlegen':'+ Dodaj instalację','Anlage anlegen':'Dodaj instalację','Typ':'Typ','Sicherheitsrelevant':'Istotna dla bezpieczeństwa',
+'ja':'tak','nein':'nie','Hersteller':'Producent','Baujahr':'Rok budowy','Standort':'Lokalizacja','Anlage angelegt — jetzt Prüfpflichten hinterlegen.':'Instalacja utworzona — dodaj teraz obowiązki przeglądów.',
+'sicherheitsrelevant':'istotna dla bezpieczeństwa','Prüf- &amp; Wartungspflichten':'Obowiązki przeglądów i konserwacji','Prüfung':'Przegląd','Grundlage':'Podstawa','Turnus':'Interwał','letzte':'ostatni','nächste':'następny','Status':'Status','Mon.':'mies.',
+'erfasst ✓':'wykonano ✓','+ Prüfpflicht hinzufügen':'+ Dodaj obowiązek','Dokumente · Wartungsberichte &amp; Prüfprotokolle':'Dokumenty · raporty konserwacji i protokoły przeglądów','Dokument':'Dokument','hochgeladen':'przesłano',
+'ausgelesen ✓':'odczytano ✓','✳ Auslesen':'✳ Odczytaj','Noch keine Dokumente.':'Brak dokumentów.','Prüfprotokoll':'Protokół przeglądu','Wartungsbericht':'Raport konserwacji','Angebot':'Oferta','Sonstiges':'Inne',
+'— Prüfpflicht zuordnen (optional) —':'— przypisz do obowiązku (opcjonalnie) —','⬆ Hochladen':'⬆ Prześlij',
+'PDF, Foto oder Text · max. 15 MB. Nach dem Hochladen liest die KI Mängel, Prüfdatum und Fristen aus — zugeordnete Prüfpflichten werden automatisch aktualisiert.':'PDF, zdjęcie lub tekst · maks. 15 MB. Po przesłaniu AI odczytuje usterki, datę przeglądu i terminy — przypisane obowiązki są aktualizowane automatycznie.',
+'Mängel':'Usterki','offen':'otwarta','vergeben':'zlecona','behoben':'usunięta','freigemeldet ✓':'zgłoszona ✓','Wesentlicher Mangel':'Istotna usterka','Unwesentlicher Mangel':'Drobna usterka','Frist':'termin','Firma:':'Firma:','behoben am':'usunięto dnia',
+'✳ Angebotsbewertung:':'✳ Ocena oferty:','✳ Vergabe vorbereiten':'✳ Przygotuj zlecenie','Angebot bewerten':'Oceń ofertę','→ vergeben':'→ zleć','✓ behoben':'✓ usunięta',
+'📄 Mangelfreimeldung erstellen':'📄 Utwórz zgłoszenie usunięcia','als freigemeldet markieren':'oznacz jako zgłoszoną','📄 Freimeldung erneut erzeugen':'📄 Wygeneruj ponownie',
+'Keine Mängel erfasst. ✓':'Brak usterek. ✓','+ Mangel manuell erfassen':'+ Dodaj usterkę ręcznie','überfällig':'zaległy','kein Datum erfasst':'brak daty','im Plan':'w terminie',
+'Prüfung / Wartung erfasst':'Przegląd / konserwacja wykonana','Durchgeführt am':'Wykonano dnia','Speichern':'Zapisz',
+'Tipp: Lade das Protokoll hoch und lass es auslesen — dann wird das Datum automatisch gesetzt und Mängel werden erfasst.':'Wskazówka: prześlij protokół i zleć odczyt — data ustawi się automatycznie, a usterki zostaną zapisane.',
+'Erfasst — Frist läuft neu.':'Zapisano — termin biegnie od nowa.','Prüfpflicht hinzufügen':'Dodaj obowiązek','Prüfung / Wartung':'Przegląd / konserwacja','Rechtsgrundlage / Norm':'Podstawa prawna / norma','Turnus (Monate)':'Interwał (miesiące)','Kategorie':'Kategoria',
+'SV-Prüfung':'Przegląd rzeczoznawcy','Wartung':'Konserwacja','Eigenkontrolle':'Kontrola własna','Zuletzt durchgeführt (optional)':'Ostatnio wykonano (opcjonalnie)','Prüfpflicht angelegt.':'Obowiązek utworzony.',
+'Erst eine Datei wählen.':'Najpierw wybierz plik.','lädt …':'przesyłanie …','Hochgeladen — jetzt „✳ Auslesen" klicken.':'Przesłano — kliknij „✳ Odczytaj".','Upload fehlgeschlagen.':'Przesyłanie nie powiodło się.',
+'✳ KAȲȲA liest …':'✳ KAȲȲA odczytuje …','Ausgelesen:':'Odczytano:','Mängel erfasst':'usterek zapisano','Prüfdatum':'data przeglądu',
+'Mangel erfassen':'Dodaj usterkę','Beschreibung':'Opis','Einstufung':'Klasyfikacja','wesentlich (sicherheitsrelevant / Frist)':'istotna (bezpieczeństwo / termin)','unwesentlich':'drobna','Mangel erfasst.':'Usterka zapisana.','Status:':'Status:',
+'Mangel behoben':'Usterka usunięta','Behoben am':'Usunięto dnia','Ausführende Firma':'Firma wykonująca','Behoben — jetzt die Mangelfreimeldung erstellen.':'Usunięto — utwórz teraz zgłoszenie usunięcia.',
+'✳ Vergabe wird vorbereitet …':'✳ Przygotowywanie zlecenia …','KAȲȲA ordnet das Gewerk zu und entwirft die Angebotsanfrage.':'KAȲȲA przypisuje branżę i przygotowuje zapytanie ofertowe.',
+'Vergabeempfehlung · Gewerk:':'Rekomendacja zlecenia · branża:','Passende Firmen':'Odpowiednie firmy','Noch keine Firma für dieses Gewerk hinterlegt.':'Brak firmy dla tej branży.',
+'Angebotsanfrage (KI-Entwurf, editierbar)':'Zapytanie ofertowe (szkic AI, edytowalne)','Kopieren':'Kopiuj','Anfrage kopiert — per E-Mail an die Firma senden.':'Skopiowano — wyślij firmie e-mailem.',
+'Als vergeben markieren':'Oznacz jako zlecone','Schließen':'Zamknij','Firma':'Firma','Angebotssumme (€ brutto)':'Kwota oferty (€ brutto)','Leistungsbeschreibung (kurz)':'Zakres prac (krótko)',
+'✳ Bewerten lassen':'✳ Oceń','Angebotssumme eingeben.':'Podaj kwotę oferty.','✳ KAȲȲA bewertet …':'✳ KAȲȲA ocenia …','Preisspanne, Einordnung, Empfehlung — dauert einen Moment.':'Przedział cen, kontekst, rekomendacja — chwileczkę.',
+'Angebotsbewertung':'Ocena oferty','Übernehmen':'Zastosuj','Mangelfreimeldung erzeugt — unterschreiben und an die Prüforganisation senden.':'Utworzono zgłoszenie usunięcia — podpisz i wyślij do jednostki kontrolnej.'}
+};
+function t(s){ if(LANG==='de') return s; return (L[LANG]&&L[LANG][s])||s; }
+function sprache(l){ LANG=(l==='en'||l==='pl')?l:'de'; try{ localStorage.setItem('w_lang',LANG); }catch(e){} kopfSprache(); route(); }
+function kopfSprache(){ $('k-ab').textContent=t('Abmelden'); var s=$('k-sp'); if(s) s.value=LANG; }
+
+function toast(txt){ var e=$('toast'); e.textContent=txt; e.classList.add('an'); clearTimeout(e._t); e._t=setTimeout(function(){ e.classList.remove('an'); },3800); }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
 function api(body,cb){
   fetch('/wartung-api.php',{method:'POST',headers:{'Content-Type':'application/json','X-W-Token':TOK||''},body:JSON.stringify(body)})
     .then(function(r){ return r.json(); })
     .then(function(j){ if(j&&j.error){ if(/Token|Sitzung/.test(j.error)){ TOK=null; try{sessionStorage.removeItem('w_tok');}catch(e){} route(); } else toast(j.error); cb(null); } else cb(j); })
-    .catch(function(){ toast('Server nicht erreichbar.'); cb(null); });
+    .catch(function(){ toast(t('Server nicht erreichbar.')); cb(null); });
 }
 function dstr(d){ if(!d) return '—'; var p=String(d).slice(0,10).split('-'); return p.length===3?(p[2]+'.'+p[1]+'.'+p[0]):d; }
 function ampTag(a){
-  if(a==='ueberfaellig') return '<span class="tag rot">überfällig</span>';
-  if(a==='faellig') return '<span class="tag gelb">fällig ≤ 60 Tage</span>';
-  if(a==='offen') return '<span class="tag gelb">kein Datum erfasst</span>';
-  return '<span class="tag gruen">im Plan</span>';
+  if(a==='ueberfaellig') return '<span class="tag rot">'+t('überfällig')+'</span>';
+  if(a==='faellig') return '<span class="tag gelb">'+t('fällig ≤ 60 Tage')+'</span>';
+  if(a==='offen') return '<span class="tag gelb">'+t('kein Datum erfasst')+'</span>';
+  return '<span class="tag gruen">'+t('im Plan')+'</span>';
 }
 function deckAuf(html){ $('deck-inhalt').innerHTML=html; $('deck').classList.add('an'); }
 function deckZu(){ $('deck').classList.remove('an'); }
@@ -119,54 +205,54 @@ function immoBildAus(){ var el=$('immobg'); el.style.opacity='0'; el.style.backg
 function vLogin(){
   $('k-wer').textContent=''; $('k-ab').style.display='none';
   $('app').innerHTML='<div class="karte" style="max-width:420px;margin:60px auto">'
-   +'<h2>Anmelden</h2><div class="hinweis" style="margin-bottom:8px">Konten: <b>gf</b> (Geschäftsführung) · <b>hausmeister</b> (Team)</div>'
-   +'<label>Konto</label><input id="l-u" autocomplete="username">'
-   +'<label>Passwort</label><input id="l-p" type="password" autocomplete="current-password">'
+   +'<h2>'+t('Anmelden')+'</h2><div class="hinweis" style="margin-bottom:8px">'+t('Konten:')+' <b>gf</b> ('+t('Geschäftsführung')+') · <b>hausmeister</b> ('+t('Team')+')</div>'
+   +'<label>'+t('Konto')+'</label><input id="l-u" autocomplete="username">'
+   +'<label>'+t('Passwort')+'</label><input id="l-p" type="password" autocomplete="current-password">'
    +'<div id="l-err" class="hinweis" style="color:var(--rot);min-height:16px;margin-top:6px"></div>'
-   +'<button class="btn voll" style="margin-top:8px" onclick="login()">Anmelden</button></div>';
+   +'<button class="btn voll" style="margin-top:8px" onclick="login()">'+t('Anmelden')+'</button></div>';
   $('l-p').addEventListener('keydown',function(e){ if(e.key==='Enter') login(); });
 }
 function login(){
   var u=$('l-u').value.trim(), p=$('l-p').value;
-  if(!u||!p){ $('l-err').textContent='Konto und Passwort eingeben.'; return; }
+  if(!u||!p){ $('l-err').textContent=t('Konto und Passwort eingeben.'); return; }
   api({action:'login',login:u,pass:p},function(j){
-    if(!j||!j.token){ $('l-err').textContent='Anmeldung fehlgeschlagen.'; return; }
+    if(!j||!j.token){ $('l-err').textContent=t('Anmeldung fehlgeschlagen.'); return; }
     TOK=j.token; WER=j; try{ sessionStorage.setItem('w_tok',TOK); }catch(e){}
     location.hash='#/'; route();
   });
 }
 function abmelden(){ api({action:'logout'},function(){}); TOK=null; WER=null; try{ sessionStorage.removeItem('w_tok'); }catch(e){} route(); }
-function kopf(){ $('k-wer').textContent=WER?WER.name:''; $('k-ab').style.display=WER?'':'none'; }
+function kopf(){ $('k-wer').textContent=WER?WER.name:''; $('k-ab').style.display=WER?'':'none'; kopfSprache(); }
 
 /* ---------- Ebene 1: Immobilien ---------- */
 function vDash(){
   api({action:'uebersicht'},function(rows){
     if(!rows) return;
-    var h='<h1>Immobilien</h1><div class="hinweis" style="margin:4px 0 18px">Ampel aus Prüffristen und offenen Mängeln — das, wofür die Geschäftsführung haftet, auf einen Blick.</div>';
+    var h='<h1>'+t('Immobilien')+'</h1><div class="hinweis" style="margin:4px 0 18px">'+t('Ampel aus Prüffristen und offenen Mängeln — das, wofür die Geschäftsführung haftet, auf einen Blick.')+'</div>';
     rows.forEach(function(i){
       var rot=(+i.ueberfaellig)>0||(+i.wesentlich_offen)>0;
       var gelb=!rot&&(+i.faellig)>0;
       h+='<div class="karte klick" onclick="location.hash=\'#/immo/'+i.id+'\'"><div class="zeile">'
-       +'<div><b style="font-size:16px">'+esc(i.name)+'</b><div class="hinweis">'+esc(i.adresse||'')+' · '+i.anlagen+' Anlagen</div></div>'
+       +'<div><b style="font-size:16px">'+esc(i.name)+'</b><div class="hinweis">'+esc(i.adresse||'')+' · '+i.anlagen+' '+t('Anlagen')+'</div></div>'
        +'<div style="display:flex;gap:8px;flex-wrap:wrap">'
-       +((+i.ueberfaellig)>0?'<span class="tag rot">'+i.ueberfaellig+'× Prüfung überfällig</span>':'')
-       +((+i.wesentlich_offen)>0?'<span class="tag rot">'+i.wesentlich_offen+'× wesentlicher Mangel</span>':'')
-       +((+i.faellig)>0?'<span class="tag gelb">'+i.faellig+'× fällig ≤ 60 Tage</span>':'')
-       +((+i.maengel_offen)>0&&(+i.wesentlich_offen)===0?'<span class="tag gelb">'+i.maengel_offen+'× Mangel offen</span>':'')
-       +(rot?'':(gelb?'':'<span class="tag gruen">alles im Plan</span>'))
+       +((+i.ueberfaellig)>0?'<span class="tag rot">'+i.ueberfaellig+'× '+t('Prüfung überfällig')+'</span>':'')
+       +((+i.wesentlich_offen)>0?'<span class="tag rot">'+i.wesentlich_offen+'× '+t('wesentlicher Mangel')+'</span>':'')
+       +((+i.faellig)>0?'<span class="tag gelb">'+i.faellig+'× '+t('fällig ≤ 60 Tage')+'</span>':'')
+       +((+i.maengel_offen)>0&&(+i.wesentlich_offen)===0?'<span class="tag gelb">'+i.maengel_offen+'× '+t('Mangel offen')+'</span>':'')
+       +(rot?'':(gelb?'':'<span class="tag gruen">'+t('alles im Plan')+'</span>'))
        +'</div></div></div>';
     });
-    if(WER&&WER.rolle==='gf') h+='<button class="btn mini" onclick="fImmo()">+ Immobilie anlegen</button>';
+    if(WER&&WER.rolle==='gf') h+='<button class="btn mini" onclick="fImmo()">'+t('+ Immobilie anlegen')+'</button>';
     $('app').innerHTML=h;
   });
 }
 function fImmo(){
-  deckAuf('<h2>Immobilie anlegen</h2><label>Name</label><input id="fi-n"><label>Adresse</label><input id="fi-a">'
-   +'<div class="mrow"><button class="btn voll" onclick="fImmoOk()">Anlegen</button><button class="btn" onclick="deckZu()">Abbrechen</button></div>');
+  deckAuf('<h2>'+t('Immobilie anlegen')+'</h2><label>'+t('Name')+'</label><input id="fi-n"><label>'+t('Adresse')+'</label><input id="fi-a">'
+   +'<div class="mrow"><button class="btn voll" onclick="fImmoOk()">'+t('Anlegen')+'</button><button class="btn" onclick="deckZu()">'+t('Abbrechen')+'</button></div>');
 }
 function fImmoOk(){
   api({action:'immobilie_anlegen',name:$('fi-n').value,adresse:$('fi-a').value},function(j){
-    if(j&&j.ok){ deckZu(); toast('Immobilie angelegt.'); vDash(); }
+    if(j&&j.ok){ deckZu(); toast(t('Immobilie angelegt.')); vDash(); }
   });
 }
 
@@ -176,40 +262,40 @@ function vImmo(id){
   api({action:'immobilie',id:+id},function(im){
     if(!im) return;
     var grp=function(titel,liste){
-      if(!liste.length) return '<div class="eyebrow">'+titel+'</div><div class="hinweis">Keine Anlagen.</div>';
+      if(!liste.length) return '<div class="eyebrow">'+titel+'</div><div class="hinweis">'+t('Keine Anlagen.')+'</div>';
       var h='<div class="eyebrow">'+titel+'</div>';
       liste.forEach(function(a){
         h+='<div class="karte klick" onclick="location.hash=\'#/anlage/'+a.id+'\'"><div class="zeile">'
          +'<div><b>'+esc(a.name)+'</b><div class="hinweis">'+esc(a.typ||'')+(a.hersteller?' · '+esc(a.hersteller):'')+(a.baujahr?' · Bj. '+esc(a.baujahr):'')+(a.standort?' · '+esc(a.standort):'')+'</div></div>'
          +'<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">'
-         +((+a.ueberfaellig)>0?'<span class="tag rot">Prüfung überfällig</span>':'')
-         +((+a.wesentlich_offen)>0?'<span class="tag rot">'+a.wesentlich_offen+'× wesentlich</span>':'')
-         +((+a.maengel_offen)>0&&(+a.wesentlich_offen)===0?'<span class="tag gelb">'+a.maengel_offen+'× Mangel</span>':'')
+         +((+a.ueberfaellig)>0?'<span class="tag rot">'+t('Prüfung überfällig')+'</span>':'')
+         +((+a.wesentlich_offen)>0?'<span class="tag rot">'+a.wesentlich_offen+t('× wesentlich')+'</span>':'')
+         +((+a.maengel_offen)>0&&(+a.wesentlich_offen)===0?'<span class="tag gelb">'+a.maengel_offen+t('× Mangel')+'</span>':'')
          +((+a.ueberfaellig)===0&&(+a.maengel_offen)===0?'<span class="tag gruen">ok</span>':'')
-         +'<span class="hinweis">nächste: '+dstr(a.naechste)+'</span>'
+         +'<span class="hinweis">'+t('nächste:')+' '+dstr(a.naechste)+'</span>'
          +'</div></div></div>';
       });
       return h;
     };
     var sr=im.anlagen.filter(function(a){ return +a.sicherheitsrelevant===1; });
     var ns=im.anlagen.filter(function(a){ return +a.sicherheitsrelevant!==1; });
-    $('app').innerHTML='<a class="btn mini zrk" href="#/">← Zurück</a>'
-     +'<div class="crumb"><a href="#/">Immobilien</a> › '+esc(im.name)+'</div>'
+    $('app').innerHTML='<a class="btn mini zrk" href="#/">'+t('← Zurück')+'</a>'
+     +'<div class="crumb"><a href="#/">'+t('Immobilien')+'</a> › '+esc(im.name)+'</div>'
      +'<h1>'+esc(im.name)+'</h1><div class="hinweis">'+esc(im.adresse||'')+'</div>'
-     +grp('Sicherheitsrelevante Anlagen',sr)+grp('Nicht sicherheitsrelevante Anlagen',ns)
-     +'<div style="margin-top:16px"><button class="btn mini" onclick="fAnlage('+im.id+')">+ Anlage anlegen</button></div>';
+     +grp(t('Sicherheitsrelevante Anlagen'),sr)+grp(t('Nicht sicherheitsrelevante Anlagen'),ns)
+     +'<div style="margin-top:16px"><button class="btn mini" onclick="fAnlage('+im.id+')">'+t('+ Anlage anlegen')+'</button></div>';
   });
 }
 function fAnlage(iid){
-  deckAuf('<h2>Anlage anlegen</h2><label>Name</label><input id="fa-n" placeholder="z. B. Personenaufzug Haus B">'
-   +'<label>Typ</label><select id="fa-t"><option>Aufzug</option><option>BMA</option><option>Feuerlöscher</option><option>RWA</option><option>Sicherheitsbeleuchtung</option><option>Elektro</option><option>Heizung</option><option>Trinkwasser</option><option>Spielplatz</option><option>Tore</option><option>Sonstiges</option></select>'
-   +'<label>Sicherheitsrelevant</label><select id="fa-s"><option value="1">ja</option><option value="0">nein</option></select>'
-   +'<label>Hersteller</label><input id="fa-h"><label>Baujahr</label><input id="fa-b"><label>Standort</label><input id="fa-o">'
-   +'<div class="mrow"><button class="btn voll" onclick="fAnlageOk('+iid+')">Anlegen</button><button class="btn" onclick="deckZu()">Abbrechen</button></div>');
+  deckAuf('<h2>'+t('Anlage anlegen')+'</h2><label>'+t('Name')+'</label><input id="fa-n" placeholder="z. B. Personenaufzug Haus B">'
+   +'<label>'+t('Typ')+'</label><select id="fa-t"><option>Aufzug</option><option>BMA</option><option>Feuerlöscher</option><option>RWA</option><option>Sicherheitsbeleuchtung</option><option>Elektro</option><option>Heizung</option><option>Trinkwasser</option><option>Spielplatz</option><option>Tore</option><option>Sonstiges</option></select>'
+   +'<label>'+t('Sicherheitsrelevant')+'</label><select id="fa-s"><option value="1">'+t('ja')+'</option><option value="0">'+t('nein')+'</option></select>'
+   +'<label>'+t('Hersteller')+'</label><input id="fa-h"><label>'+t('Baujahr')+'</label><input id="fa-b"><label>'+t('Standort')+'</label><input id="fa-o">'
+   +'<div class="mrow"><button class="btn voll" onclick="fAnlageOk('+iid+')">'+t('Anlegen')+'</button><button class="btn" onclick="deckZu()">'+t('Abbrechen')+'</button></div>');
 }
 function fAnlageOk(iid){
   api({action:'anlage_anlegen',immobilie_id:iid,name:$('fa-n').value,typ:$('fa-t').value,sicherheitsrelevant:+$('fa-s').value,hersteller:$('fa-h').value,baujahr:$('fa-b').value,standort:$('fa-o').value},function(j){
-    if(j&&j.ok){ deckZu(); toast('Anlage angelegt — jetzt Prüfpflichten hinterlegen.'); vImmo(iid); }
+    if(j&&j.ok){ deckZu(); toast(t('Anlage angelegt — jetzt Prüfpflichten hinterlegen.')); vImmo(iid); }
   });
 }
 
@@ -218,144 +304,145 @@ var AKT=null;
 function vAnlage(id){
   api({action:'anlage',id:+id},function(a){
     if(!a) return; AKT=a;
-    var h='<a class="btn mini zrk" href="#/immo/'+a.immobilie_id+'">← Zurück</a>'
-     +'<div class="crumb"><a href="#/">Immobilien</a> › <a href="#/immo/'+a.immobilie_id+'">'+esc(a.immobilie)+'</a> › '+esc(a.name)+'</div>'
-     +'<h1>'+esc(a.name)+' '+(+a.sicherheitsrelevant===1?'<span class="tag akz" style="vertical-align:4px">sicherheitsrelevant</span>':'')+'</h1>'
-     +'<div class="hinweis" style="margin-bottom:16px">'+esc(a.typ||'')+(a.hersteller?' · '+esc(a.hersteller):'')+(a.baujahr?' · Baujahr '+esc(a.baujahr):'')+(a.standort?' · '+esc(a.standort):'')+'</div>';
+    var h='<a class="btn mini zrk" href="#/immo/'+a.immobilie_id+'">'+t('← Zurück')+'</a>'
+     +'<div class="crumb"><a href="#/">'+t('Immobilien')+'</a> › <a href="#/immo/'+a.immobilie_id+'">'+esc(a.immobilie)+'</a> › '+esc(a.name)+'</div>'
+     +'<h1>'+esc(a.name)+' '+(+a.sicherheitsrelevant===1?'<span class="tag akz" style="vertical-align:4px">'+t('sicherheitsrelevant')+'</span>':'')+'</h1>'
+     +'<div class="hinweis" style="margin-bottom:16px">'+esc(a.typ||'')+(a.hersteller?' · '+esc(a.hersteller):'')+(a.baujahr?' · '+t('Baujahr')+' '+esc(a.baujahr):'')+(a.standort?' · '+esc(a.standort):'')+'</div>';
 
-    h+='<div class="karte"><h2>Prüf- &amp; Wartungspflichten</h2><table><tr><th>Prüfung</th><th>Grundlage</th><th>Turnus</th><th>letzte</th><th>nächste</th><th>Status</th><th></th></tr>';
+    h+='<div class="karte"><h2>'+t('Prüf- &amp; Wartungspflichten')+'</h2><table><tr><th>'+t('Prüfung')+'</th><th>'+t('Grundlage')+'</th><th>'+t('Turnus')+'</th><th>'+t('letzte')+'</th><th>'+t('nächste')+'</th><th>'+t('Status')+'</th><th></th></tr>';
     a.pruefarten.forEach(function(p){
       h+='<tr><td><b>'+esc(p.art)+'</b>'+(p.kategorie==='sv'?' <span class="tag akz">SV</span>':'')+'</td><td class="hinweis">'+esc(p.grundlage||'')+'</td>'
-       +'<td>'+p.turnus_monate+' Mon.</td><td>'+dstr(p.letzte)+'</td><td><b>'+dstr(p.naechste)+'</b></td><td>'+ampTag(p.ampel)+'</td>'
-       +'<td><button class="btn mini" onclick="fErledigt('+p.id+')">erfasst ✓</button></td></tr>';
+       +'<td>'+p.turnus_monate+' '+t('Mon.')+'</td><td>'+dstr(p.letzte)+'</td><td><b>'+dstr(p.naechste)+'</b></td><td>'+ampTag(p.ampel)+'</td>'
+       +'<td><button class="btn mini" onclick="fErledigt('+p.id+')">'+t('erfasst ✓')+'</button></td></tr>';
     });
-    h+='</table><div style="margin-top:10px"><button class="btn mini" onclick="fPruefart('+a.id+')">+ Prüfpflicht hinzufügen</button></div></div>';
+    h+='</table><div style="margin-top:10px"><button class="btn mini" onclick="fPruefart('+a.id+')">'+t('+ Prüfpflicht hinzufügen')+'</button></div></div>';
 
-    h+='<div class="karte"><h2>Dokumente · Wartungsberichte &amp; Prüfprotokolle</h2>';
+    h+='<div class="karte"><h2>'+t('Dokumente · Wartungsberichte &amp; Prüfprotokolle')+'</h2>';
     if(a.dokumente.length){
-      h+='<table><tr><th>Dokument</th><th>Typ</th><th>hochgeladen</th><th></th></tr>';
+      h+='<table><tr><th>'+t('Dokument')+'</th><th>'+t('Typ')+'</th><th>'+t('hochgeladen')+'</th><th></th></tr>';
       a.dokumente.forEach(function(d){
         h+='<tr><td><a href="/wartung-api.php?action=datei&id='+d.id+'&token='+encodeURIComponent(TOK)+'" target="_blank" style="color:var(--akz)">'+esc(d.orig_name)+'</a></td>'
          +'<td class="hinweis">'+esc(d.typ)+'</td><td class="hinweis">'+esc(d.hochgeladen)+'</td>'
-         +'<td>'+(+d.ausgewertet===1?'<span class="tag gruen">ausgelesen ✓</span>':'<button class="btn mini" id="ausw-'+d.id+'" onclick="auswerten('+d.id+')">✳ Auslesen</button>')+'</td></tr>';
+         +'<td>'+(+d.ausgewertet===1?'<span class="tag gruen">'+t('ausgelesen ✓')+'</span>':'<button class="btn mini" id="ausw-'+d.id+'" onclick="auswerten('+d.id+')">'+t('✳ Auslesen')+'</button>')+'</td></tr>';
       });
       h+='</table>';
-    } else h+='<div class="hinweis">Noch keine Dokumente.</div>';
+    } else h+='<div class="hinweis">'+t('Noch keine Dokumente.')+'</div>';
     h+='<div style="margin-top:12px;border-top:1px solid var(--line);padding-top:12px"><div class="zeile" style="justify-content:flex-start">'
      +'<input type="file" id="up-f" accept=".pdf,.jpg,.jpeg,.png,.txt" style="width:auto;flex:1;min-width:200px">'
-     +'<select id="up-t" style="width:auto"><option value="pruefprotokoll">Prüfprotokoll</option><option value="wartungsbericht">Wartungsbericht</option><option value="angebot">Angebot</option><option value="sonstiges">Sonstiges</option></select>'
-     +'<select id="up-p" style="width:auto"><option value="0">— Prüfpflicht zuordnen (optional) —</option>'+a.pruefarten.map(function(p){ return '<option value="'+p.id+'">'+esc(p.art)+'</option>'; }).join('')+'</select>'
-     +'<button class="btn voll mini" id="up-go" onclick="upload('+a.id+')">⬆ Hochladen</button></div>'
-     +'<div class="hinweis" style="margin-top:6px">PDF, Foto oder Text · max. 15 MB. Nach dem Hochladen liest die KI Mängel, Prüfdatum und Fristen aus — zugeordnete Prüfpflichten werden automatisch aktualisiert.</div></div></div>';
+     +'<select id="up-t" style="width:auto"><option value="pruefprotokoll">'+t('Prüfprotokoll')+'</option><option value="wartungsbericht">'+t('Wartungsbericht')+'</option><option value="angebot">'+t('Angebot')+'</option><option value="sonstiges">'+t('Sonstiges')+'</option></select>'
+     +'<select id="up-p" style="width:auto"><option value="0">'+t('— Prüfpflicht zuordnen (optional) —')+'</option>'+a.pruefarten.map(function(p){ return '<option value="'+p.id+'">'+esc(p.art)+'</option>'; }).join('')+'</select>'
+     +'<button class="btn voll mini" id="up-go" onclick="upload('+a.id+')">'+t('⬆ Hochladen')+'</button></div>'
+     +'<div class="hinweis" style="margin-top:6px">'+t('PDF, Foto oder Text · max. 15 MB. Nach dem Hochladen liest die KI Mängel, Prüfdatum und Fristen aus — zugeordnete Prüfpflichten werden automatisch aktualisiert.')+'</div></div></div>';
 
-    h+='<div class="karte"><h2>Mängel</h2>';
+    h+='<div class="karte"><h2>'+t('Mängel')+'</h2>';
     if(a.maengel.length){
       a.maengel.forEach(function(m){
-        var st={offen:'<span class="tag rot">offen</span>',vergeben:'<span class="tag gelb">vergeben</span>',behoben:'<span class="tag gruen">behoben</span>',freigemeldet:'<span class="tag gruen">freigemeldet ✓</span>'}[m.status];
+        var st={offen:'<span class="tag rot">'+t('offen')+'</span>',vergeben:'<span class="tag gelb">'+t('vergeben')+'</span>',behoben:'<span class="tag gruen">'+t('behoben')+'</span>',freigemeldet:'<span class="tag gruen">'+t('freigemeldet ✓')+'</span>'}[m.status];
         h+='<div class="mang'+(+m.wesentlich===1?' wes':'')+'"><div class="zeile">'
-         +'<div style="flex:1"><b>'+(+m.wesentlich===1?'Wesentlicher Mangel':'Unwesentlicher Mangel')+'</b> '+st
-         +(m.frist?' <span class="tag gelb">Frist '+dstr(m.frist)+'</span>':'')+'</div></div>'
+         +'<div style="flex:1"><b>'+(+m.wesentlich===1?t('Wesentlicher Mangel'):t('Unwesentlicher Mangel'))+'</b> '+st
+         +(m.frist?' <span class="tag gelb">'+t('Frist')+' '+dstr(m.frist)+'</span>':'')+'</div></div>'
          +'<div style="margin-top:5px">'+esc(m.text)+'</div>'
-         +(m.firma?'<div class="hinweis" style="margin-top:4px">Firma: '+esc(m.firma)+(m.angebot?' · Angebot '+(+m.angebot).toLocaleString('de-DE',{minimumFractionDigits:2})+' €':'')+(m.behoben_am?' · behoben am '+dstr(m.behoben_am):'')+'</div>':'')
-         +(m.bewertung?'<div class="hinweis" style="margin-top:6px;border:1px dashed var(--line);border-radius:8px;padding:8px"><b style="color:var(--akz)">✳ Angebotsbewertung:</b> '+esc(m.bewertung)+'</div>':'')
+         +(m.firma?'<div class="hinweis" style="margin-top:4px">'+t('Firma:')+' '+esc(m.firma)+(m.angebot?' · '+t('Angebot')+' '+(+m.angebot).toLocaleString('de-DE',{minimumFractionDigits:2})+' €':'')+(m.behoben_am?' · '+t('behoben am')+' '+dstr(m.behoben_am):'')+'</div>':'')
+         +(m.bewertung?'<div class="hinweis" style="margin-top:6px;border:1px dashed var(--line);border-radius:8px;padding:8px"><b style="color:var(--akz)">'+t('✳ Angebotsbewertung:')+'</b> '+esc(m.bewertung)+'</div>':'')
          +'<div class="mrow">'
-         +(m.status==='offen'?'<button class="btn mini" onclick="vergabe('+m.id+')">✳ Vergabe vorbereiten</button><button class="btn mini" onclick="fAngebot('+m.id+')">Angebot bewerten</button><button class="btn mini" onclick="setStatus('+m.id+',\'vergeben\')">→ vergeben</button>':'')
-         +(m.status==='vergeben'?'<button class="btn mini" onclick="fAngebot('+m.id+')">Angebot bewerten</button><button class="btn mini" onclick="fBehoben('+m.id+')">✓ behoben</button>':'')
-         +(m.status==='behoben'?'<button class="btn voll mini" onclick="freimeldung('+m.id+')">📄 Mangelfreimeldung erstellen</button><button class="btn mini" onclick="setStatus('+m.id+',\'freigemeldet\')">als freigemeldet markieren</button>':'')
-         +(m.status==='freigemeldet'?'<button class="btn mini" onclick="freimeldung('+m.id+')">📄 Freimeldung erneut erzeugen</button>':'')
+         +(m.status==='offen'?'<button class="btn mini" onclick="vergabe('+m.id+')">'+t('✳ Vergabe vorbereiten')+'</button><button class="btn mini" onclick="fAngebot('+m.id+')">'+t('Angebot bewerten')+'</button><button class="btn mini" onclick="setStatus('+m.id+',\'vergeben\')">'+t('→ vergeben')+'</button>':'')
+         +(m.status==='vergeben'?'<button class="btn mini" onclick="fAngebot('+m.id+')">'+t('Angebot bewerten')+'</button><button class="btn mini" onclick="fBehoben('+m.id+')">'+t('✓ behoben')+'</button>':'')
+         +(m.status==='behoben'?'<button class="btn voll mini" onclick="freimeldung('+m.id+')">'+t('📄 Mangelfreimeldung erstellen')+'</button><button class="btn mini" onclick="setStatus('+m.id+',\'freigemeldet\')">'+t('als freigemeldet markieren')+'</button>':'')
+         +(m.status==='freigemeldet'?'<button class="btn mini" onclick="freimeldung('+m.id+')">'+t('📄 Freimeldung erneut erzeugen')+'</button>':'')
          +'</div></div>';
       });
-    } else h+='<div class="hinweis">Keine Mängel erfasst. ✓</div>';
-    h+='<div style="margin-top:8px"><button class="btn mini" onclick="fMangel('+a.id+')">+ Mangel manuell erfassen</button></div></div>';
+    } else h+='<div class="hinweis">'+t('Keine Mängel erfasst. ✓')+'</div>';
+    h+='<div style="margin-top:8px"><button class="btn mini" onclick="fMangel('+a.id+')">'+t('+ Mangel manuell erfassen')+'</button></div></div>';
     $('app').innerHTML=h;
   });
 }
 function fErledigt(pid){
-  deckAuf('<h2>Prüfung / Wartung erfasst</h2><label>Durchgeführt am</label><input id="fe-d" type="date" value="'+new Date().toISOString().slice(0,10)+'">'
-   +'<div class="mrow"><button class="btn voll" onclick="fErledigtOk('+pid+')">Speichern</button><button class="btn" onclick="deckZu()">Abbrechen</button></div>'
-   +'<div class="hinweis" style="margin-top:8px">Tipp: Lade das Protokoll hoch und lass es auslesen — dann wird das Datum automatisch gesetzt und Mängel werden erfasst.</div>');
+  deckAuf('<h2>'+t('Prüfung / Wartung erfasst')+'</h2><label>'+t('Durchgeführt am')+'</label><input id="fe-d" type="date" value="'+new Date().toISOString().slice(0,10)+'">'
+   +'<div class="mrow"><button class="btn voll" onclick="fErledigtOk('+pid+')">'+t('Speichern')+'</button><button class="btn" onclick="deckZu()">'+t('Abbrechen')+'</button></div>'
+   +'<div class="hinweis" style="margin-top:8px">'+t('Tipp: Lade das Protokoll hoch und lass es auslesen — dann wird das Datum automatisch gesetzt und Mängel werden erfasst.')+'</div>');
 }
 function fErledigtOk(pid){
-  api({action:'pruefung_erfasst',pruefart_id:pid,datum:$('fe-d').value},function(j){ if(j&&j.ok){ deckZu(); toast('Erfasst — Frist läuft neu.'); vAnlage(AKT.id); } });
+  api({action:'pruefung_erfasst',pruefart_id:pid,datum:$('fe-d').value},function(j){ if(j&&j.ok){ deckZu(); toast(t('Erfasst — Frist läuft neu.')); vAnlage(AKT.id); } });
 }
 function fPruefart(aid){
-  deckAuf('<h2>Prüfpflicht hinzufügen</h2><label>Prüfung / Wartung</label><input id="fp-a" placeholder="z. B. SV-Prüfung, jährliche Wartung">'
-   +'<label>Rechtsgrundlage / Norm</label><input id="fp-g" placeholder="z. B. BetrSichV, DIN 14675, DGUV V3">'
-   +'<label>Turnus (Monate)</label><input id="fp-t" type="number" min="1" value="12">'
-   +'<label>Kategorie</label><select id="fp-k"><option value="sv">SV-Prüfung</option><option value="wartung" selected>Wartung</option><option value="eigen">Eigenkontrolle</option></select>'
-   +'<label>Zuletzt durchgeführt (optional)</label><input id="fp-l" type="date">'
-   +'<div class="mrow"><button class="btn voll" onclick="fPruefartOk('+aid+')">Anlegen</button><button class="btn" onclick="deckZu()">Abbrechen</button></div>');
+  deckAuf('<h2>'+t('Prüfpflicht hinzufügen')+'</h2><label>'+t('Prüfung / Wartung')+'</label><input id="fp-a" placeholder="z. B. SV-Prüfung, jährliche Wartung">'
+   +'<label>'+t('Rechtsgrundlage / Norm')+'</label><input id="fp-g" placeholder="z. B. BetrSichV, DIN 14675, DGUV V3">'
+   +'<label>'+t('Turnus (Monate)')+'</label><input id="fp-t" type="number" min="1" value="12">'
+   +'<label>'+t('Kategorie')+'</label><select id="fp-k"><option value="sv">'+t('SV-Prüfung')+'</option><option value="wartung" selected>'+t('Wartung')+'</option><option value="eigen">'+t('Eigenkontrolle')+'</option></select>'
+   +'<label>'+t('Zuletzt durchgeführt (optional)')+'</label><input id="fp-l" type="date">'
+   +'<div class="mrow"><button class="btn voll" onclick="fPruefartOk('+aid+')">'+t('Anlegen')+'</button><button class="btn" onclick="deckZu()">'+t('Abbrechen')+'</button></div>');
 }
 function fPruefartOk(aid){
-  api({action:'pruefart_anlegen',anlage_id:aid,art:$('fp-a').value,grundlage:$('fp-g').value,turnus_monate:+$('fp-t').value,kategorie:$('fp-k').value,letzte:$('fp-l').value},function(j){ if(j&&j.ok){ deckZu(); toast('Prüfpflicht angelegt.'); vAnlage(aid); } });
+  api({action:'pruefart_anlegen',anlage_id:aid,art:$('fp-a').value,grundlage:$('fp-g').value,turnus_monate:+$('fp-t').value,kategorie:$('fp-k').value,letzte:$('fp-l').value},function(j){ if(j&&j.ok){ deckZu(); toast(t('Prüfpflicht angelegt.')); vAnlage(aid); } });
 }
 function upload(aid){
   var f=$('up-f').files[0];
-  if(!f){ toast('Erst eine Datei wählen.'); return; }
+  if(!f){ toast(t('Erst eine Datei wählen.')); return; }
   var fd=new FormData();
   fd.append('action','upload'); fd.append('token',TOK); fd.append('anlage_id',aid);
   fd.append('typ',$('up-t').value); fd.append('pruefart_id',$('up-p').value); fd.append('datei',f);
-  $('up-go').classList.add('ladend'); $('up-go').textContent='lädt …';
+  $('up-go').classList.add('ladend'); $('up-go').textContent=t('lädt …');
   fetch('/wartung-api.php',{method:'POST',body:fd}).then(function(r){ return r.json(); }).then(function(j){
-    if(j&&j.ok){ toast('Hochgeladen — jetzt „✳ Auslesen" klicken.'); vAnlage(aid); }
-    else toast((j&&j.error)||'Upload fehlgeschlagen.');
-  }).catch(function(){ toast('Upload fehlgeschlagen.'); });
+    if(j&&j.ok){ toast(t('Hochgeladen — jetzt „✳ Auslesen" klicken.')); vAnlage(aid); }
+    else toast((j&&j.error)||t('Upload fehlgeschlagen.'));
+  }).catch(function(){ toast(t('Upload fehlgeschlagen.')); });
 }
 function auswerten(did){
-  var b=$('ausw-'+did); if(b){ b.classList.add('ladend'); b.textContent='✳ KAȲȲA liest …'; }
+  var b=$('ausw-'+did); if(b){ b.classList.add('ladend'); b.textContent=t('✳ KAȲȲA liest …'); }
   api({action:'auswerten',dokument_id:did},function(j){
-    if(!j){ if(b){ b.classList.remove('ladend'); b.textContent='✳ Auslesen'; } return; }
+    if(!j){ if(b){ b.classList.remove('ladend'); b.textContent=t('✳ Auslesen'); } return; }
     var a=j.auswertung||{};
-    toast('Ausgelesen: '+(j.neue_maengel||0)+' Mängel erfasst'+(a.pruefdatum?' · Prüfdatum '+dstr(a.pruefdatum):'')+'.');
+    toast(t('Ausgelesen:')+' '+(j.neue_maengel||0)+' '+t('Mängel erfasst')+(a.pruefdatum?' · '+t('Prüfdatum')+' '+dstr(a.pruefdatum):'')+'.');
     vAnlage(AKT.id);
   });
 }
 function fMangel(aid){
-  deckAuf('<h2>Mangel erfassen</h2><label>Beschreibung</label><textarea id="fm-t"></textarea>'
-   +'<label>Einstufung</label><select id="fm-w"><option value="1">wesentlich (sicherheitsrelevant / Frist)</option><option value="0" selected>unwesentlich</option></select>'
-   +'<div class="mrow"><button class="btn voll" onclick="fMangelOk('+aid+')">Anlegen</button><button class="btn" onclick="deckZu()">Abbrechen</button></div>');
+  deckAuf('<h2>'+t('Mangel erfassen')+'</h2><label>'+t('Beschreibung')+'</label><textarea id="fm-t"></textarea>'
+   +'<label>'+t('Einstufung')+'</label><select id="fm-w"><option value="1">'+t('wesentlich (sicherheitsrelevant / Frist)')+'</option><option value="0" selected>'+t('unwesentlich')+'</option></select>'
+   +'<div class="mrow"><button class="btn voll" onclick="fMangelOk('+aid+')">'+t('Anlegen')+'</button><button class="btn" onclick="deckZu()">'+t('Abbrechen')+'</button></div>');
 }
 function fMangelOk(aid){
-  api({action:'mangel_anlegen',anlage_id:aid,text:$('fm-t').value,wesentlich:+$('fm-w').value},function(j){ if(j&&j.ok){ deckZu(); toast('Mangel erfasst.'); vAnlage(aid); } });
+  api({action:'mangel_anlegen',anlage_id:aid,text:$('fm-t').value,wesentlich:+$('fm-w').value},function(j){ if(j&&j.ok){ deckZu(); toast(t('Mangel erfasst.')); vAnlage(aid); } });
 }
 function setStatus(id,s){
-  api({action:'mangel_status',id:id,status:s},function(j){ if(j&&j.ok){ toast('Status: '+s+'.'); vAnlage(AKT.id); } });
+  api({action:'mangel_status',id:id,status:s},function(j){ if(j&&j.ok){ toast(t('Status:')+' '+s+'.'); vAnlage(AKT.id); } });
 }
 function fBehoben(id){
-  deckAuf('<h2>Mangel behoben</h2><label>Behoben am</label><input id="fb-d" type="date" value="'+new Date().toISOString().slice(0,10)+'">'
-   +'<label>Ausführende Firma</label><input id="fb-f">'
-   +'<div class="mrow"><button class="btn voll" onclick="fBehobenOk('+id+')">Speichern</button><button class="btn" onclick="deckZu()">Abbrechen</button></div>');
+  deckAuf('<h2>'+t('Mangel behoben')+'</h2><label>'+t('Behoben am')+'</label><input id="fb-d" type="date" value="'+new Date().toISOString().slice(0,10)+'">'
+   +'<label>'+t('Ausführende Firma')+'</label><input id="fb-f">'
+   +'<div class="mrow"><button class="btn voll" onclick="fBehobenOk('+id+')">'+t('Speichern')+'</button><button class="btn" onclick="deckZu()">'+t('Abbrechen')+'</button></div>');
 }
 function fBehobenOk(id){
-  api({action:'mangel_status',id:id,status:'behoben',behoben_am:$('fb-d').value,firma:$('fb-f').value},function(j){ if(j&&j.ok){ deckZu(); toast('Behoben — jetzt die Mangelfreimeldung erstellen.'); vAnlage(AKT.id); } });
+  api({action:'mangel_status',id:id,status:'behoben',behoben_am:$('fb-d').value,firma:$('fb-f').value},function(j){ if(j&&j.ok){ deckZu(); toast(t('Behoben — jetzt die Mangelfreimeldung erstellen.')); vAnlage(AKT.id); } });
 }
 function vergabe(mid){
-  deckAuf('<h2>✳ Vergabe wird vorbereitet …</h2><div class="hinweis">KAȲȲA ordnet das Gewerk zu und entwirft die Angebotsanfrage.</div>');
+  deckAuf('<h2>'+t('✳ Vergabe wird vorbereitet …')+'</h2><div class="hinweis">'+t('KAȲȲA ordnet das Gewerk zu und entwirft die Angebotsanfrage.')+'</div>');
   api({action:'vergabe',mangel_id:mid},function(j){
     if(!j){ deckZu(); return; }
-    deckAuf('<h2>Vergabeempfehlung · Gewerk: '+esc(j.gewerk)+'</h2>'
-     +'<label>Passende Firmen</label><div class="hinweis" style="margin-bottom:8px">'+(j.firmen.length?j.firmen.map(function(f){ return '<b>'+esc(f.name)+'</b> · '+esc(f.kontakt||''); }).join('<br>'):'Noch keine Firma für dieses Gewerk hinterlegt.')+'</div>'
-     +'<label>Angebotsanfrage (KI-Entwurf, editierbar)</label><textarea id="vg-t" style="min-height:200px">'+esc(j.anfrage)+'</textarea>'
-     +'<div class="mrow"><button class="btn voll" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById(\'vg-t\').value).then(function(){toast(\'Anfrage kopiert — per E-Mail an die Firma senden.\')})">Kopieren</button>'
-     +'<button class="btn" onclick="setStatus('+mid+',\'vergeben\');deckZu()">Als vergeben markieren</button>'
-     +'<button class="btn" onclick="deckZu()">Schließen</button></div>');
+    deckAuf('<h2>'+t('Vergabeempfehlung · Gewerk:')+' '+esc(j.gewerk)+'</h2>'
+     +'<label>'+t('Passende Firmen')+'</label><div class="hinweis" style="margin-bottom:8px">'+(j.firmen.length?j.firmen.map(function(f){ return '<b>'+esc(f.name)+'</b> · '+esc(f.kontakt||''); }).join('<br>'):t('Noch keine Firma für dieses Gewerk hinterlegt.'))+'</div>'
+     +'<label>'+t('Angebotsanfrage (KI-Entwurf, editierbar)')+'</label><textarea id="vg-t" style="min-height:200px">'+esc(j.anfrage)+'</textarea>'
+     +'<div class="mrow"><button class="btn voll" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById(\'vg-t\').value).then(function(){toast(t(\'Anfrage kopiert — per E-Mail an die Firma senden.\'))})">'+t('Kopieren')+'</button>'
+     +'<button class="btn" onclick="setStatus('+mid+',\'vergeben\');deckZu()">'+t('Als vergeben markieren')+'</button>'
+     +'<button class="btn" onclick="deckZu()">'+t('Schließen')+'</button></div>');
   });
 }
 function fAngebot(mid){
-  deckAuf('<h2>Angebot bewerten</h2><label>Firma</label><input id="ag-f"><label>Angebotssumme (€ brutto)</label><input id="ag-b" type="number" step="0.01">'
-   +'<label>Leistungsbeschreibung (kurz)</label><textarea id="ag-t"></textarea>'
-   +'<div class="mrow"><button class="btn voll" onclick="fAngebotOk('+mid+')">✳ Bewerten lassen</button><button class="btn" onclick="deckZu()">Abbrechen</button></div>');
+  deckAuf('<h2>'+t('Angebot bewerten')+'</h2><label>'+t('Firma')+'</label><input id="ag-f"><label>'+t('Angebotssumme (€ brutto)')+'</label><input id="ag-b" type="number" step="0.01">'
+   +'<label>'+t('Leistungsbeschreibung (kurz)')+'</label><textarea id="ag-t"></textarea>'
+   +'<div class="mrow"><button class="btn voll" onclick="fAngebotOk('+mid+')">'+t('✳ Bewerten lassen')+'</button><button class="btn" onclick="deckZu()">'+t('Abbrechen')+'</button></div>');
 }
 function fAngebotOk(mid){
-  var f=$('ag-f').value, b=parseFloat($('ag-b').value), t=$('ag-t').value;
-  if(!b||b<=0){ toast('Angebotssumme eingeben.'); return; }
-  deckAuf('<h2>✳ KAȲȲA bewertet …</h2><div class="hinweis">Preisspanne, Einordnung, Empfehlung — dauert einen Moment.</div>');
-  api({action:'angebot_bewerten',mangel_id:mid,betrag:b,firma:f,beschreibung:t},function(j){
+  var f=$('ag-f').value, b=parseFloat($('ag-b').value), tx=$('ag-t').value;
+  if(!b||b<=0){ toast(t('Angebotssumme eingeben.')); return; }
+  deckAuf('<h2>'+t('✳ KAȲȲA bewertet …')+'</h2><div class="hinweis">'+t('Preisspanne, Einordnung, Empfehlung — dauert einen Moment.')+'</div>');
+  api({action:'angebot_bewerten',mangel_id:mid,betrag:b,firma:f,beschreibung:tx},function(j){
     if(!j){ deckZu(); return; }
-    deckAuf('<h2>Angebotsbewertung</h2><div style="font-size:14px;white-space:pre-wrap">'+esc(j.bewertung)+'</div>'
-     +'<div class="mrow"><button class="btn voll" onclick="deckZu();vAnlage(AKT.id)">Übernehmen</button></div>');
+    deckAuf('<h2>'+t('Angebotsbewertung')+'</h2><div style="font-size:14px;white-space:pre-wrap">'+esc(j.bewertung)+'</div>'
+     +'<div class="mrow"><button class="btn voll" onclick="deckZu();vAnlage(AKT.id)">'+t('Übernehmen')+'</button></div>');
   });
 }
+/* Die Mangelfreimeldung bleibt bewusst deutsch — offizielles Schreiben an die Prüforganisation. */
 function freimeldung(mid){
   api({action:'freimeldung',mangel_id:mid},function(m){
     if(!m) return;
@@ -374,7 +461,7 @@ function freimeldung(mid){
      +'<div style="margin-top:34px;border-top:1px solid #333;width:280px;padding-top:4px;font-size:12px">Bernhard Krug · Geschäftsführung<br>Betreiber / Hausverwaltung</div></div>';
     var blob=new Blob(['<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Mangelfreimeldung</title></head><body style="font-family:Segoe UI,Arial,sans-serif;max-width:760px;margin:40px auto;color:#111" onload="window.print()">'+html+'</body></html>'],{type:'text/html'});
     var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='Mangelfreimeldung-'+m.id+'.html'; a.click(); URL.revokeObjectURL(a.href);
-    toast('Mangelfreimeldung erzeugt — unterschreiben und an die Prüforganisation senden.');
+    toast(t('Mangelfreimeldung erzeugt — unterschreiben und an die Prüforganisation senden.'));
   });
 }
 
@@ -390,6 +477,7 @@ function route(){
   else vDash();
 }
 window.addEventListener('hashchange',route);
+kopfSprache();
 route();
 </script>
 </body>

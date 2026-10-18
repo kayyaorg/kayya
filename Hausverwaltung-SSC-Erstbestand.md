@@ -133,6 +133,19 @@
 
 ---
 
+## Nachtrag 18.10.2026 — Befunde aus „00 SV", „10 TGA", „09 Revisionsunterlagen", „06 Mieterausbau", Sprinkler-Ordner (Desktop)
+
+| Befund | Quelle | Konsequenz (noch einzutragen) |
+|---|---|---|
+| **Trinkwasseruntersuchung zuletzt 09.02.2017** | 10 TGA / 2.6.5. Sanitär | Prüfart „Trinkwasseruntersuchung (TrinkwV)", Turnus 36 M → seit 2020 überfällig |
+| **Kühlwasser-Untersuchung nach 42. BImSchV zuletzt 28.05.2020** (BlueBiolabs) | 10 TGA / 2.6.5. | Prüfart an Kältetechnik, Turnus 3 M → überfällig; klären, ob Verdunstungskühlanlage noch in Betrieb |
+| **Bezirksamts-Vorgang Fettabscheider 2026** (Az …-0071701-1 / …-0071702-3, Schreiben 30.03.2026; Generalinspektion von 2021) | 00 SV / „2026 - Bezirksamt Fettabscheider" | Mangel/Hinweis an Fettabscheideranlagen; Generalinspektion (60 M) seit Mai 2026 fällig |
+| Blitzschutz-Prüfbericht 03.12.2024 | 10 TGA / 2.6.9. | ggf. neueres SV-Datum (bisher 10.09.2024 erfasst) |
+| Sprinkler: Mängelfreimeldung 07.01.2026 zur TÜV-Prüfung 2023 | Desktop\Sprinkler | 2023er Mangel ist freigemeldet ✓ |
+| Sprinkler-Umbau DM: Baugenehmigung 2025-3657 (Änd. 30.03.2026), Prüfbericht BSN, provisorischer Sprinklerschutz EG (Aktennotiz 16.04.2026) | Desktop\Sprinkler + 06 Mieterausbau | **Doku der Sprinklerfirma ausstehend:** Errichterbescheinigung, Konformitätsbescheinigung, Sprinklerverzeichnis, Abnahme-/Abdrückprotokoll (handschriftl. Notiz) → als offener Punkt/Mangel erfassen |
+| Mieterausbau: Kaufland-Umbau (Sprinkler-Umlegung, Elektro, HLS, Vakuumanlage, Kühlmöbel) + DM-Erweiterung mit Brandschutzberichten (R-25 275) | 06 Mieterausbau | Nach Fertigstellung: SV-Abnahmen der betroffenen Anlagen einplanen |
+| Historische Wartungsverträge aller Gewerke (Thyssen, Bildfunk, Gottschalk, Minimax, CEAG, Prigge, City Tore, Sauter, HELL, B&M …) | 10 TGA | bestätigt Zuständigkeiten; keine neuen Anlagen |
+
 ## Offene Punkte / Annahmen
 
 1. **Wartungsnachweise Aufzüge:** Für 31.03.2026 liegen Nachweise zu FA…607/608/609/634/635/637/638 sowie zu **FA40173570/40173571** vor — die letzten beiden Nummern kann ich keiner Anlage zuordnen (L4/L5 haben 40173569/68). Bitte klären.

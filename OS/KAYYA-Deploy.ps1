@@ -12,7 +12,8 @@
 # ============================================================
 param([switch]$NurIndex, [switch]$Key, [switch]$NurPruefen)
 $ErrorActionPreference = "Stop"
-$zugang = "C:\Users\BKRG\KAYYA-Zugang"
+$zugang = @("C:\Users\BKRG\KAYYA-Zugang", (Join-Path $env:USERPROFILE "KAYYA-Zugang")) | Where-Object { Test-Path $_ } | Select-Object -First 1
+if (-not $zugang) { $zugang = Join-Path $env:USERPROFILE "KAYYA-Zugang" }
 $ziele  = Join-Path $zugang "ziele.txt"
 $netrc  = Join-Path $zugang "netrc.txt"
 $curl   = Join-Path ${env:ProgramFiles} "Git\mingw64\bin\curl.exe"   # FTPS
