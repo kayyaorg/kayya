@@ -193,6 +193,18 @@ case 'datei': {
   readfile(__DIR__.'/wdok/'.$d['datei']); exit;
 }
 
+case 'dokument_loeschen': {
+  if($ME['rolle']!=='gf') fail(403,'nur Geschäftsführung');
+  $id=(int)($in['dokument_id'] ?? 0); if($id<1) fail(400,'dokument_id');
+  $st=$db->prepare("SELECT datei,orig_name FROM w_dokumente WHERE id=?");
+  $st->bind_param('i',$id); $st->execute(); $d=$st->get_result()->fetch_assoc();
+  if(!$d) fail(404,'Dokument unbekannt');
+  $st=$db->prepare("DELETE FROM w_dokumente WHERE id=?"); $st->bind_param('i',$id); $st->execute();
+  $pf=__DIR__.'/wdok/'.$d['datei']; if(is_file($pf)) @unlink($pf);
+  wlog($db,$ME['id'],'dokument_loeschen',$d['orig_name']);
+  echo json_encode(['ok'=>true]); break;
+}
+
 case 'auswerten': {
   $id=(int)($in['dokument_id'] ?? 0); if($id<1) fail(400,'dokument_id');
   $st=$db->prepare("SELECT d.*,a.name anlage,a.typ FROM w_dokumente d JOIN w_anlagen a ON a.id=d.anlage_id WHERE d.id=?");

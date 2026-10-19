@@ -137,7 +137,8 @@ en:{'Abmelden':'Log out','Anmelden':'Sign in','Konten:':'Accounts:','Geschäftsf
 'Angebotsanfrage (KI-Entwurf, editierbar)':'Request for quote (AI draft, editable)','Kopieren':'Copy','Anfrage kopiert — per E-Mail an die Firma senden.':'Request copied — send it to the company by e-mail.',
 'Als vergeben markieren':'Mark as assigned','Schließen':'Close','Firma':'Company','Angebotssumme (€ brutto)':'Quote amount (€ gross)','Leistungsbeschreibung (kurz)':'Scope of work (short)',
 '✳ Bewerten lassen':'✳ Assess','Angebotssumme eingeben.':'Enter the quote amount.','✳ KAȲȲA bewertet …':'✳ KAȲȲA is assessing …','Preisspanne, Einordnung, Empfehlung — dauert einen Moment.':'Price range, context, recommendation — one moment.',
-'Angebotsbewertung':'Quote assessment','Übernehmen':'Apply','Mangelfreimeldung erzeugt — unterschreiben und an die Prüforganisation senden.':'Clearance letter created — sign it and send it to the inspection body.'},
+'Angebotsbewertung':'Quote assessment','Übernehmen':'Apply','Mangelfreimeldung erzeugt — unterschreiben und an die Prüforganisation senden.':'Clearance letter created — sign it and send it to the inspection body.',
+'Dokument löschen':'Delete document','Dokument wirklich löschen?':'Really delete this document?','Dokument gelöscht.':'Document deleted.'},
 pl:{'Abmelden':'Wyloguj','Anmelden':'Zaloguj','Konten:':'Konta:','Geschäftsführung':'Zarząd','Team':'Zespół','Konto':'Konto','Passwort':'Hasło',
 'Konto und Passwort eingeben.':'Podaj konto i hasło.','Anmeldung fehlgeschlagen.':'Logowanie nie powiodło się.','Server nicht erreichbar.':'Brak połączenia z serwerem.','Lade …':'Ładowanie …',
 'Immobilien':'Nieruchomości','Ampel aus Prüffristen und offenen Mängeln — das, wofür die Geschäftsführung haftet, auf einen Blick.':'Sygnalizacja na podstawie terminów przeglądów i otwartych usterek — to, za co odpowiada zarząd, na pierwszy rzut oka.',
@@ -168,7 +169,8 @@ pl:{'Abmelden':'Wyloguj','Anmelden':'Zaloguj','Konten:':'Konta:','Geschäftsfüh
 'Angebotsanfrage (KI-Entwurf, editierbar)':'Zapytanie ofertowe (szkic AI, edytowalne)','Kopieren':'Kopiuj','Anfrage kopiert — per E-Mail an die Firma senden.':'Skopiowano — wyślij firmie e-mailem.',
 'Als vergeben markieren':'Oznacz jako zlecone','Schließen':'Zamknij','Firma':'Firma','Angebotssumme (€ brutto)':'Kwota oferty (€ brutto)','Leistungsbeschreibung (kurz)':'Zakres prac (krótko)',
 '✳ Bewerten lassen':'✳ Oceń','Angebotssumme eingeben.':'Podaj kwotę oferty.','✳ KAȲȲA bewertet …':'✳ KAȲȲA ocenia …','Preisspanne, Einordnung, Empfehlung — dauert einen Moment.':'Przedział cen, kontekst, rekomendacja — chwileczkę.',
-'Angebotsbewertung':'Ocena oferty','Übernehmen':'Zastosuj','Mangelfreimeldung erzeugt — unterschreiben und an die Prüforganisation senden.':'Utworzono zgłoszenie usunięcia — podpisz i wyślij do jednostki kontrolnej.'}
+'Angebotsbewertung':'Ocena oferty','Übernehmen':'Zastosuj','Mangelfreimeldung erzeugt — unterschreiben und an die Prüforganisation senden.':'Utworzono zgłoszenie usunięcia — podpisz i wyślij do jednostki kontrolnej.',
+'Dokument löschen':'Usuń dokument','Dokument wirklich löschen?':'Na pewno usunąć ten dokument?','Dokument gelöscht.':'Dokument usunięty.'}
 };
 function t(s){ if(LANG==='de') return s; return (L[LANG]&&L[LANG][s])||s; }
 function sprache(l){ LANG=(l==='en'||l==='pl')?l:'de'; try{ localStorage.setItem('w_lang',LANG); }catch(e){} kopfSprache(); route(); }
@@ -323,7 +325,8 @@ function vAnlage(id){
       a.dokumente.forEach(function(d){
         h+='<tr><td><a href="/wartung-api.php?action=datei&id='+d.id+'&token='+encodeURIComponent(TOK)+'" target="_blank" style="color:var(--akz)">'+esc(d.orig_name)+'</a></td>'
          +'<td class="hinweis">'+esc(d.typ)+'</td><td class="hinweis">'+esc(d.hochgeladen)+'</td>'
-         +'<td>'+(+d.ausgewertet===1?'<span class="tag gruen">'+t('ausgelesen ✓')+'</span>':'<button class="btn mini" id="ausw-'+d.id+'" onclick="auswerten('+d.id+')">'+t('✳ Auslesen')+'</button>')+'</td></tr>';
+         +'<td>'+(+d.ausgewertet===1?'<span class="tag gruen">'+t('ausgelesen ✓')+'</span>':'<button class="btn mini" id="ausw-'+d.id+'" onclick="auswerten('+d.id+')">'+t('✳ Auslesen')+'</button>')
+         +(WER&&WER.rolle==='gf'?' <button class="btn mini" title="'+t('Dokument löschen')+'" onclick="dokLoeschen('+d.id+')">🗑</button>':'')+'</td></tr>';
       });
       h+='</table>';
     } else h+='<div class="hinweis">'+t('Noch keine Dokumente.')+'</div>';
@@ -395,6 +398,10 @@ function auswerten(did){
     toast(t('Ausgelesen:')+' '+(j.neue_maengel||0)+' '+t('Mängel erfasst')+(a.pruefdatum?' · '+t('Prüfdatum')+' '+dstr(a.pruefdatum):'')+'.');
     vAnlage(AKT.id);
   });
+}
+function dokLoeschen(did){
+  if(!confirm(t('Dokument wirklich löschen?'))) return;
+  api({action:'dokument_loeschen',dokument_id:did},function(j){ if(j&&j.ok){ toast(t('Dokument gelöscht.')); vAnlage(AKT.id); } });
 }
 function fMangel(aid){
   deckAuf('<h2>'+t('Mangel erfassen')+'</h2><label>'+t('Beschreibung')+'</label><textarea id="fm-t"></textarea>'
