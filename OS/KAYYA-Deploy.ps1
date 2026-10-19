@@ -12,6 +12,7 @@
 # ============================================================
 param([switch]$NurIndex, [switch]$Key, [switch]$NurPruefen)
 $ErrorActionPreference = "Stop"
+try { [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12 } catch {}
 $zugang = @("C:\Users\BKRG\KAYYA-Zugang", (Join-Path $env:USERPROFILE "KAYYA-Zugang")) | Where-Object { Test-Path $_ } | Select-Object -First 1
 if (-not $zugang) { $zugang = Join-Path $env:USERPROFILE "KAYYA-Zugang" }
 $ziele  = Join-Path $zugang "ziele.txt"
@@ -51,6 +52,8 @@ foreach ($t in $targets) {
     if ($Key) { $kf = Join-Path $zugang "kayya-key.php"; if (Test-Path $kf) { $toUpload += $kf } else { Write-Host "  -Key: $kf fehlt (Inhalt: <?php return 'sk-ant-...';)" -ForegroundColor Yellow } }
     $docsDir = Join-Path $PSScriptRoot 'docs'
     $docsFiles = @(); if (-not $NurIndex -and (Test-Path $docsDir)) { $docsFiles = @(Get-ChildItem $docsDir -File) }
+    $bilderDir = Join-Path $PSScriptRoot 'wbilder'
+    $bilderFiles = @(); if (-not $NurIndex -and (Test-Path $bilderDir)) { $bilderFiles = @(Get-ChildItem $bilderDir -File | Where-Object { $_.Extension -match '\.(jpe?g|png)$' }) }
 
     if ($sftp) {
       # ---- SFTP ueber Windows-OpenSSH ----
@@ -73,6 +76,10 @@ foreach ($t in $targets) {
           $lines += "-mkdir docs"
           foreach ($f in $docsFiles) { $lines += ('put "' + ($f.FullName -replace '\\','/') + '" docs/' + $f.Name) }
         }
+        if ($bilderFiles.Count -gt 0) {
+          $lines += "-mkdir wbilder"
+          foreach ($f in $bilderFiles) { $lines += ('put "' + ($f.FullName -replace '\\','/') + '" wbilder/' + $f.Name) }
+        }
         Set-Content $bat -Encoding ascii -Value $lines
         $env:KAYYA_SFTP_PW = $m.Groups[2].Value
         $env:SSH_ASKPASS = $askpass; $env:SSH_ASKPASS_REQUIRE = "force"
@@ -85,7 +92,7 @@ foreach ($t in $targets) {
         $env:KAYYA_SFTP_PW = ""
         Remove-Item $bat -Force -ErrorAction SilentlyContinue
         if ($code -eq 0) {
-          Write-Host ("  hochgeladen (SFTP): " + $toUpload.Count + " Dateien" + $(if ($docsFiles.Count) { " + docs/ (" + $docsFiles.Count + ")" })) -ForegroundColor Green
+          Write-Host ("  hochgeladen (SFTP): " + $toUpload.Count + " Dateien" + $(if ($docsFiles.Count) { " + docs/ (" + $docsFiles.Count + ")" }) + $(if ($bilderFiles.Count) { " + wbilder/ (" + $bilderFiles.Count + ")" })) -ForegroundColor Green
         } else {
           $txt = (($out | ForEach-Object { "$_" }) -join "`n") -replace '(?i)(login|password)\S*','***'
           Write-Host ("  SFTP-FEHLER (exit " + $code + "): " + $txt.Trim()) -ForegroundColor Red; $ok = $false
@@ -106,6 +113,12 @@ foreach ($t in $targets) {
         $out = & $curl @cargs
         if ($LASTEXITCODE -eq 0) { Write-Host ("  hochgeladen: docs/" + $f.Name) -ForegroundColor Green }
         else { Write-Host ("  FEHLER bei docs/" + $f.Name + " (curl exit " + $LASTEXITCODE + "): " + (($out | Out-String) -replace '(?i)(login|password)\S*','***').Trim()) -ForegroundColor Red; $ok = $false }
+      }
+      foreach ($f in $bilderFiles) {
+        $cargs = @("--silent","--show-error","--fail","--stderr","-","--netrc-file",$netrc,"--connect-timeout","25","--ssl","--ftp-create-dirs","-T",$f.FullName,($base + "wbilder/" + $f.Name))
+        $out = & $curl @cargs
+        if ($LASTEXITCODE -eq 0) { Write-Host ("  hochgeladen: wbilder/" + $f.Name) -ForegroundColor Green }
+        else { Write-Host ("  FEHLER bei wbilder/" + $f.Name + " (curl exit " + $LASTEXITCODE + "): " + (($out | Out-String) -replace '(?i)(login|password)\S*','***').Trim()) -ForegroundColor Red; $ok = $false }
       }
     }
   }
