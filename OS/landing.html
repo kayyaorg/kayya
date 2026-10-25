@@ -63,6 +63,9 @@
     display:flex;gap:8px;justify-content:center;align-items:center;font-size:11.5px;color:var(--mut);flex-wrap:wrap}
   #fuss a{color:var(--mut);text-decoration:none;border-bottom:1px dotted rgba(94,124,134,.6)}
   #fuss a:hover{color:var(--txt)}
+  #fuss .intern{display:inline-flex;gap:8px;opacity:.5;font-size:10.5px;letter-spacing:.06em}
+  #fuss .intern a{border-bottom:none}
+  #fuss .intern:hover{opacity:.9}
   /* ---- Tor-Abfrage & Modale ---- */
   .deck{position:fixed;inset:0;background:rgba(2,4,9,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
     display:none;align-items:center;justify-content:center;z-index:30;padding:20px}
@@ -109,29 +112,10 @@
   </svg>
 </div>
 <div id="tore">
-  <button class="tor" onclick="tor('beta1.html')">
-    <span class="gross">G <i>0.3</i></span>
-    <span class="klein">KAȲȲA OS</span>
-    <span class="schloss">🔒 Zugang</span>
-    <span class="torbeta">β.1.6.6</span>
-  </button>
-  <button class="tor" onclick="tor('g4.html')">
-    <span class="gross">G <i>0.4</i></span>
-    <span class="klein">KAȲȲA G4</span>
-    <span class="schloss">🔒 Zugang</span>
-    <span class="torbeta">β.2.1.0 · DB</span>
-  </button>
   <button class="tor" onclick="tor('g5.html')">
-    <span class="gross">G <i>0.5</i></span>
-    <span class="klein">KAȲȲA G5 · clean</span>
+    <span class="gross">KAȲȲA <i>öffnen</i></span>
+    <span class="klein">Das Betriebssystem für Träger</span>
     <span class="schloss">🔒 Zugang</span>
-    <span class="torbeta">β.1.1.0</span>
-  </button>
-  <button class="tor" onclick="tor('wartung.html')">
-    <span class="gross schmal">Wartungs<i>übersicht</i></span>
-    <span class="klein">Hausverwaltung · Prüfpflichten</span>
-    <span class="schloss">🔒 Zugang</span>
-    <span class="torbeta">β.1.0.0 · DB</span>
   </button>
   <button class="tor gold" onclick="tor('docs/invest.html')">
     <span class="gross">Investor <i>Deck</i></span>
@@ -142,7 +126,13 @@
 <div id="dbstatus" style="text-align:center;margin-top:54px;font:700 10.5px Consolas,monospace;letter-spacing:.14em;color:#5E7C86;text-transform:uppercase">○ Datenbasis wird geprüft …</div>
 <div id="fuss">
   <a href="#" onclick="offen('m-imp');return false;">Impressum</a><span>·</span>
-  <a href="#" onclick="offen('m-ds');return false;">Datenschutz</a>
+  <a href="#" onclick="offen('m-ds');return false;">Datenschutz</a><span class="fsep">·</span>
+  <span class="intern">Arbeitsstände:
+    <a href="#" onclick="tor('beta1.html');return false;" title="KAȲȲA OS β.1.6.6">G3</a>
+    <a href="#" onclick="tor('g4.html');return false;" title="KAȲȲA G4 β.2.1.0">G4</a>
+    <a href="#" onclick="tor('g5.html');return false;" title="KAȲȲA G5 β.1.2.0">G5</a>
+    <a href="#" onclick="tor('wartung.html');return false;" title="Hausverwaltung · Prüfpflichten">Wartung</a>
+  </span>
 </div>
 
 <div class="deck" id="m-pw" onclick="if(event.target===this)zu('m-pw')">
