@@ -1,0 +1,7 @@
+KAYYA Wortmarke, Stand 24.10.2026 (Fassung S2)
+
+Geometrie: Strich 4,2 % der Versalhoehe; A als Lambda ohne Querstrich, Fuesse senkrecht auf 60 % der Hoehe gekappt;
+Lambda-Beine und Y-Arme parallel mit 68 Grad zur Waagrechten (Spitze 44 Grad); Y-Knoten bei 68 % der Hoehe;
+K mit eigenem Winkel von 50 Grad; Lambda-Y-Y-Lambda spiegelsymmetrisch; Abstaende 9,8 (K-A, A-Y, Y-A) und 7,8 (Y-Y).
+Dateien: 261024_KAYYA_Logo_schwarz.svg (auf hellem Grund), 261024_KAYYA_Logo_weiss.svg (auf dunklem Grund).
+Auf der Startseite (OS/landing.html) liegt dieselbe Wortmarke als Inline-SVG mit Leucht-Animation und Ueberstrich-Bruecke.

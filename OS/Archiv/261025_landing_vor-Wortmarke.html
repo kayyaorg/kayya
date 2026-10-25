@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#05070D">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>KAȲȲA</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  :root{--ink:#05070D;--glow:#41E8FF;--gold:#FFC24B;--txt:#E8F6F4;--mut:#5E7C86}
+  html{background:var(--ink);overscroll-behavior:none}
+  body{font-family:-apple-system,"SF Pro Text","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
+    background:radial-gradient(760px 560px at 50% 42%, rgba(65,232,255,.09), transparent 62%), var(--ink);
+    color:var(--txt);min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:24px;padding-top:calc(24px + env(safe-area-inset-top));overflow:hidden;touch-action:manipulation}
+  #foto{position:fixed;left:50%;top:50%;width:130vmax;height:130vmax;transform:translate(-50%,-50%) rotate(62deg);background:url('milchstrasse.jpg') center/cover no-repeat;opacity:.8;pointer-events:none;will-change:transform;animation:galaxdreh 420s linear infinite}
+  @keyframes galaxdreh{from{transform:translate(-50%,-50%) rotate(62deg)}to{transform:translate(-50%,-50%) rotate(422deg)}}
+  #dunkel{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 44%, rgba(5,7,13,.08), rgba(5,7,13,.62) 82%);pointer-events:none}
+  #sterne{position:fixed;inset:0;pointer-events:none}
+  /* ---- illuminiertes KAȲȲA ---- */
+  #logo{position:relative;text-align:center;user-select:none}
+  #logo h1{font-family:"Segoe UI Variable Display","SF Pro Display","Segoe UI Black",system-ui,sans-serif;
+    font-weight:900;font-size:clamp(58px,14vw,132px);letter-spacing:.12em;line-height:1;
+    color:#DCEFF5;text-shadow:0 0 42px rgba(65,232,255,.25);
+    animation:kaglanz 3.8s ease-in-out infinite}
+  /* K, A, A nehmen Glanz & Helligkeit der ȲȲ an — aber nur in deren Hell-Phase (0/100 %); in der Lila-Phase (50 %) bleiben sie ruhig */
+  @keyframes kaglanz{
+    0%,100%{color:#FFFFFF;text-shadow:0 0 12px rgba(255,255,255,.95),0 0 34px rgba(255,255,255,.8),0 0 100px rgba(200,242,255,.55)}
+    50%{color:#39424C;text-shadow:0 0 28px rgba(65,232,255,.07)}}
+  #logo h1 b{color:#FFFFFF;text-shadow:0 0 12px rgba(255,255,255,1),0 0 30px rgba(255,255,255,.9),0 0 90px rgba(190,240,255,.7);
+    animation:leuchte 3.8s ease-in-out infinite}
+  @keyframes leuchte{
+    0%,100%{color:#FFFFFF;text-shadow:0 0 14px rgba(255,255,255,1),0 0 38px rgba(255,255,255,1),0 0 110px rgba(215,245,255,.9),0 0 185px rgba(165,230,255,.6)}
+    50%{color:#220022;text-shadow:0 0 10px rgba(255,255,255,.35),0 0 38px rgba(34,0,34,1),0 0 115px rgba(27,0,31,.85),0 0 195px rgba(22,0,26,.55)}}
+
+  /* ---- Die Überstriche der ȲȲ sind selbst gezeichnet (YY + Striche) — so können sie sich wirklich verbinden, ohne zweite Linie.
+         Alle 9 s wachsen beide Striche zur Mitte, treffen sich mit kleinem Licht-Knall, halten das Dach und lösen sich wieder. ---- */
+  #logo h1 b{position:relative}
+  #ybr{position:absolute;left:0;top:0;width:100%;height:1em;pointer-events:none}
+  #ybr i{position:absolute;top:var(--yb-top,.18em);height:var(--yb-h,.055em);background:currentColor;border-radius:.027em;
+    box-shadow:0 0 .05em currentColor,0 0 .14em rgba(255,255,255,.4)}
+  #ybr i.l{animation:ybl 9s ease-in-out infinite}
+  #ybr i.r{animation:ybrr 9s ease-in-out infinite}
+  @keyframes ybl { 0%,30%{width:var(--w0,0px)} 36%,76%{width:var(--w1,0px)} 82%,100%{width:var(--w0,0px)} }
+  @keyframes ybrr{ 0%,30%{width:var(--w0,0px)} 36%,76%{width:var(--w1,0px)} 82%,100%{width:var(--w0,0px)} }
+  #ybr em{position:absolute;left:50%;top:calc(var(--yb-top,.18em) + var(--yb-h,.055em)/2);width:.5em;height:.5em;margin:-.25em 0 0 -.25em;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.95) 0%,rgba(190,240,255,.5) 35%,rgba(190,240,255,0) 70%);
+    opacity:0;transform:scale(.2);animation:ybknall 9s ease-out infinite}
+  @keyframes ybknall{ 0%,35%{opacity:0;transform:scale(.2)} 37%{opacity:1;transform:scale(.55)} 48%{opacity:0;transform:scale(1.9)} 100%{opacity:0;transform:scale(.2)} }
+  @media (prefers-reduced-motion: reduce){ #ybr i,#ybr em{animation:none} }
+
+  /* ---- Knoepfe ---- */
+  #tore{display:flex;gap:22px;margin-top:58px;flex-wrap:wrap;justify-content:center}
+  .tor{position:relative;display:flex;flex-direction:column;align-items:center;gap:7px;width:240px;padding:20px 10px;cursor:pointer;
+    background:rgba(16,27,46,.7);border:1px solid rgba(65,232,255,.35);border-radius:18px;color:var(--txt);
+    -webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3);
+    transition:border-color .25s, box-shadow .25s, transform .15s;font:inherit}
+  .tor:hover{border-color:var(--glow);box-shadow:0 0 26px rgba(65,232,255,.28)}
+  .tor:active{transform:scale(.97)}
+  .tor .gross{font-size:26px;font-weight:900;letter-spacing:.06em;white-space:nowrap}
+  .tor .gross i{font-style:normal;color:var(--glow)}
+  .tor .gross.schmal{font-size:18px}
+  .tor .klein{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:11px;color:var(--mut);letter-spacing:.08em}
+  .tor .schloss{font-size:10px;color:var(--mut);letter-spacing:.14em;text-transform:uppercase}
+  .torbeta{position:absolute;bottom:-26px;left:0;right:0;text-align:center;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:10.5px;color:var(--mut);letter-spacing:.1em}
+  .tor.gold{border-color:rgba(255,194,75,.4)}
+  .tor.gold:hover{border-color:var(--gold);box-shadow:0 0 26px rgba(255,194,75,.25)}
+  .tor.gold .gross i{color:var(--gold)}
+  /* ---- Fuss ---- */
+  #fuss{position:fixed;left:0;right:0;bottom:0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));
+    display:flex;gap:8px;justify-content:center;align-items:center;font-size:11.5px;color:var(--mut);flex-wrap:wrap}
+  #fuss a{color:var(--mut);text-decoration:none;border-bottom:1px dotted rgba(94,124,134,.6)}
+  #fuss a:hover{color:var(--txt)}
+  /* ---- Tor-Abfrage & Modale ---- */
+  .deck{position:fixed;inset:0;background:rgba(2,4,9,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    display:none;align-items:center;justify-content:center;z-index:30;padding:20px}
+  .deck.auf{display:flex}
+  .glas{width:100%;max-width:430px;max-height:82dvh;overflow-y:auto;background:rgba(13,18,32,.88);
+    border:1px solid rgba(65,232,255,.3);border-radius:20px;padding:24px;
+    -webkit-backdrop-filter:blur(22px) saturate(1.5);backdrop-filter:blur(22px) saturate(1.5)}
+  .glas h3{font-size:16px;font-weight:900;letter-spacing:.04em;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+  .glas h3 .x{margin-left:auto;background:none;border:none;color:var(--mut);font-size:20px;cursor:pointer;line-height:1}
+  .glas p{font-size:13px;line-height:1.65;margin-bottom:10px}
+  .glas .klein2{font-size:11px;color:var(--mut);line-height:1.6}
+  #pwrow{display:flex;gap:10px;margin-top:14px}
+  #pw{flex:1;background:rgba(65,232,255,.06);border:1px solid rgba(65,232,255,.35);border-radius:12px;
+    color:var(--txt);padding:12px 14px;font-size:15px;letter-spacing:.14em;outline:none}
+  #pw:focus{border-color:var(--glow)}
+  #pwok{background:linear-gradient(135deg,#0FB8D8,#41E8FF);color:#04222A;border:none;border-radius:12px;
+    padding:12px 20px;font-size:13.5px;font-weight:800;cursor:pointer}
+  #pwfehl{display:none;color:#FF7AC6;font-size:12px;margin-top:10px;font-weight:700}
+  .glas.zitter{animation:zitter .4s}
+  .babey{font-size:72px;font-weight:900;color:#FFFFFF;text-align:center;line-height:1;margin:4px 0 14px;animation:leuchte 3.8s ease-in-out infinite}
+  .babetxt{font-size:17px;font-weight:800;text-align:center;line-height:1.5;margin-bottom:8px}
+  .babesub{font-size:12.5px;color:var(--mut);text-align:center;line-height:1.6;margin-bottom:16px}
+  .babebtn{display:block;width:100%;text-align:center;background:linear-gradient(135deg,#0FB8D8,#41E8FF);color:#04222A;border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:800;cursor:pointer;text-decoration:none;margin-bottom:10px}
+  .babeghost{display:block;width:100%;text-align:center;background:none;border:1px solid rgba(94,124,134,.5);color:var(--mut);border-radius:14px;padding:12px;font-size:13px;font-weight:700;cursor:pointer}
+  @keyframes zitter{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
+  @media (prefers-reduced-motion: reduce){ #logo h1 b{animation:none} #logo h1{animation:none} .stern{animation:none !important} }
+  @keyframes funkel{0%,100%{opacity:.12}50%{opacity:.5}}
+</style>
+</head>
+<body>
+<div id="foto"></div>
+<div id="dunkel"></div>
+<svg id="sterne" xmlns="http://www.w3.org/2000/svg"></svg>
+<div id="logo">
+  
+  <h1 aria-label="KAȲȲA">KA<b><span class="yg">Y</span><span class="yg">Y</span><span id="ybr" aria-hidden="true"><i class="l"></i><i class="r"></i><em></em></span></b>A</h1>
+</div>
+<div id="tore">
+  <button class="tor" onclick="tor('beta1.html')">
+    <span class="gross">G <i>0.3</i></span>
+    <span class="klein">KAȲȲA OS</span>
+    <span class="schloss">🔒 Zugang</span>
+    <span class="torbeta">β.1.6.6</span>
+  </button>
+  <button class="tor" onclick="tor('g4.html')">
+    <span class="gross">G <i>0.4</i></span>
+    <span class="klein">KAȲȲA G4</span>
+    <span class="schloss">🔒 Zugang</span>
+    <span class="torbeta">β.2.1.0 · DB</span>
+  </button>
+  <button class="tor" onclick="tor('g5.html')">
+    <span class="gross">G <i>0.5</i></span>
+    <span class="klein">KAȲȲA G5 · clean</span>
+    <span class="schloss">🔒 Zugang</span>
+    <span class="torbeta">β.1.1.0</span>
+  </button>
+  <button class="tor" onclick="tor('wartung.html')">
+    <span class="gross schmal">Wartungs<i>übersicht</i></span>
+    <span class="klein">Hausverwaltung · Prüfpflichten</span>
+    <span class="schloss">🔒 Zugang</span>
+    <span class="torbeta">β.1.0.0 · DB</span>
+  </button>
+  <button class="tor gold" onclick="tor('docs/invest.html')">
+    <span class="gross">Investor <i>Deck</i></span>
+    <span class="klein">Kennzahlen · Downloads</span>
+    <span class="schloss">🔒 Zugang</span>
+  </button>
+</div>
+<div id="dbstatus" style="text-align:center;margin-top:54px;font:700 10.5px Consolas,monospace;letter-spacing:.14em;color:#5E7C86;text-transform:uppercase">○ Datenbasis wird geprüft …</div>
+<div id="fuss">
+  <a href="#" onclick="offen('m-imp');return false;">Impressum</a><span>·</span>
+  <a href="#" onclick="offen('m-ds');return false;">Datenschutz</a>
+</div>
+
+<div class="deck" id="m-pw" onclick="if(event.target===this)zu('m-pw')">
+  <div class="glas" id="pwglas">
+    <h3>Ȳ&nbsp; Zugangswort <button class="x" onclick="zu('m-pw')">×</button></h3>
+    <p class="klein2">Dieser Bereich ist nicht öffentlich. Bitte Zugangswort eingeben.</p>
+    <div id="pwrow"><input id="pw" type="password" autocomplete="off" placeholder="•••••••••" onkeydown="if(event.key==='Enter')pruef()"><button id="pwok" onclick="pruef()">Öffnen</button></div>
+    <div id="pwfehl">Kein Zutritt — falsches Zugangswort.</div>
+  </div>
+</div>
+
+<div class="deck" id="m-babe" onclick="if(event.target===this)zu('m-babe')">
+  <div class="glas">
+    <div class="babey">Ȳ</div>
+    <div class="babetxt">Babe, KAȲȲA is not a mobile app — yet.</div>
+    <div class="babesub">KAȲȲA ist für den großen Bildschirm gebaut. Laptop auf, Kaffee an.</div>
+    <button class="babeghost" onclick="zu('m-babe')">Alles klar</button>
+  </div>
+</div>
+
+<div class="deck" id="m-imp" onclick="if(event.target===this)zu('m-imp')">
+  <div class="glas">
+    <h3>Impressum <button class="x" onclick="zu('m-imp')">×</button></h3>
+    <p><b>Bernhard Krug</b><br>Thaerstraße 40 · 10249 Berlin</p>
+    <p><b>Kontakt:</b> <a href="mailto:b@kayya.org" style="color:var(--glow)">b@kayya.org</a></p>
+    <p><b>Verantwortlich i.&nbsp;S.&nbsp;d. § 18 Abs. 2 MStV:</b> Bernhard Krug, Anschrift wie oben.</p>
+    <p><b>Inhaltliche Verantwortung:</b> Bernhard Krug übernimmt die Verantwortung für den Inhalt der Webseiten kayya.org und kayya.de.</p>
+  </div>
+</div>
+
+<div class="deck" id="m-ds" onclick="if(event.target===this)zu('m-ds')">
+  <div class="glas">
+    <h3>Datenschutz <button class="x" onclick="zu('m-ds')">×</button></h3>
+    <p><b>Verantwortlicher:</b> Bernhard Krug, Thaerstraße 40 · 10249 Berlin, <a href="mailto:b@kayya.org" style="color:var(--glow)">b@kayya.org</a>.</p>
+    <p class="klein2">Diese Seite wird bei der IONOS SE (Montabaur) gehostet. Beim Aufruf verarbeitet der Server technisch notwendige Daten (IP-Adresse, Zeitpunkt, aufgerufene Datei, Browser-Kennung) zur Auslieferung und Absicherung (Art. 6 Abs. 1 lit. f DSGVO); Logfiles löscht der Hoster nach seinen Standardfristen. Es gibt keine Cookies und kein Tracking. Für die Zugangssitzung wird ein technisches Merkmal lokal im Browser (sessionStorage) abgelegt; es wird nicht übertragen und beim Schließen des Tabs gelöscht (§ 25 Abs. 2 TDDDG). Die vollständige Datenschutzerklärung der Anwendung ist innerhalb der Anwendung verlinkt. Sie haben die Rechte aus Art. 15–21 DSGVO; Beschwerden: Berliner Beauftragte für Datenschutz und Informationsfreiheit.</p>
+  </div>
+</div>
+
+<script>
+/* Sternenstaub */
+(function(){
+  var s=document.getElementById('sterne'), w=innerWidth, h=innerHeight;
+  s.setAttribute('viewBox','0 0 '+w+' '+h);
+  for(var i=0;i<90;i++){
+    var c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',(Math.random()*w).toFixed(0)); c.setAttribute('cy',(Math.random()*h).toFixed(0));
+    c.setAttribute('r',(Math.random()<.85?0.8:1.5)); c.setAttribute('fill','#41E8FF');
+    c.setAttribute('class','stern');
+    c.style.opacity=(0.06+Math.random()*0.3).toFixed(2);
+    c.style.animation='funkel '+(2.5+Math.random()*4).toFixed(1)+'s ease-in-out infinite';
+    c.style.animationDelay='-'+(Math.random()*4).toFixed(1)+'s';
+    s.appendChild(c);
+  }
+})();
+/* Überstrich-Brücke: Striche exakt über die beiden Y legen (gemessen am echten Layout, robust bei jeder Fontgröße) */
+function ybSetup(){
+  try{
+    var b=document.querySelector('#logo h1 b'); if(!b) return;
+    var ys=b.querySelectorAll('.yg'); if(ys.length!==2) return;
+    var l=b.querySelector('#ybr i.l'), r=b.querySelector('#ybr i.r'); if(!l||!r) return;
+    var br=b.getBoundingClientRect(), r1=ys[0].getBoundingClientRect(), r2=ys[1].getBoundingClientRect();
+    if(br.width<10) return;
+    var fs=parseFloat(getComputedStyle(b).fontSize)||100;
+    var ls=0.12*fs; /* letter-spacing haengt hinten an der Span-Breite */
+    var g1=r1.width-ls, g2=r2.width-ls; /* echte Glyphenbreite */
+    var mitte=br.width/2;
+    var mw1=g1*0.72, mw2=g2*0.72; /* Makron etwas schmaler als die Glyphe, zentriert */
+    var off1=(r1.left-br.left)+(g1-mw1)/2;
+    var offR=(br.right-r2.right)+ls+(g2-mw2)/2;
+    l.style.left=off1.toFixed(1)+'px';
+    l.style.setProperty('--w0',mw1.toFixed(1)+'px');
+    l.style.setProperty('--w1',(mitte-off1+1).toFixed(1)+'px');
+    r.style.right=offR.toFixed(1)+'px';
+    r.style.setProperty('--w0',mw2.toFixed(1)+'px');
+    r.style.setProperty('--w1',((br.width-mitte)-offR+1).toFixed(1)+'px');
+  }catch(e){}
+}
+ybSetup();
+window.addEventListener('resize',ybSetup);
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(ybSetup);
+function offen(id){ document.getElementById(id).classList.add('auf'); }
+function zu(id){ document.getElementById(id).classList.remove('auf'); }
+function gateHash(s){ let h=5381; for(let i=0;i<s.length;i++){ h=((h<<5)+h+s.charCodeAt(i))>>>0; } return h; }
+var ZIEL='';
+var MOBIL=('ontouchstart' in window)&&Math.min(screen.width,screen.height)<820;
+function tor(z){
+  ZIEL=z;
+  if(MOBIL){ offen('m-babe'); return; }
+  offen('m-pw');
+  setTimeout(function(){ var p=document.getElementById('pw'); if(p){ p.value=''; p.focus(); } },80);
+}
+var TORWORTE={ 'beta1.html':52379384, 'g4.html':52379384, 'g5.html':52379384, 'wartung.html':1861440186, 'docs/invest.html':1983849120 };
+function pruef(){
+  var p=document.getElementById('pw'), g=document.getElementById('pwglas'), f=document.getElementById('pwfehl');
+  var v=(p&&p.value)||'', soll=TORWORTE[ZIEL]||0, ok=false;
+  [v, v.trim(), v.trim().toUpperCase()].forEach(function(k){ if(gateHash(k)===soll) ok=true; });
+  if(ok){
+    try{
+      if(ZIEL==='beta1.html'){ sessionStorage.setItem('kayya_gate','open2'); sessionStorage.setItem('kayya_user','Bernhard'); }
+      if(ZIEL==='docs/invest.html'){ sessionStorage.setItem('kayya_invest','open2'); }
+    }catch(e){}
+    location.href=ZIEL||'beta1.html';
+  } else {
+    f.style.display='block';
+    g.classList.remove('zitter'); void g.offsetWidth; g.classList.add('zitter');
+  }
+}
+fetch("/kayya-api.php?action=ping",{headers:{}}).then(function(r){return r.json();}).then(function(j){
+  var e=document.getElementById("dbstatus");
+  if(j&&j.ok){ e.innerHTML='<span style="color:#41E896">●</span> <span style="color:#9FD9C4">Datenbankbetrieben · '+j.db+' · '+j.massnahmen+' Maßnahmen live · Belege in Echtzeit</span>'; }
+  else{ e.textContent="○ Datenbasis: Demo-Modus"; }
+}).catch(function(){ document.getElementById("dbstatus").textContent="○ Datenbasis: Demo-Modus"; });
+</script>
+</body>
+</html>

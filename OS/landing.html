@@ -19,37 +19,27 @@
   @keyframes galaxdreh{from{transform:translate(-50%,-50%) rotate(62deg)}to{transform:translate(-50%,-50%) rotate(422deg)}}
   #dunkel{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 44%, rgba(5,7,13,.08), rgba(5,7,13,.62) 82%);pointer-events:none}
   #sterne{position:fixed;inset:0;pointer-events:none}
-  /* ---- illuminiertes KAȲȲA ---- */
+  /* ---- illuminiertes KAȲȲA: eigene Wortmarke (dünn, Λ ohne Querstrich, K 50°, Λ und Y parallel 68°) ---- */
   #logo{position:relative;text-align:center;user-select:none}
-  #logo h1{font-family:"Segoe UI Variable Display","SF Pro Display","Segoe UI Black",system-ui,sans-serif;
-    font-weight:900;font-size:clamp(58px,14vw,132px);letter-spacing:.12em;line-height:1;
-    color:#DCEFF5;text-shadow:0 0 42px rgba(65,232,255,.25);
-    animation:kaglanz 3.8s ease-in-out infinite}
-  /* K, A, A nehmen Glanz & Helligkeit der ȲȲ an — aber nur in deren Hell-Phase (0/100 %); in der Lila-Phase (50 %) bleiben sie ruhig */
+  #logo svg{display:block;width:clamp(250px,58vw,600px);height:auto;overflow:visible;margin:0 auto}
+  #logo .ka{fill:#FFFFFF;animation:kaglanz 3.8s ease-in-out infinite}
+  /* K, Λ, Λ nehmen Glanz und Helligkeit der YY an, aber nur in deren Hell-Phase (0/100 %); in der Lila-Phase (50 %) bleiben sie ruhig */
   @keyframes kaglanz{
-    0%,100%{color:#FFFFFF;text-shadow:0 0 12px rgba(255,255,255,.95),0 0 34px rgba(255,255,255,.8),0 0 100px rgba(200,242,255,.55)}
-    50%{color:#39424C;text-shadow:0 0 28px rgba(65,232,255,.07)}}
-  #logo h1 b{color:#FFFFFF;text-shadow:0 0 12px rgba(255,255,255,1),0 0 30px rgba(255,255,255,.9),0 0 90px rgba(190,240,255,.7);
-    animation:leuchte 3.8s ease-in-out infinite}
-  @keyframes leuchte{
-    0%,100%{color:#FFFFFF;text-shadow:0 0 14px rgba(255,255,255,1),0 0 38px rgba(255,255,255,1),0 0 110px rgba(215,245,255,.9),0 0 185px rgba(165,230,255,.6)}
-    50%{color:#220022;text-shadow:0 0 10px rgba(255,255,255,.35),0 0 38px rgba(34,0,34,1),0 0 115px rgba(27,0,31,.85),0 0 195px rgba(22,0,26,.55)}}
-
-  /* ---- Die Überstriche der ȲȲ sind selbst gezeichnet (YY + Striche) — so können sie sich wirklich verbinden, ohne zweite Linie.
-         Alle 9 s wachsen beide Striche zur Mitte, treffen sich mit kleinem Licht-Knall, halten das Dach und lösen sich wieder. ---- */
-  #logo h1 b{position:relative}
-  #ybr{position:absolute;left:0;top:0;width:100%;height:1em;pointer-events:none}
-  #ybr i{position:absolute;top:var(--yb-top,.18em);height:var(--yb-h,.055em);background:currentColor;border-radius:.027em;
-    box-shadow:0 0 .05em currentColor,0 0 .14em rgba(255,255,255,.4)}
-  #ybr i.l{animation:ybl 9s ease-in-out infinite}
-  #ybr i.r{animation:ybrr 9s ease-in-out infinite}
-  @keyframes ybl { 0%,30%{width:var(--w0,0px)} 36%,76%{width:var(--w1,0px)} 82%,100%{width:var(--w0,0px)} }
-  @keyframes ybrr{ 0%,30%{width:var(--w0,0px)} 36%,76%{width:var(--w1,0px)} 82%,100%{width:var(--w0,0px)} }
-  #ybr em{position:absolute;left:50%;top:calc(var(--yb-top,.18em) + var(--yb-h,.055em)/2);width:.5em;height:.5em;margin:-.25em 0 0 -.25em;border-radius:50%;
-    background:radial-gradient(circle,rgba(255,255,255,.95) 0%,rgba(190,240,255,.5) 35%,rgba(190,240,255,0) 70%);
-    opacity:0;transform:scale(.2);animation:ybknall 9s ease-out infinite}
+    0%,100%{fill:#FFFFFF;filter:drop-shadow(0 0 4px rgba(255,255,255,.95)) drop-shadow(0 0 14px rgba(255,255,255,.7)) drop-shadow(0 0 40px rgba(200,242,255,.5))}
+    50%{fill:#39424C;filter:drop-shadow(0 0 10px rgba(65,232,255,.07))}}
+  #logo .yy{fill:#FFFFFF;animation:wmleuchte 3.8s ease-in-out infinite}
+  @keyframes wmleuchte{
+    0%,100%{fill:#FFFFFF;filter:drop-shadow(0 0 5px rgba(255,255,255,1)) drop-shadow(0 0 16px rgba(255,255,255,.9)) drop-shadow(0 0 46px rgba(215,245,255,.8)) drop-shadow(0 0 80px rgba(165,230,255,.5))}
+    50%{fill:#220022;filter:drop-shadow(0 0 4px rgba(255,255,255,.35)) drop-shadow(0 0 16px rgba(34,0,34,1)) drop-shadow(0 0 48px rgba(27,0,31,.85))}}
+  /* Die Überstriche der ȲȲ: alle 9 s wachsen beide Striche zur Mitte, treffen sich mit kleinem Licht-Knall, halten das Dach und lösen sich wieder. */
+  #logo .yb{transform-box:fill-box}
+  #logo .yb.l{transform-origin:left center;animation:ybl 9s ease-in-out infinite}
+  #logo .yb.r{transform-origin:right center;animation:ybr 9s ease-in-out infinite}
+  @keyframes ybl{ 0%,30%{transform:scaleX(1)} 36%,76%{transform:scaleX(1.3001)} 82%,100%{transform:scaleX(1)} }
+  @keyframes ybr{ 0%,30%{transform:scaleX(1)} 36%,76%{transform:scaleX(1.3001)} 82%,100%{transform:scaleX(1)} }
+  #logo .knall{fill:url(#knallgrad);opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(.2);animation:ybknall 9s ease-out infinite}
   @keyframes ybknall{ 0%,35%{opacity:0;transform:scale(.2)} 37%{opacity:1;transform:scale(.55)} 48%{opacity:0;transform:scale(1.9)} 100%{opacity:0;transform:scale(.2)} }
-  @media (prefers-reduced-motion: reduce){ #ybr i,#ybr em{animation:none} }
+  @media (prefers-reduced-motion: reduce){ #logo .ka,#logo .yy,#logo .yb,#logo .knall{animation:none} }
 
   /* ---- Knoepfe ---- */
   #tore{display:flex;gap:22px;margin-top:58px;flex-wrap:wrap;justify-content:center}
@@ -98,7 +88,7 @@
   .babebtn{display:block;width:100%;text-align:center;background:linear-gradient(135deg,#0FB8D8,#41E8FF);color:#04222A;border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:800;cursor:pointer;text-decoration:none;margin-bottom:10px}
   .babeghost{display:block;width:100%;text-align:center;background:none;border:1px solid rgba(94,124,134,.5);color:var(--mut);border-radius:14px;padding:12px;font-size:13px;font-weight:700;cursor:pointer}
   @keyframes zitter{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
-  @media (prefers-reduced-motion: reduce){ #logo h1 b{animation:none} #logo h1{animation:none} .stern{animation:none !important} }
+  @media (prefers-reduced-motion: reduce){ .stern{animation:none !important} }
   @keyframes funkel{0%,100%{opacity:.12}50%{opacity:.5}}
 </style>
 </head>
@@ -108,7 +98,15 @@
 <svg id="sterne" xmlns="http://www.w3.org/2000/svg"></svg>
 <div id="logo">
   
-  <h1 aria-label="KAȲȲA">KA<b><span class="yg">Y</span><span class="yg">Y</span><span id="ybr" aria-hidden="true"><i class="l"></i><i class="r"></i><em></em></span></b>A</h1>
+  <svg id="wm" viewBox="-8 -26 276.19 134" role="img" aria-label="KAȲȲA" focusable="false">
+    <defs><radialGradient id="knallgrad"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".35" stop-color="#BEF0FF" stop-opacity=".5"/><stop offset=".7" stop-color="#BEF0FF" stop-opacity="0"/></radialGradient></defs>
+    <g class="ka"><path d="M4.200 53.768 L42.994 100.000 L48.476 100.000 L6.521 50.000 L48.476 0.000 L42.994 0.000 L4.200 46.232 L4.200 0.000 L0.000 0.000 L0.000 100.000 L4.200 100.000 Z"/><path d="M79.072 0.000 L49.072 74.253 L49.072 85.464 L79.072 11.212 L109.072 85.464 L109.072 74.253 Z"/><path d="M230.190 0.000 L260.190 74.253 L260.190 85.464 L230.190 11.212 L200.190 85.464 L200.190 74.253 Z"/></g>
+    <g class="yy"><path d="M120.972 62.394 L95.764 0.000 L91.234 0.000 L118.872 68.408 L118.872 100.000 L123.072 100.000 L123.072 68.408 L150.711 0.000 L146.181 0.000 Z"/><path d="M188.290 62.394 L213.499 0.000 L218.029 0.000 L190.390 68.408 L190.390 100.000 L186.190 100.000 L186.190 68.408 L158.551 0.000 L163.081 0.000 Z"/>
+      <rect class="yb l" x="99.56" y="-16.0" width="42.82" height="4.2" rx="2.1"/>
+      <rect class="yb r" x="166.88" y="-16.0" width="42.82" height="4.2" rx="2.1"/>
+      <circle class="knall" cx="154.63" cy="-13.90" r="16"/>
+    </g>
+  </svg>
 </div>
 <div id="tore">
   <button class="tor" onclick="tor('beta1.html')">
@@ -199,32 +197,6 @@
     s.appendChild(c);
   }
 })();
-/* Überstrich-Brücke: Striche exakt über die beiden Y legen (gemessen am echten Layout, robust bei jeder Fontgröße) */
-function ybSetup(){
-  try{
-    var b=document.querySelector('#logo h1 b'); if(!b) return;
-    var ys=b.querySelectorAll('.yg'); if(ys.length!==2) return;
-    var l=b.querySelector('#ybr i.l'), r=b.querySelector('#ybr i.r'); if(!l||!r) return;
-    var br=b.getBoundingClientRect(), r1=ys[0].getBoundingClientRect(), r2=ys[1].getBoundingClientRect();
-    if(br.width<10) return;
-    var fs=parseFloat(getComputedStyle(b).fontSize)||100;
-    var ls=0.12*fs; /* letter-spacing haengt hinten an der Span-Breite */
-    var g1=r1.width-ls, g2=r2.width-ls; /* echte Glyphenbreite */
-    var mitte=br.width/2;
-    var mw1=g1*0.72, mw2=g2*0.72; /* Makron etwas schmaler als die Glyphe, zentriert */
-    var off1=(r1.left-br.left)+(g1-mw1)/2;
-    var offR=(br.right-r2.right)+ls+(g2-mw2)/2;
-    l.style.left=off1.toFixed(1)+'px';
-    l.style.setProperty('--w0',mw1.toFixed(1)+'px');
-    l.style.setProperty('--w1',(mitte-off1+1).toFixed(1)+'px');
-    r.style.right=offR.toFixed(1)+'px';
-    r.style.setProperty('--w0',mw2.toFixed(1)+'px');
-    r.style.setProperty('--w1',((br.width-mitte)-offR+1).toFixed(1)+'px');
-  }catch(e){}
-}
-ybSetup();
-window.addEventListener('resize',ybSetup);
-if(document.fonts&&document.fonts.ready) document.fonts.ready.then(ybSetup);
 function offen(id){ document.getElementById(id).classList.add('auf'); }
 function zu(id){ document.getElementById(id).classList.remove('auf'); }
 function gateHash(s){ let h=5381; for(let i=0;i<s.length;i++){ h=((h<<5)+h+s.charCodeAt(i))>>>0; } return h; }
