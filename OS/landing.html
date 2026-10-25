@@ -41,23 +41,10 @@
   @keyframes ybknall{ 0%,35%{opacity:0;transform:scale(.2)} 37%{opacity:1;transform:scale(.55)} 48%{opacity:0;transform:scale(1.9)} 100%{opacity:0;transform:scale(.2)} }
   @media (prefers-reduced-motion: reduce){ #logo .ka,#logo .yy,#logo .yb,#logo .knall{animation:none} }
 
-  /* ---- Knoepfe ---- */
-  #tore{display:flex;gap:22px;margin-top:58px;flex-wrap:wrap;justify-content:center}
-  .tor{position:relative;display:flex;flex-direction:column;align-items:center;gap:7px;width:240px;padding:20px 10px;cursor:pointer;
-    background:rgba(16,27,46,.7);border:1px solid rgba(65,232,255,.35);border-radius:18px;color:var(--txt);
-    -webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3);
-    transition:border-color .25s, box-shadow .25s, transform .15s;font:inherit}
-  .tor:hover{border-color:var(--glow);box-shadow:0 0 26px rgba(65,232,255,.28)}
-  .tor:active{transform:scale(.97)}
-  .tor .gross{font-size:26px;font-weight:900;letter-spacing:.06em;white-space:nowrap}
-  .tor .gross i{font-style:normal;color:var(--glow)}
-  .tor .gross.schmal{font-size:18px}
-  .tor .klein{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:11px;color:var(--mut);letter-spacing:.08em}
-  .tor .schloss{font-size:10px;color:var(--mut);letter-spacing:.14em;text-transform:uppercase}
-  .torbeta{position:absolute;bottom:-26px;left:0;right:0;text-align:center;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:10.5px;color:var(--mut);letter-spacing:.1em}
-  .tor.gold{border-color:rgba(255,194,75,.4)}
-  .tor.gold:hover{border-color:var(--gold);box-shadow:0 0 26px rgba(255,194,75,.25)}
-  .tor.gold .gross i{color:var(--gold)}
+  /* ---- Zugang: ein Feld, das Wort entscheidet den Bereich ---- */
+  #zugang{display:flex;gap:10px;justify-content:center;margin:54px auto 0;max-width:400px;padding:0 16px}
+  #zugang.zitter{animation:zitter .4s}
+  #zughinweis{text-align:center;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:10.5px;color:var(--mut);letter-spacing:.14em;text-transform:uppercase;margin-top:14px}
   /* ---- Fuss ---- */
   #fuss{position:fixed;left:0;right:0;bottom:0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));
     display:flex;gap:8px;justify-content:center;align-items:center;font-size:11.5px;color:var(--mut);flex-wrap:wrap}
@@ -77,13 +64,12 @@
   .glas h3 .x{margin-left:auto;background:none;border:none;color:var(--mut);font-size:20px;cursor:pointer;line-height:1}
   .glas p{font-size:13px;line-height:1.65;margin-bottom:10px}
   .glas .klein2{font-size:11px;color:var(--mut);line-height:1.6}
-  #pwrow{display:flex;gap:10px;margin-top:14px}
   #pw{flex:1;background:rgba(65,232,255,.06);border:1px solid rgba(65,232,255,.35);border-radius:12px;
     color:var(--txt);padding:12px 14px;font-size:15px;letter-spacing:.14em;outline:none}
   #pw:focus{border-color:var(--glow)}
   #pwok{background:linear-gradient(135deg,#0FB8D8,#41E8FF);color:#04222A;border:none;border-radius:12px;
     padding:12px 20px;font-size:13.5px;font-weight:800;cursor:pointer}
-  #pwfehl{display:none;color:#FF7AC6;font-size:12px;margin-top:10px;font-weight:700}
+  #pwfehl{display:none;color:#FF7AC6;font-size:12px;margin-top:10px;font-weight:700;text-align:center}
   .glas.zitter{animation:zitter .4s}
   .babey{font-size:72px;font-weight:900;color:#FFFFFF;text-align:center;line-height:1;margin:4px 0 14px;animation:leuchte 3.8s ease-in-out infinite}
   .babetxt{font-size:17px;font-weight:800;text-align:center;line-height:1.5;margin-bottom:8px}
@@ -111,37 +97,16 @@
     </g>
   </svg>
 </div>
-<div id="tore">
-  <button class="tor" onclick="tor('g5.html')">
-    <span class="gross">KAȲȲA <i>öffnen</i></span>
-    <span class="klein">Das Betriebssystem für Träger</span>
-    <span class="schloss">🔒 Zugang</span>
-  </button>
-  <button class="tor gold" onclick="tor('docs/invest.html')">
-    <span class="gross">Investor <i>Deck</i></span>
-    <span class="klein">Kennzahlen · Downloads</span>
-    <span class="schloss">🔒 Zugang</span>
-  </button>
+<div id="zugang">
+  <input id="pw" type="password" autocomplete="off" placeholder="Zugangswort" aria-label="Zugangswort" onkeydown="if(event.key==='Enter')pruef()">
+  <button id="pwok" onclick="pruef()">Öffnen</button>
 </div>
+<div id="pwfehl">Kein Zutritt — falsches Zugangswort.</div>
+<div id="zughinweis">🔒 Nicht öffentlich — das Zugangswort bestimmt den Bereich</div>
 <div id="dbstatus" style="text-align:center;margin-top:54px;font:700 10.5px Consolas,monospace;letter-spacing:.14em;color:#5E7C86;text-transform:uppercase">○ Datenbasis wird geprüft …</div>
 <div id="fuss">
   <a href="#" onclick="offen('m-imp');return false;">Impressum</a><span>·</span>
-  <a href="#" onclick="offen('m-ds');return false;">Datenschutz</a><span class="fsep">·</span>
-  <span class="intern">Arbeitsstände:
-    <a href="#" onclick="tor('beta1.html');return false;" title="KAȲȲA OS β.1.6.6">G3</a>
-    <a href="#" onclick="tor('g4.html');return false;" title="KAȲȲA G4 β.2.1.0">G4</a>
-    <a href="#" onclick="tor('g5.html');return false;" title="KAȲȲA G5 β.1.2.0">G5</a>
-    <a href="#" onclick="tor('wartung.html');return false;" title="Hausverwaltung · Prüfpflichten">Wartung</a>
-  </span>
-</div>
-
-<div class="deck" id="m-pw" onclick="if(event.target===this)zu('m-pw')">
-  <div class="glas" id="pwglas">
-    <h3>Ȳ&nbsp; Zugangswort <button class="x" onclick="zu('m-pw')">×</button></h3>
-    <p class="klein2">Dieser Bereich ist nicht öffentlich. Bitte Zugangswort eingeben.</p>
-    <div id="pwrow"><input id="pw" type="password" autocomplete="off" placeholder="•••••••••" onkeydown="if(event.key==='Enter')pruef()"><button id="pwok" onclick="pruef()">Öffnen</button></div>
-    <div id="pwfehl">Kein Zutritt — falsches Zugangswort.</div>
-  </div>
+  <a href="#" onclick="offen('m-ds');return false;">Datenschutz</a>
 </div>
 
 <div class="deck" id="m-babe" onclick="if(event.target===this)zu('m-babe')">
@@ -190,28 +155,24 @@
 function offen(id){ document.getElementById(id).classList.add('auf'); }
 function zu(id){ document.getElementById(id).classList.remove('auf'); }
 function gateHash(s){ let h=5381; for(let i=0;i<s.length;i++){ h=((h<<5)+h+s.charCodeAt(i))>>>0; } return h; }
-var ZIEL='';
 var MOBIL=('ontouchstart' in window)&&Math.min(screen.width,screen.height)<820;
-function tor(z){
-  ZIEL=z;
-  if(MOBIL){ offen('m-babe'); return; }
-  offen('m-pw');
-  setTimeout(function(){ var p=document.getElementById('pw'); if(p){ p.value=''; p.focus(); } },80);
-}
-var TORWORTE={ 'beta1.html':52379384, 'g4.html':52379384, 'g5.html':52379384, 'wartung.html':1861440186, 'docs/invest.html':1983849120 };
+/* Ein Zugangsfeld: das Wort (als Hash) bestimmt den Bereich */
+var ZIELE={ 52379384:'g5.html', 1206576723:'g4.html', 1206576722:'beta1.html', 1861440186:'wartung.html', 1983849120:'docs/invest.html' };
 function pruef(){
-  var p=document.getElementById('pw'), g=document.getElementById('pwglas'), f=document.getElementById('pwfehl');
-  var v=(p&&p.value)||'', soll=TORWORTE[ZIEL]||0, ok=false;
-  [v, v.trim(), v.trim().toUpperCase()].forEach(function(k){ if(gateHash(k)===soll) ok=true; });
-  if(ok){
+  var p=document.getElementById('pw'), z=document.getElementById('zugang'), f=document.getElementById('pwfehl');
+  var v=(p&&p.value)||'', ziel='';
+  [v, v.trim(), v.trim().toUpperCase()].forEach(function(k){ var t=ZIELE[gateHash(k)]; if(t) ziel=t; });
+  if(ziel){
+    if(MOBIL){ offen('m-babe'); return; }
     try{
-      if(ZIEL==='beta1.html'){ sessionStorage.setItem('kayya_gate','open2'); sessionStorage.setItem('kayya_user','Bernhard'); }
-      if(ZIEL==='docs/invest.html'){ sessionStorage.setItem('kayya_invest','open2'); }
+      if(ziel==='beta1.html'){ sessionStorage.setItem('kayya_gate','open2'); sessionStorage.setItem('kayya_user','Bernhard'); }
+      if(ziel==='docs/invest.html'){ sessionStorage.setItem('kayya_invest','open2'); }
     }catch(e){}
-    location.href=ZIEL||'beta1.html';
+    location.href=ziel;
   } else {
     f.style.display='block';
-    g.classList.remove('zitter'); void g.offsetWidth; g.classList.add('zitter');
+    z.classList.remove('zitter'); void z.offsetWidth; z.classList.add('zitter');
+    p.focus();
   }
 }
 fetch("/kayya-api.php?action=ping",{headers:{}}).then(function(r){return r.json();}).then(function(j){
