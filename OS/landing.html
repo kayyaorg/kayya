@@ -22,22 +22,22 @@
   /* ---- illuminiertes KAȲȲA: eigene Wortmarke (dünn, Λ ohne Querstrich, K 50°, Λ und Y parallel 68°) ---- */
   #logo{position:relative;text-align:center;user-select:none}
   #logo svg{display:block;width:clamp(250px,58vw,600px);height:auto;overflow:visible;margin:0 auto}
-  #logo .ka{fill:#FFFFFF;animation:kaglanz 3.8s ease-in-out infinite}
+  #logo .ka{fill:#FFFFFF;animation:kaglanz 7s ease-in-out infinite}
   /* K, Λ, Λ nehmen Glanz und Helligkeit der YY an, aber nur in deren Hell-Phase (0/100 %); in der Lila-Phase (50 %) bleiben sie ruhig */
   @keyframes kaglanz{
     0%,100%{fill:#FFFFFF;filter:drop-shadow(0 0 4px rgba(255,255,255,.95)) drop-shadow(0 0 14px rgba(255,255,255,.7)) drop-shadow(0 0 40px rgba(200,242,255,.5))}
     50%{fill:#39424C;filter:drop-shadow(0 0 10px rgba(65,232,255,.07))}}
-  #logo .yy{fill:#FFFFFF;animation:wmleuchte 3.8s ease-in-out infinite}
+  #logo .yy{fill:#FFFFFF;animation:wmleuchte 7s ease-in-out infinite}
   @keyframes wmleuchte{
     0%,100%{fill:#FFFFFF;filter:drop-shadow(0 0 5px rgba(255,255,255,1)) drop-shadow(0 0 16px rgba(255,255,255,.9)) drop-shadow(0 0 46px rgba(215,245,255,.8)) drop-shadow(0 0 80px rgba(165,230,255,.5))}
     50%{fill:#220022;filter:drop-shadow(0 0 4px rgba(255,255,255,.35)) drop-shadow(0 0 16px rgba(34,0,34,1)) drop-shadow(0 0 48px rgba(27,0,31,.85))}}
   /* Die Überstriche der ȲȲ: alle 9 s wachsen beide Striche zur Mitte, treffen sich mit kleinem Licht-Knall, halten das Dach und lösen sich wieder. */
   #logo .yb{transform-box:fill-box}
-  #logo .yb.l{transform-origin:left center;animation:ybl 9s ease-in-out infinite}
-  #logo .yb.r{transform-origin:right center;animation:ybr 9s ease-in-out infinite}
+  #logo .yb.l{transform-origin:left center;animation:ybl 15s ease-in-out infinite}
+  #logo .yb.r{transform-origin:right center;animation:ybr 15s ease-in-out infinite}
   @keyframes ybl{ 0%,30%{transform:scaleX(1)} 36%,76%{transform:scaleX(1.3001)} 82%,100%{transform:scaleX(1)} }
   @keyframes ybr{ 0%,30%{transform:scaleX(1)} 36%,76%{transform:scaleX(1.3001)} 82%,100%{transform:scaleX(1)} }
-  #logo .knall{fill:url(#knallgrad);opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(.2);animation:ybknall 9s ease-out infinite}
+  #logo .knall{fill:url(#knallgrad);opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(.2);animation:ybknall 15s ease-out infinite}
   @keyframes ybknall{ 0%,35%{opacity:0;transform:scale(.2)} 37%{opacity:1;transform:scale(.55)} 48%{opacity:0;transform:scale(1.9)} 100%{opacity:0;transform:scale(.2)} }
   @media (prefers-reduced-motion: reduce){ #logo .ka,#logo .yy,#logo .yb,#logo .knall{animation:none} }
 
