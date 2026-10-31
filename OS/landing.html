@@ -111,10 +111,10 @@
   <div class="zkarte" id="zkarte">
     <div class="pwzeile">
       <div class="feld">
-        <input id="pw" type="password" autocomplete="off" placeholder="Zugangswort" aria-label="Zugangswort" onkeydown="if(event.key==='Enter')pruef()">
+        <input id="pw" type="password" autocomplete="off" aria-label="Zugangswort" onkeydown="if(event.key==='Enter')pruef()">
         <button type="button" id="pwauge" onclick="pwZeigen()" aria-label="Zugangswort anzeigen" title="Anzeigen">👁</button>
       </div>
-      <button id="pwok" onclick="pruef()">Öffnen</button>
+      <button id="pwok" onclick="pruef()" aria-label="Öffnen">&gt;&gt;&gt;</button>
     </div>
     <div id="pwfehl">Kein Zutritt — falsches Zugangswort.</div>
     <div id="zughinweis" style="display:none"></div>
@@ -182,7 +182,7 @@ function pruef(){
   var p=document.getElementById('pw'), z=document.getElementById('zkarte'), f=document.getElementById('pwfehl'), ok=document.getElementById('pwok');
   var v=(p&&p.value)||'';
   if(MOBIL){ offen('m-babe'); return; }
-  f.style.display='none'; ok.disabled=true; ok.textContent='Prüfe …';
+  f.style.display='none'; ok.disabled=true; ok.textContent='…';
   fetch('/gate.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({wort:v})})
     .then(function(r){ return r.json(); })
     .then(function(j){
@@ -196,7 +196,7 @@ function pruef(){
       } else { throw 0; }
     })
     .catch(function(){
-      ok.disabled=false; ok.textContent='Öffnen';
+      ok.disabled=false; ok.textContent='>>>';
       f.style.display='block';
       z.classList.remove('zitter'); void z.offsetWidth; z.classList.add('zitter');
       p.focus();
