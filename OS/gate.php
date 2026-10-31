@@ -9,8 +9,8 @@
    ============================================================ */
 $BEREICHE=[
   'g5'=>'573ca3a55765ace33c84fa3da2f28903d535e94101b594e7c6501c751a243fc3',
-  'g4'=>'5f209cda31de9f3d2b1b78dc86605f0e57e092b776a16bc1558dd16760a1b850',
-  'g3'=>'7f23af773731a3a31d809391bf6d59fd87678352a5a08b6e7f6aeacec389df89',
+  'g4'=>'2f57281814888d4b2647f500186da277ede1526cf9c2c3c610d62925efb808ec',
+  'g3'=>'58fdd58efa59fe0079430c59d0e811bc3ecce472c772acadb67c281f5c93c0b4',
   'wartung'=>'a8014fe24738a6f95210a73f40aef6b54b6300fa01c71aee899a73336db166ce',
   'invest'=>'b5e418681c8c1bffb6c43090e9503acde28a7669484e70dcdeddcf2395c487b2'
 ];
