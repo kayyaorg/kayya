@@ -41,24 +41,16 @@
   @keyframes ybknall{ 0%,35%{opacity:0;transform:scale(.2)} 37%{opacity:1;transform:scale(.55)} 48%{opacity:0;transform:scale(1.9)} 100%{opacity:0;transform:scale(.2)} }
   @media (prefers-reduced-motion: reduce){ #logo .ka,#logo .yy,#logo .yb,#logo .knall{animation:none} }
 
-  /* ---- Zugang: Bereich waehlen, Zugangswort eingeben ---- */
-  :root{--lesbar:#C3D5DB}
-  #zugang{margin:46px auto 0;max-width:440px;padding:0 16px}
-  .zkarte{background:rgba(13,18,32,.9);border:1px solid rgba(65,232,255,.35);border-radius:20px;padding:22px 22px 18px;
-    -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);box-shadow:0 20px 60px -30px rgba(0,0,0,.8)}
+  /* ---- Zugang: ein Feld — das Zugangswort bestimmt den Bereich (geprueft vom Server) ---- */
+  :root{--lesbar:#D3E3E8}
+  #zugang{margin:50px auto 0;max-width:460px;padding:0 16px}
   .zkarte.zitter{animation:zitter .4s}
-  .zkarte label{display:block;font-size:13px;font-weight:700;color:var(--lesbar);letter-spacing:.02em;margin:0 0 6px 2px}
-  .zkarte label+label{margin-top:14px}
-  #bereich{width:100%;appearance:none;-webkit-appearance:none;background:rgba(65,232,255,.08) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%2341E8FF' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 14px center;
-    border:1px solid rgba(65,232,255,.4);border-radius:12px;color:var(--txt);padding:12px 40px 12px 14px;font:600 16px/1.3 inherit;cursor:pointer;outline:none}
-  #bereich:focus{border-color:var(--glow)}
-  #bereich option{background:#0D1220;color:var(--txt)}
   .pwzeile{display:flex;gap:10px}
   .pwzeile .feld{flex:1;position:relative}
   #pwauge{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--lesbar);font-size:18px;cursor:pointer;padding:6px 8px;line-height:1}
   #pwauge:hover{color:var(--glow)}
-  #zughinweis{text-align:center;font-size:13px;color:var(--lesbar);line-height:1.5;margin-top:14px}
-  #dbstatus{text-align:center;margin-top:34px;font-size:13px;color:var(--lesbar)}
+  #zughinweis{text-align:center;font-size:14px;color:var(--lesbar);line-height:1.5;margin-top:14px}
+  #dbstatus{text-align:center;margin-top:30px;font-size:14px;color:var(--lesbar)}
   /* ---- Fuss ---- */
   #fuss{position:fixed;left:0;right:0;bottom:0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));
     display:flex;gap:8px;justify-content:center;align-items:center;font-size:13px;color:var(--lesbar);flex-wrap:wrap}
@@ -78,9 +70,9 @@
   .glas h3 .x{margin-left:auto;background:none;border:none;color:var(--mut);font-size:20px;cursor:pointer;line-height:1}
   .glas p{font-size:13px;line-height:1.65;margin-bottom:10px}
   .glas .klein2{font-size:11px;color:var(--mut);line-height:1.6}
-  #pw{width:100%;background:rgba(65,232,255,.1);border:1px solid rgba(65,232,255,.4);border-radius:12px;
-    color:var(--txt);padding:12px 44px 12px 14px;font-size:16px;letter-spacing:.08em;outline:none}
-  #pw::placeholder{color:#7F98A1;letter-spacing:0}
+  #pw{width:100%;background:rgba(13,18,32,.85);border:1px solid rgba(65,232,255,.55);border-radius:12px;
+    color:#FFFFFF;padding:13px 44px 13px 16px;font-size:17px;letter-spacing:.08em;outline:none;box-shadow:0 10px 40px -20px rgba(0,0,0,.9)}
+  #pw::placeholder{color:#9DB4BC;letter-spacing:0}
   #pw:focus{border-color:var(--glow)}
   #pwok{background:linear-gradient(135deg,#0FB8D8,#41E8FF);color:#04222A;border:none;border-radius:12px;
     padding:12px 22px;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap}
@@ -114,24 +106,15 @@
 </div>
 <div id="zugang">
   <div class="zkarte" id="zkarte">
-    <label for="bereich">Bereich</label>
-    <select id="bereich" aria-label="Bereich wählen">
-      <option value="g5.html">KAȲȲA G5 — aktuelle Generation</option>
-      <option value="g4.html">KAȲȲA G4 — Systembild &amp; App</option>
-      <option value="beta1.html">KAȲȲA OS (G3) — eingefrorener Prototyp</option>
-      <option value="wartung.html">Wartungsübersicht — Hausverwaltung</option>
-      <option value="docs/invest.html">Investor-Bereich</option>
-    </select>
-    <label for="pw">Zugangswort</label>
     <div class="pwzeile">
       <div class="feld">
-        <input id="pw" type="password" autocomplete="off" placeholder="Zugangswort für diesen Bereich" aria-label="Zugangswort" onkeydown="if(event.key==='Enter')pruef()">
+        <input id="pw" type="password" autocomplete="off" placeholder="Zugangswort" aria-label="Zugangswort" onkeydown="if(event.key==='Enter')pruef()">
         <button type="button" id="pwauge" onclick="pwZeigen()" aria-label="Zugangswort anzeigen" title="Anzeigen">👁</button>
       </div>
       <button id="pwok" onclick="pruef()">Öffnen</button>
     </div>
-    <div id="pwfehl">Kein Zutritt — das Zugangswort passt nicht zu diesem Bereich.</div>
-    <div id="zughinweis">🔒 Nicht öffentlich. Jeder Bereich hat sein eigenes Zugangswort.</div>
+    <div id="pwfehl">Kein Zutritt — falsches Zugangswort.</div>
+    <div id="zughinweis">🔒 Nicht öffentlich — das Zugangswort bestimmt den Bereich.</div>
   </div>
 </div>
 <div id="dbstatus">○ Datenbasis wird geprüft …</div>
@@ -190,17 +173,18 @@ var MOBIL=('ontouchstart' in window)&&Math.min(screen.width,screen.height)<820;
 /* Ein Zugangsfeld: das Wort (als Hash) bestimmt den Bereich */
 /* Das Zugangswort prueft der SERVER (gate.php): richtiges Wort -> signiertes Cookie fuer den Bereich,
    erst damit liefert der Server die geschuetzten Seiten aus. Der gewaehlte Bereich bestimmt das Ziel. */
-var BEREICH_KEY={ 'g5.html':'g5', 'g4.html':'g4', 'beta1.html':'g3', 'wartung.html':'wartung', 'docs/invest.html':'invest' };
+var ZIEL_VON={ g5:'g5.html', g4:'g4.html', g3:'beta1.html', wartung:'wartung.html', invest:'docs/invest.html' };
 function pwZeigen(){ var p=document.getElementById('pw'); p.type=(p.type==='password')?'text':'password'; p.focus(); }
 function pruef(){
   var p=document.getElementById('pw'), z=document.getElementById('zkarte'), f=document.getElementById('pwfehl'), ok=document.getElementById('pwok');
-  var ziel=document.getElementById('bereich').value, v=(p&&p.value)||'';
+  var v=(p&&p.value)||'';
   if(MOBIL){ offen('m-babe'); return; }
   f.style.display='none'; ok.disabled=true; ok.textContent='Prüfe …';
-  fetch('/gate.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({bereich:BEREICH_KEY[ziel],wort:v})})
+  fetch('/gate.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({wort:v})})
     .then(function(r){ return r.json(); })
     .then(function(j){
-      if(j&&j.ok){
+      var ziel=j&&j.ok?ZIEL_VON[j.bereich]:null;
+      if(ziel){
         try{
           if(ziel==='beta1.html'){ sessionStorage.setItem('kayya_gate','open2'); sessionStorage.setItem('kayya_user','Bernhard'); }
           if(ziel==='docs/invest.html'){ sessionStorage.setItem('kayya_invest','open2'); }
@@ -220,8 +204,6 @@ function pruef(){
   try{
     var q=new URLSearchParams(location.search), b=q.get('bereich');
     if(!b) return;
-    var sel=document.getElementById('bereich'), ziel=Object.keys(BEREICH_KEY).filter(function(k){ return BEREICH_KEY[k]===b; })[0];
-    if(sel&&ziel) sel.value=ziel;
     var h=document.getElementById('zughinweis'); if(h) h.textContent='🔒 Dieser Bereich ist geschützt — bitte zuerst das Zugangswort eingeben.';
     history.replaceState(null,'','/');
     setTimeout(function(){ var p=document.getElementById('pw'); if(p) p.focus(); },200);
@@ -229,7 +211,7 @@ function pruef(){
 })();
 fetch("/kayya-api.php?action=ping",{headers:{}}).then(function(r){return r.json();}).then(function(j){
   var e=document.getElementById("dbstatus");
-  if(j&&j.ok){ e.innerHTML='<span style="color:#41E896">●</span> <span style="color:#9FD9C4">Datenbankbetrieben · '+j.db+' · '+j.massnahmen+' Maßnahmen live · Belege in Echtzeit</span>'; }
+  if(j&&j.ok){ e.innerHTML='<span style="color:#41E896">●</span> <span style="color:#D6F3E6">Datenbankbetrieben · '+j.db+' · '+j.massnahmen+' Maßnahmen live · Belege in Echtzeit</span>'; }
   else{ e.textContent="○ Datenbasis: Demo-Modus"; }
 }).catch(function(){ document.getElementById("dbstatus").textContent="○ Datenbasis: Demo-Modus"; });
 </script>

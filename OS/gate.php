@@ -46,10 +46,11 @@ function freischalten($neu){ global $SECRET,$DAUER;
 if($_SERVER['REQUEST_METHOD']==='POST'){
   header('Content-Type: application/json; charset=utf-8');
   $in=json_decode(file_get_contents('php://input'),true) ?: [];
+  /* Ein Feld, ein Wort: das Wort bestimmt den Bereich (Startseite); optional kann ein Bereich vorgegeben werden */
   $b=$in['bereich'] ?? ''; $w=(string)($in['wort'] ?? '');
-  $ok=false;
-  if(isset($BEREICHE[$b])){
-    foreach([$w,trim($w),mb_strtoupper(trim($w))] as $k){ if(hash_equals($BEREICHE[$b],hash('sha256',$k))){ $ok=true; break; } }
+  $ok=false; $kandidaten=isset($BEREICHE[$b]) ? [$b] : array_keys($BEREICHE);
+  foreach($kandidaten as $kb){
+    foreach([$w,trim($w),mb_strtoupper(trim($w))] as $k){ if(hash_equals($BEREICHE[$kb],hash('sha256',$k))){ $ok=true; $b=$kb; break 2; } }
   }
   if(!$ok){ usleep(500000); http_response_code(403); echo json_encode(['ok'=>false]); exit; }
   freischalten($b);
