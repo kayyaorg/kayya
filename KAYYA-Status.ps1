@@ -70,7 +70,7 @@ Write-Host ''
 Write-Host '=== GESPERRT (muss 403/404 liefern) ==='
 foreach($g in $gesperrt){
   $code=httpCode('https://kayya.org/'+$g)
-  if($code -eq 403 -or $code -eq 404){ Write-Host ("  OK "+$g+" ("+$code+")") }
+  if($code -eq 403 -or $code -eq 404 -or ($code -eq 302 -and $g -like '*.html')){ Write-Host ("  OK "+$g+" ("+$code+$(if($code -eq 302){', hinter dem Tor'})+")") }
   elseif($code -eq 0){ Write-Host ("  ?  "+$g+" (keine Antwort - nicht pruefbar)") }
   else { Write-Host ("  !! "+$g+" OEFFENTLICH ("+$code+")"); $probleme+=('OEFFENTLICH: '+$g) }
 }
