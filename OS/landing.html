@@ -117,7 +117,7 @@
       <button id="pwok" onclick="pruef()">Öffnen</button>
     </div>
     <div id="pwfehl">Kein Zutritt — falsches Zugangswort.</div>
-    <div id="zughinweis">🔒 Nicht öffentlich — das Zugangswort bestimmt den Bereich.</div>
+    <div id="zughinweis" style="display:none"></div>
   </div>
 </div>
 <div id="dbstatus">○ Datenbasis wird geprüft …</div>
@@ -207,7 +207,7 @@ function pruef(){
   try{
     var q=new URLSearchParams(location.search), b=q.get('bereich');
     if(!b) return;
-    var h=document.getElementById('zughinweis'); if(h) h.textContent='🔒 Dieser Bereich ist geschützt — bitte zuerst das Zugangswort eingeben.';
+    var h=document.getElementById('zughinweis'); if(h){ h.textContent='Dieser Bereich ist geschützt — bitte zuerst das Zugangswort eingeben.'; h.style.display='block'; }
     history.replaceState(null,'','/');
     setTimeout(function(){ var p=document.getElementById('pw'); if(p) p.focus(); },200);
   }catch(e){}
