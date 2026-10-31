@@ -88,7 +88,15 @@ function api(body){
 }
 function amp(a){ return a==='rot'?'<span class="tag rot">Rot</span>':a==='gelb'?'<span class="tag gelb">Gelb</span>':'<span class="tag gruen">Grün</span>'; }
 function prozent(p){ p=+p||0; var k=p>=85?'':p>=70?'gelb':'rot'; return '<div class="zeile" style="gap:8px"><div class="balken" style="flex:1"><i class="'+k+'" style="width:'+p+'%"></i></div><span style="font-size:12.5px;min-width:38px">'+p+' %</span></div>'; }
-function kopf(){ $('k-wer').innerHTML=WER?('<b>'+esc(WER.name)+'</b> · '+esc(WER.rolle)):''; $('k-ab').hidden=!WER; }
+function kopf(){
+  var demo=WER&&WER.rolle==='demo';
+  $('k-wer').innerHTML=!WER?'':(demo?'<span class="tag akz">Demo-Rundgang · nur lesend</span> <a href="#/login">Anmelden</a>':'<b>'+esc(WER.name)+'</b> · '+esc(WER.rolle));
+  $('k-ab').hidden=!(WER&&!demo);
+}
+/* Ohne Anmeldung: Demo-Konto (nur Leserechte auf dem Server) — das Landing-Tor ist der Sichtschutz, die Datenbasis bleibt serverseitig geschützt */
+function gast(){
+  return api({action:'login',login:'g4app',pass:'G4-APP-BETA'}).then(function(j){ TOK=j.token; WER=j; try{ sessionStorage.setItem('g5_tok',TOK); }catch(e){} });
+}
 
 /* ---------- Anmeldung ---------- */
 function vLogin(){
@@ -107,19 +115,25 @@ function login(){
     location.hash=heim(); route();
   }).catch(function(){ $('l-err').textContent='Anmeldung fehlgeschlagen.'; });
 }
-function abmelden(){ api({action:'logout'}).catch(function(){}); TOK=null; WER=null; try{ sessionStorage.removeItem('g5_tok'); }catch(e){} location.hash=''; route(); }
+function abmelden(){ api({action:'logout'}).catch(function(){}); TOK=null; WER=null; try{ sessionStorage.removeItem('g5_tok'); }catch(e){} location.hash='#/m'; route(); }
 function heim(){ return WER&&WER.rolle==='kostentraeger'?'#/ktr':'#/m'; }
 
 /* ---------- Kostenträger: Live-Report (Server liefert nur die eigenen Maßnahmen) ---------- */
 function vKtr(vorschauKey){
   Promise.all([api({action:'massnahmen'}),api({action:'belege'}),api({action:'zeugnisse'})]).then(function(r){
-    var ms=r[0], bl=r[1], zg=r[2];
+    var ms=r[0], bl=r[1], zg=r[2], auswahl='';
+    if(WER.rolle!=='kostentraeger'){
+      /* Management/Demo: Vorschau je Kostenträger, Auswahl oben; Standard = erster Kostenträger */
+      var kts={}; ms.forEach(function(m){ if(m.kostentraeger_key) kts[m.kostentraeger_key]=m.kostentraeger; });
+      var keys=Object.keys(kts); if(!vorschauKey||keys.indexOf(vorschauKey)<0) vorschauKey=keys[0]||null;
+      auswahl='<div class="zeile" style="margin-bottom:16px">'+keys.map(function(k){ return '<a class="btn'+(k===vorschauKey?' voll':'')+'" href="#/ktr/'+esc(k)+'">'+esc(kts[k])+'</a>'; }).join('')+'</div>';
+    }
     if(vorschauKey){ ms=ms.filter(function(m){ return m.kostentraeger_key===vorschauKey; }); var kn=ms.map(function(m){ return m.kennung; }); bl=bl.filter(function(b){ return kn.indexOf(b.kennung)>=0; }); zg=zg.filter(function(z){ return kn.indexOf(z.kennung)>=0; }); }
     var name=ms.length?ms[0].kostentraeger:(WER.name||'Kostenträger');
     var pl=ms.reduce(function(a,m){ return a+(+m.plaetze); },0), bel=ms.reduce(function(a,m){ return a+(+m.belegt); },0);
     var anw=ms.filter(function(m){ return +m.anwesenheit_prozent>0; }); var anwD=anw.length?Math.round(anw.reduce(function(a,m){ return a+(+m.anwesenheit_prozent); },0)/anw.length):null;
     var rot=ms.filter(function(m){ return m.ampel==='rot'; }).length;
-    var h='<h1>'+esc(name)+' · <em>Live-Report</em></h1><div class="sub">Ist-Daten aus der laufenden Durchführung — kein Selbstbericht des Trägers. '+(vorschauKey?'<span class="tag akz">Vorschau aus Management-Sicht</span>':'Sie sehen ausschließlich die Maßnahmen, die Ihr Haus finanziert; die Zuordnung prüft der Server.')+'</div>';
+    var h=auswahl+'<h1>'+esc(name)+' · <em>Live-Report</em></h1><div class="sub">Ist-Daten aus der laufenden Durchführung — kein Selbstbericht des Trägers. '+(WER.rolle!=='kostentraeger'?'<span class="tag akz">So sieht es dieser Kostenträger</span> — mit eigenem Konto oder Live-Link liefert der Server ihm ausschließlich diese Maßnahmen.':'Sie sehen ausschließlich die Maßnahmen, die Ihr Haus finanziert; die Zuordnung prüft der Server.')+'</div>';
     h+='<div class="kpis"><div class="kpi"><b>'+ms.length+'</b><span>finanzierte Maßnahmen</span></div><div class="kpi"><b>'+bel+' / '+pl+'</b><span>Plätze belegt</span></div><div class="kpi"><b>'+(anwD===null?'—':anwD+' %')+'</b><span>Ø Anwesenheit</span></div><div class="kpi"><b style="color:'+(rot?'var(--rot)':'var(--gruen)')+'">'+rot+'</b><span>Maßnahmen mit roter Ampel</span></div></div>';
     h+='<div class="karte"><h2>Maßnahmen</h2><div class="tabelle"><table><tr><th>Kennung</th><th>Maßnahme</th><th>Plätze</th><th>Anwesenheit</th><th>Fortschritt</th><th>€ / Eingliederung</th><th>Ampel</th></tr>';
     if(!ms.length) h+='<tr><td colspan="7" class="hinweis">Keine Maßnahmen für dieses Konto zugeordnet.</td></tr>';
@@ -172,22 +186,24 @@ function anlegen(){
 }
 
 /* ---------- Andere Rollen: Frontend folgt ---------- */
-function vFolgt(){
-  $('app').innerHTML='<div class="karte"><h2>'+esc(WER.name)+' · '+esc(WER.rolle)+'</h2><div class="hinweis">Das G5-Frontend für diese Rolle ist in Arbeit. Zuerst kommen Kostenträger-Report und Management; Kursleitung und Teilnehmer folgen.</div></div>';
+var ROLLEN={zuw:'Fördermittel & Zuwendung',lc:'Recht & Compliance',kl:'Kursleiter',tn:'Teilnehmer',mit:'Mitarbeitende',mot:'Begleitung',cp:'Auslands-Campus',fib:'Buchhaltung',zgv:'Qualifizierung & Zeugnisse',ag:'Arbeitgeber'};
+function vFolgt(k){
+  $('app').innerHTML='<h1>'+esc(ROLLEN[k]||k||WER.rolle)+'</h1><div class="sub">Dieses G5-Frontend ist in Arbeit — auf derselben Datenbasis, in derselben ruhigen Linie. Fertig sind <a href="#/ktr" style="color:var(--akz);font-weight:600">Kostenträger</a> und <a href="#/m" style="color:var(--akz);font-weight:600">Management</a>.</div>';
 }
 
 /* ---------- Router ---------- */
 function route(){
   var lt=null; try{ lt=new URLSearchParams(location.search).get('t'); }catch(e){}
   if(lt&&/^[0-9a-f]{64}$/.test(lt)){ TOK=lt; try{ sessionStorage.setItem('g5_tok',TOK); }catch(e){} history.replaceState(null,'',location.pathname+'#/ktr'); }
-  if(!TOK){ vLogin(); return; }
-  if(!WER){ api({action:'me'}).then(function(j){ WER=j; kopf(); route(); }).catch(function(){ vLogin(); }); return; }
-  kopf();
   var h=location.hash.replace('#/',''), teile=h.split('/'), k=teile[0]||'';
+  if(k==='login'){ vLogin(); return; }
+  if(!TOK){ gast().then(route).catch(function(){ $('app').innerHTML='<div class="karte hinweis">Datenbasis nicht erreichbar.</div>'; }); return; }
+  if(!WER){ api({action:'me'}).then(function(j){ WER=j; kopf(); route(); }).catch(function(){ TOK=null; route(); }); return; }
+  kopf();
   if(!k){ location.hash=heim(); return; }
-  if(k==='ktr'){ if(WER.rolle==='kostentraeger') vKtr(null); else if(WER.rolle==='management'||WER.rolle==='demo') vKtr(teile[1]||null); else vFolgt(); return; }
-  if(k==='m'){ if(WER.rolle==='management'||WER.rolle==='demo') vMgmt(); else if(WER.rolle==='kostentraeger') location.hash='#/ktr'; else vFolgt(); return; }
-  vFolgt();
+  if(k==='ktr'){ if(WER.rolle==='kostentraeger') vKtr(null); else if(WER.rolle==='management'||WER.rolle==='demo') vKtr(teile[1]||null); else vFolgt('ktr'); return; }
+  if(k==='m'){ if(WER.rolle==='management'||WER.rolle==='demo') vMgmt(); else if(WER.rolle==='kostentraeger') location.hash='#/ktr'; else vFolgt('m'); return; }
+  vFolgt(k);
 }
 window.addEventListener('hashchange',route);
 route();
