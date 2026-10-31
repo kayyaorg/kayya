@@ -20,8 +20,22 @@ $gesperrt=@('docs/abo-modell.html','docs/260723_V2_KAYYA_Lastenheft.docx','docs/
   'wartung-setup.php','kayya-setup.php','kayya-key.php','kayya-db.php')
 
 [Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12
-$wc=New-Object Net.WebClient
 $probleme=@()
+# Tor passieren: Zugangswoerter liegen lokal in KAYYA-Zugang\torworte.txt (nie im Repo); das Cookie gilt fuer alle Abrufe
+$cc=New-Object Net.CookieContainer
+$torDatei='C:\Users\BKRG\KAYYA-Zugang\torworte.txt'
+if(Test-Path $torDatei){
+  foreach($zeile in [IO.File]::ReadAllLines($torDatei,[Text.Encoding]::UTF8)){
+    if($zeile -match '^\s*#' -or $zeile -notmatch '=') { continue }
+    $k=$zeile.Split('=',2)[0].Trim(); $w=$zeile.Split('=',2)[1]
+    try{
+      $req=[Net.HttpWebRequest]::Create('https://kayya.org/gate.php'); $req.Method='POST'; $req.ContentType='application/json'; $req.CookieContainer=$cc
+      $body=[Text.Encoding]::UTF8.GetBytes(('{"bereich":"'+$k+'","wort":'+(ConvertTo-Json $w)+'}')); $req.ContentLength=$body.Length
+      $s=$req.GetRequestStream(); $s.Write($body,0,$body.Length); $s.Close(); $resp=$req.GetResponse(); $resp.Close()
+    }catch{ Write-Host ("  !! Tor fuer '"+$k+"' abgelehnt - Zugangswort in torworte.txt pruefen"); $probleme+=('Tor abgelehnt: '+$k) }
+  }
+} else { Write-Host '  ?  KAYYA-Zugang\torworte.txt fehlt - geschuetzte Seiten koennen nicht verglichen werden' }
+function holen($url){ $req=[Net.HttpWebRequest]::Create($url); $req.CookieContainer=$cc; $req.AllowAutoRedirect=$false; $resp=$req.GetResponse(); $ms=New-Object IO.MemoryStream; $resp.GetResponseStream().CopyTo($ms); $code=[int]$resp.StatusCode; $resp.Close(); if($code -ne 200){ throw ("HTTP "+$code) }; return $ms.ToArray() }
 # Hash mit normalisierten Zeilenenden (CRLF->LF), damit Git-Normalisierung keine Phantom-Abweichungen erzeugt
 function normHash($bytes){ $t=[Text.Encoding]::UTF8.GetString($bytes) -replace "`r`n","`n"; [BitConverter]::ToString(([Security.Cryptography.SHA256]::Create()).ComputeHash([Text.Encoding]::UTF8.GetBytes($t))) }
 function httpCode($url){
@@ -37,10 +51,19 @@ foreach($p in $paare){
   if(-not (Test-Path $lp)){ Write-Host ("  ?  "+$p[2]+" - lokale Datei fehlt: "+$p[0]); continue }
   try{
     $l=normHash([IO.File]::ReadAllBytes($lp))
-    $r=normHash($wc.DownloadData($p[1]+'?v='+(Get-Random)))
+    $r=normHash((holen ($p[1]+'?v='+(Get-Random))))
     if($l -eq $r){ Write-Host ("  OK "+$p[2]) }
     else { Write-Host ("  !! "+$p[2]+" - WEICHT AB (lokal != live)"); $probleme+=($p[2]+': lokal != kayya.org') }
   }catch{ Write-Host ("  !! "+$p[2]+" - live nicht erreichbar"); $probleme+=($p[2]+': live nicht erreichbar') }
+}
+
+Write-Host ''
+Write-Host '=== TOR (ohne Cookie muss der Server umleiten, 302) ==='
+foreach($t in @('g4/','g5/','g4.html','g5.html','beta1.html','wartung.html','docs/invest.html')){
+  $code=httpCode('https://kayya.org/'+$t)
+  if($code -eq 302 -or $code -eq 301 -or $code -eq 303){ Write-Host ("  OK "+$t+" (gesperrt, "+$code+")") }
+  elseif($code -eq 0){ Write-Host ("  ?  "+$t+" (keine Antwort)") }
+  else { Write-Host ("  !! "+$t+" OHNE TOR ERREICHBAR ("+$code+")"); $probleme+=('Tor offen: '+$t) }
 }
 
 Write-Host ''

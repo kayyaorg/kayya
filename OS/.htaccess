@@ -1,4 +1,14 @@
 Options -Indexes
+
+# KAYYA Tor (seit 31.10.2026): geschuetzte Bereiche werden nur ueber gate.php ausgeliefert,
+# das ein gueltiges Tor-Cookie verlangt (Zugangswort auf der Startseite). Direktaufruf -> Umleitung zur Startseite.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteCond %{REQUEST_URI} !^/gate\.php
+  RewriteRule ^(g4/.*|g5/.*|g4\.html|g5\.html|beta1\.html|wartung\.html|docs/[^/]+\.html)$ gate.php?p=$1 [L,QSA,NC]
+</IfModule>
+
 # KAYYA OS - Schluesseldatei nie direkt ausliefern (Deploy laedt diese Datei mit hoch)
 <Files "kayya-key.php">
   <IfModule mod_authz_core.c>

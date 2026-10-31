@@ -37,7 +37,7 @@ Set-Content $askpass -Encoding ascii -Value "@echo off`r`npowershell -NoProfile 
 $umbenennen = @{ "index.html" = "beta1.html"; "landing.html" = "index.html" }
 # SEIT 16.10.2026: g5.html (G 0.5, eigenes Zugangswort) wird mit hochgeladen.
 # NICHT hochladen: kayya-setup.php / kayya-upgrade1.php (Tokens, nach Gebrauch loeschen).
-$files = if ($NurIndex) { @("index.html","landing.html") } else { @("index.html","landing.html","g4.html","g5.html","wartung.html","wartung-api.php","kayya-api.php","ted-proxy.php","kayya-ki.php","foerder-proxy.php",".htaccess") }
+$files = if ($NurIndex) { @("index.html","landing.html") } else { @("index.html","landing.html","g4.html","g5.html","wartung.html","wartung-api.php","kayya-api.php","gate.php","ted-proxy.php","kayya-ki.php","foerder-proxy.php",".htaccess") }
 # SEIT 31.10.2026: die Apps liegen in Unterordnern (G4-App: ..\G4\index.html -> g4/, G5-Frontend: g5\index.html -> g5/)
 $apps = @()
 $g4App = Join-Path (Split-Path $PSScriptRoot -Parent) 'G4\index.html'; if (-not $NurIndex -and (Test-Path $g4App)) { $apps += @{ lokal = $g4App; fern = 'g4' } }

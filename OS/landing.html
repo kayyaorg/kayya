@@ -188,27 +188,45 @@ function zu(id){ document.getElementById(id).classList.remove('auf'); }
 function gateHash(s){ let h=5381; for(let i=0;i<s.length;i++){ h=((h<<5)+h+s.charCodeAt(i))>>>0; } return h; }
 var MOBIL=('ontouchstart' in window)&&Math.min(screen.width,screen.height)<820;
 /* Ein Zugangsfeld: das Wort (als Hash) bestimmt den Bereich */
-/* Je Bereich sein eigenes Zugangswort (djb2-Hashes); der gewaehlte Bereich bestimmt das Ziel. Sichtschutz im Browser, kein Serverschutz. */
-var TORWORTE={ 'g5.html':[344993711], 'g4.html':[791357182], 'beta1.html':[791357148], 'wartung.html':[1861440186], 'docs/invest.html':[1983849120] };
+/* Das Zugangswort prueft der SERVER (gate.php): richtiges Wort -> signiertes Cookie fuer den Bereich,
+   erst damit liefert der Server die geschuetzten Seiten aus. Der gewaehlte Bereich bestimmt das Ziel. */
+var BEREICH_KEY={ 'g5.html':'g5', 'g4.html':'g4', 'beta1.html':'g3', 'wartung.html':'wartung', 'docs/invest.html':'invest' };
 function pwZeigen(){ var p=document.getElementById('pw'); p.type=(p.type==='password')?'text':'password'; p.focus(); }
 function pruef(){
-  var p=document.getElementById('pw'), z=document.getElementById('zkarte'), f=document.getElementById('pwfehl');
-  var bereich=document.getElementById('bereich').value, erlaubt=TORWORTE[bereich]||[];
-  var v=(p&&p.value)||'', ziel='';
-  [v, v.trim(), v.trim().toUpperCase()].forEach(function(k){ if(erlaubt.indexOf(gateHash(k))>=0) ziel=bereich; });
-  if(ziel){
-    if(MOBIL){ offen('m-babe'); return; }
-    try{
-      if(ziel==='beta1.html'){ sessionStorage.setItem('kayya_gate','open2'); sessionStorage.setItem('kayya_user','Bernhard'); }
-      if(ziel==='docs/invest.html'){ sessionStorage.setItem('kayya_invest','open2'); }
-    }catch(e){}
-    location.href=ziel;
-  } else {
-    f.style.display='block';
-    z.classList.remove('zitter'); void z.offsetWidth; z.classList.add('zitter');
-    p.focus();
-  }
+  var p=document.getElementById('pw'), z=document.getElementById('zkarte'), f=document.getElementById('pwfehl'), ok=document.getElementById('pwok');
+  var ziel=document.getElementById('bereich').value, v=(p&&p.value)||'';
+  if(MOBIL){ offen('m-babe'); return; }
+  f.style.display='none'; ok.disabled=true; ok.textContent='Prüfe …';
+  fetch('/gate.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({bereich:BEREICH_KEY[ziel],wort:v})})
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      if(j&&j.ok){
+        try{
+          if(ziel==='beta1.html'){ sessionStorage.setItem('kayya_gate','open2'); sessionStorage.setItem('kayya_user','Bernhard'); }
+          if(ziel==='docs/invest.html'){ sessionStorage.setItem('kayya_invest','open2'); }
+        }catch(e){}
+        location.href=ziel;
+      } else { throw 0; }
+    })
+    .catch(function(){
+      ok.disabled=false; ok.textContent='Öffnen';
+      f.style.display='block';
+      z.classList.remove('zitter'); void z.offsetWidth; z.classList.add('zitter');
+      p.focus();
+    });
 }
+/* Vom Tor umgeleitet (?bereich=…): Bereich vorbelegen und erklaeren */
+(function(){
+  try{
+    var q=new URLSearchParams(location.search), b=q.get('bereich');
+    if(!b) return;
+    var sel=document.getElementById('bereich'), ziel=Object.keys(BEREICH_KEY).filter(function(k){ return BEREICH_KEY[k]===b; })[0];
+    if(sel&&ziel) sel.value=ziel;
+    var h=document.getElementById('zughinweis'); if(h) h.textContent='🔒 Dieser Bereich ist geschützt — bitte zuerst das Zugangswort eingeben.';
+    history.replaceState(null,'','/');
+    setTimeout(function(){ var p=document.getElementById('pw'); if(p) p.focus(); },200);
+  }catch(e){}
+})();
 fetch("/kayya-api.php?action=ping",{headers:{}}).then(function(r){return r.json();}).then(function(j){
   var e=document.getElementById("dbstatus");
   if(j&&j.ok){ e.innerHTML='<span style="color:#41E896">●</span> <span style="color:#9FD9C4">Datenbankbetrieben · '+j.db+' · '+j.massnahmen+' Maßnahmen live · Belege in Echtzeit</span>'; }
