@@ -44,9 +44,10 @@ Options -Indexes
   </IfModule>
 </Files>
 
-# KAYYA: interne Unterlagen (Lastenheft, Planungen, Deck) nie ausliefern.
-# Frei bleibt nur der One-Pager fuer Kostentraeger. Seiten (.html) sind nicht betroffen.
-<FilesMatch "^(?!260823_V1_KAYYA_One-Pager_Kostentraeger\.docx$).+\.(docx|pptx|xlsx|pdf|zip)$">
+# KAYYA: interne Unterlagen in docs/ (Lastenheft, Planungen, Deck, NDA) werden seit 31.10.2026 ueber das Tor (gate.php,
+# Rewrite oben) nur mit gueltigem Zugangs-Cookie ausgeliefert. Frei bleibt der One-Pager fuer Kostentraeger.
+# Pakete/Archive bleiben grundsaetzlich gesperrt.
+<FilesMatch "\.zip$">
   <IfModule mod_authz_core.c>
     Require all denied
   </IfModule>
