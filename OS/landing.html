@@ -189,7 +189,7 @@ function gateHash(s){ let h=5381; for(let i=0;i<s.length;i++){ h=((h<<5)+h+s.cha
 var MOBIL=('ontouchstart' in window)&&Math.min(screen.width,screen.height)<820;
 /* Ein Zugangsfeld: das Wort (als Hash) bestimmt den Bereich */
 /* Je Bereich sein eigenes Zugangswort (djb2-Hashes); der gewaehlte Bereich bestimmt das Ziel. Sichtschutz im Browser, kein Serverschutz. */
-var TORWORTE={ 'g5.html':[52379384], 'g4.html':[1206576723], 'beta1.html':[1206576722], 'wartung.html':[1861440186], 'docs/invest.html':[1983849120] };
+var TORWORTE={ 'g5.html':[344993711], 'g4.html':[791357182], 'beta1.html':[791357148], 'wartung.html':[1861440186], 'docs/invest.html':[1983849120] };
 function pwZeigen(){ var p=document.getElementById('pw'); p.type=(p.type==='password')?'text':'password'; p.focus(); }
 function pruef(){
   var p=document.getElementById('pw'), z=document.getElementById('zkarte'), f=document.getElementById('pwfehl');
