@@ -65,7 +65,7 @@
   </div>
   <div class="card" style="margin-top:12px">
     <h3>Live auf kayya.org — drei Generationen und zwei Produkte hinter fünf Toren</h3>
-    <p>Öffentliche Startseite mit fünf zielgebunden passwortgeschützten Zugängen. <b>G 0.4</b> ist das Vollprodukt: ein interaktives ȲȲ-Schaubild des ganzen Trägers, jede Rolle klickbar in die App mit 14 Ansichten — inklusive Mitarbeitenden-Portal und Zeugnis-Siegelung; die Datenflüsse tragen die MUSS-Kennungen aus dem Lastenheft. <b>G 0.5</b> ist die cleane Produktübersicht ohne Inszenierung — der ruhige Einstieg für Pilotgespräche. <b>G 0.3</b> bleibt als eingefrorener Vollprototyp erreichbar. <b>Seit 22.09.2026 ist die Plattform datenbankbetrieben</b> (zentrale MariaDB mit Rollen-API, jede Schreibaktion revisionssicher protokolliert) — <b>seit Oktober mit echtem Mehrbenutzer-Betrieb:</b> Rollen-Logins (die Rolle bestimmt die Sicht), ein teilbarer Read-only-<b>Live-Link je Kostenträger</b> („Prüfung per Klick statt Aktenordner"), <b>AZAV-Audit-Export</b> auf Knopfdruck und der durchgehende Kernprozess: ein Zuschlag im Vergabe-Monitor legt die Maßnahme ohne Neuerfassung in der Datenbank an. <b>Neu als zweite Produktlinie:</b> die <b>Wartungsübersicht</b> — Hausverwaltungs-App für Prüfpflichten (Immobilien → sicherheitsrelevante Anlagen → Prüf-Turnusse nach BetrSichV, DIN, DGUV), mit Protokoll-Upload, KI-Mängelauslesung (wesentlich/unwesentlich), Vergabeempfehlung, Angebotsbewertung und Mangelfreimeldung an die Prüforganisation — gebaut in einem Tag auf derselben Infrastruktur, der Beweis für die Skalierbarkeit des Ansatzes.</p>
+    <p>Öffentliche Startseite mit fünf Bereichen, je mit eigenem Zugangswort (Sichtschutz im Browser; serverseitiger Zugriffsschutz in Arbeit). <b>G 0.4</b> ist das Vollprodukt: ein interaktives ȲȲ-Schaubild des ganzen Trägers, jede Rolle klickbar in die App mit 14 Ansichten — inklusive Mitarbeitenden-Portal und Zeugnis-Siegelung; die Datenflüsse tragen die MUSS-Kennungen aus dem Lastenheft. <b>G 0.5</b> ist die cleane Produktübersicht ohne Inszenierung — der ruhige Einstieg für Pilotgespräche. <b>G 0.3</b> bleibt als eingefrorener Vollprototyp erreichbar. <b>Seit 22.09.2026 ist die Plattform datenbankbetrieben</b> (zentrale MariaDB mit Rollen-API, jede Schreibaktion revisionssicher protokolliert) — <b>seit Oktober mit Mehrbenutzer-Betrieb:</b> Rollen-Logins und ein <b>Live-Link je Kostenträger</b> („Prüfung per Klick statt Aktenordner") — Rollen- und Kostenträger-Filter laufen derzeit im Browser, die serverseitige Durchsetzung ist der nächste Baustein —, <b>AZAV-Audit-Export</b> auf Knopfdruck und der durchgehende Kernprozess: ein Zuschlag im Vergabe-Monitor legt die Maßnahme ohne Neuerfassung in der Datenbank an. <b>Neu als zweite Produktlinie:</b> die <b>Wartungsübersicht</b> — Hausverwaltungs-App für Prüfpflichten (Immobilien → sicherheitsrelevante Anlagen → Prüf-Turnusse nach BetrSichV, DIN, DGUV), mit Protokoll-Upload, KI-Mängelauslesung (wesentlich/unwesentlich), Vergabeempfehlung, Angebotsbewertung und Mangelfreimeldung an die Prüforganisation — gebaut in einem Tag auf derselben Infrastruktur, der Beweis für die Skalierbarkeit des Ansatzes.</p>
   </div>
 
   <h2>Was bisher hineingeflossen ist <span class="est">(ehrliche Schätzwerte, gerundet)</span></h2>
@@ -82,7 +82,7 @@
   <div class="card">
     <table>
       <tr><th>Baustein</th><th>Status</th><th>Aufwand (Schätzung)</th></tr>
-      <tr><td>Echt-KI-Betrieb (Anthropic, claude-sonnet-5)</td><td><span class="tag a">pausiert</span></td><td>Infrastruktur läuft (war ab 12.09. live); API-Schlüssel wird rotiert — Reaktivierung in Minuten</td></tr>
+      <tr><td>Echt-KI-Betrieb (Anthropic, claude-sonnet-5)</td><td><span class="tag a">pausiert</span></td><td>Infrastruktur und Schlüssel stehen (live ab 12.09.); das API-Guthaben ist aufgebraucht — Aufladen genügt</td></tr>
       <tr><td>eM@w-Anbindung (BA, Pflicht für Maßnahmeträger)</td><td><span class="tag a">beantragt</span></td><td>Wochen Vorlauf bei der BA; Entwicklung ~15–25 PT</td></tr>
       <tr><td>AZAV-Trägerzulassung</td><td><span class="tag a">offen</span></td><td>3–8 T€ + fachkundige Stelle, 2–4 Monate</td></tr>
       <tr><td>Produktions-Backend (Mandanten, Auth, DB, DSGVO-Betrieb)</td><td><span class="tag g">im Aufbau · Kern live</span></td><td>MariaDB, Rollen-API, Logins, Schreibpfad und Protokollierung laufen seit Sept./Okt. — offen: Mandantenfähigkeit &amp; Betriebskonzepte</td></tr>
@@ -99,13 +99,13 @@
 
   <h2>Dokumente</h2>
   <div class="card">
-    <a class="dl" href="260723_V2_KAYYA_Lastenheft.docx" download>📘 Lastenheft V2 (3,7 MB)</a>
-    <a class="dl" href="260721_V1_KAYYA_Investorendeck.pptx" download>🎤 Präsentationsdeck</a>
-    <a class="dl" href="260721_V1_KAYYA_Ideenpapier.docx" download>💡 Ideenpapier</a>
+    <a class="dl" href="mailto:b@kayya.org?subject=Unterlagen%20KAYYA%20(Anfrage%20unter%20NDA)">📘 Lastenheft V2, auf Anfrage unter NDA</a>
+    <a class="dl" href="mailto:b@kayya.org?subject=Unterlagen%20KAYYA%20(Anfrage%20unter%20NDA)">🎤 Präsentationsdeck, auf Anfrage unter NDA</a>
+    <a class="dl" href="mailto:b@kayya.org?subject=Unterlagen%20KAYYA%20(Anfrage%20unter%20NDA)">💡 Ideenpapier, auf Anfrage unter NDA</a>
     <a class="dl" href="260823_V1_KAYYA_One-Pager_Kostentraeger.docx" download>📄 One-Pager Kostenträger</a>
-    <a class="dl" href="260721_V1_KAYYA_Foerderfahrplan.docx" download>🗺️ Förderfahrplan</a>
-    <a class="dl" href="260721_V1_KAYYA_Einschaetzung.docx" download>🧭 Einschätzung</a>
-    <a class="dl" href="abo-modell.html">📊 Konzeptpapier Erlösmodell (v1 · vertraulich)</a>
+    <a class="dl" href="mailto:b@kayya.org?subject=Unterlagen%20KAYYA%20(Anfrage%20unter%20NDA)">🗺️ Förderfahrplan, auf Anfrage unter NDA</a>
+    <a class="dl" href="mailto:b@kayya.org?subject=Unterlagen%20KAYYA%20(Anfrage%20unter%20NDA)">🧭 Einschätzung, auf Anfrage unter NDA</a>
+    <a class="dl" href="mailto:b@kayya.org?subject=Unterlagen%20KAYYA%20(Anfrage%20unter%20NDA)">📊 Konzeptpapier Erlösmodell, auf Anfrage unter NDA</a>
     <p style="margin-top:10px"><a href="docs.html" style="color:var(--primary)">→ Alle Unterlagen &amp; Downloads</a></p>
   </div>
 

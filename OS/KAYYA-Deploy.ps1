@@ -9,8 +9,9 @@
 #           .\KAYYA-Deploy.ps1 -NurIndex  -> nur index.html
 #           .\KAYYA-Deploy.ps1 -Key       -> zusaetzlich KAYYA-Zugang\kayya-key.php (Anthropic-Key) einmalig hochladen
 #           .\KAYYA-Deploy.ps1 -NurPruefen-> nichts hochladen, nur von aussen pruefen
+#           .\KAYYA-Deploy.ps1 -DocsBereinigen -> zusaetzlich interne Unterlagen aus docs/ auf dem Server loeschen
 # ============================================================
-param([switch]$NurIndex, [switch]$Key, [switch]$NurPruefen)
+param([switch]$NurIndex, [switch]$Key, [switch]$NurPruefen, [switch]$DocsBereinigen)
 $ErrorActionPreference = "Stop"
 try { [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12 } catch {}
 $zugang = @("C:\Users\BKRG\KAYYA-Zugang", (Join-Path $env:USERPROFILE "KAYYA-Zugang")) | Where-Object { Test-Path $_ } | Select-Object -First 1
@@ -51,7 +52,10 @@ foreach ($t in $targets) {
     $toUpload = @($files | ForEach-Object { Join-Path $PSScriptRoot $_ })
     if ($Key) { $kf = Join-Path $zugang "kayya-key.php"; if (Test-Path $kf) { $toUpload += $kf } else { Write-Host "  -Key: $kf fehlt (Inhalt: <?php return 'sk-ant-...';)" -ForegroundColor Yellow } }
     $docsDir = Join-Path $PSScriptRoot 'docs'
-    $docsFiles = @(); if (-not $NurIndex -and (Test-Path $docsDir)) { $docsFiles = @(Get-ChildItem $docsDir -File) }
+    # SEIT 21.10.2026: nur Seiten (.html) und der One-Pager gehen auf den Server; interne Unterlagen bleiben lokal.
+    $docsFrei = "260823_V1_KAYYA_One-Pager_Kostentraeger.docx"
+    $docsFiles = @(); if (-not $NurIndex -and (Test-Path $docsDir)) { $docsFiles = @(Get-ChildItem $docsDir -File | Where-Object { $_.Extension -ieq ".html" -or $_.Name -eq $docsFrei }) }
+    $docsWeg = @(); if ($DocsBereinigen -and (Test-Path $docsDir)) { $docsWeg = @(Get-ChildItem $docsDir -File | Where-Object { $_.Extension -match "^\.(docx|pptx|xlsx|pdf|zip)$" -and $_.Name -ne $docsFrei } | ForEach-Object { $_.Name }) }
     $bilderDir = Join-Path $PSScriptRoot 'wbilder'
     $bilderFiles = @(); if (-not $NurIndex -and (Test-Path $bilderDir)) { $bilderFiles = @(Get-ChildItem $bilderDir -File | Where-Object { $_.Extension -match '\.(jpe?g|png)$' }) }
 
@@ -80,6 +84,7 @@ foreach ($t in $targets) {
           $lines += "-mkdir wbilder"
           foreach ($f in $bilderFiles) { $lines += ('put "' + ($f.FullName -replace '\\','/') + '" wbilder/' + $f.Name) }
         }
+        foreach ($w in $docsWeg) { $lines += ("-rm docs/" + $w) }
         Set-Content $bat -Encoding ascii -Value $lines
         $env:KAYYA_SFTP_PW = $m.Groups[2].Value
         $env:SSH_ASKPASS = $askpass; $env:SSH_ASKPASS_REQUIRE = "force"
@@ -92,7 +97,7 @@ foreach ($t in $targets) {
         $env:KAYYA_SFTP_PW = ""
         Remove-Item $bat -Force -ErrorAction SilentlyContinue
         if ($code -eq 0) {
-          Write-Host ("  hochgeladen (SFTP): " + $toUpload.Count + " Dateien" + $(if ($docsFiles.Count) { " + docs/ (" + $docsFiles.Count + ")" }) + $(if ($bilderFiles.Count) { " + wbilder/ (" + $bilderFiles.Count + ")" })) -ForegroundColor Green
+          Write-Host ("  hochgeladen (SFTP): " + $toUpload.Count + " Dateien" + $(if ($docsFiles.Count) { " + docs/ (" + $docsFiles.Count + ")" }) + $(if ($bilderFiles.Count) { " + wbilder/ (" + $bilderFiles.Count + ")" }) + $(if ($docsWeg.Count) { ", geloescht in docs/: " + $docsWeg.Count })) -ForegroundColor Green
         } else {
           $txt = (($out | ForEach-Object { "$_" }) -join "`n") -replace '(?i)(login|password)\S*','***'
           Write-Host ("  SFTP-FEHLER (exit " + $code + "): " + $txt.Trim()) -ForegroundColor Red; $ok = $false
@@ -119,6 +124,13 @@ foreach ($t in $targets) {
         $out = & $curl @cargs
         if ($LASTEXITCODE -eq 0) { Write-Host ("  hochgeladen: wbilder/" + $f.Name) -ForegroundColor Green }
         else { Write-Host ("  FEHLER bei wbilder/" + $f.Name + " (curl exit " + $LASTEXITCODE + "): " + (($out | Out-String) -replace '(?i)(login|password)\S*','***').Trim()) -ForegroundColor Red; $ok = $false }
+      }
+      if ($docsWeg.Count -gt 0) {
+        $cargs = @("--silent","--show-error","--stderr","-","--netrc-file",$netrc,"--connect-timeout","25","--ssl","--list-only","-o","NUL")
+        foreach ($w in $docsWeg) { $cargs += @("-Q", ("-*DELE docs/" + $w)) }
+        $cargs += $base
+        $out = & $curl @cargs
+        Write-Host ("  docs/ bereinigt: " + $docsWeg.Count + " interne Unterlagen geloescht (falls vorhanden)") -ForegroundColor Green
       }
     }
   }
