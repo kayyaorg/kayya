@@ -25,8 +25,9 @@ $probleme=@()
 # Hash mit normalisierten Zeilenenden (CRLF->LF), damit Git-Normalisierung keine Phantom-Abweichungen erzeugt
 function normHash($bytes){ $t=[Text.Encoding]::UTF8.GetString($bytes) -replace "`r`n","`n"; [BitConverter]::ToString(([Security.Cryptography.SHA256]::Create()).ComputeHash([Text.Encoding]::UTF8.GetBytes($t))) }
 function httpCode($url){
-  try{ $r=[Net.HttpWebRequest]::Create($url); $r.Method='HEAD'; $r.AllowAutoRedirect=$false; $resp=$r.GetResponse(); $c=[int]$resp.StatusCode; $resp.Close(); return $c }
-  catch{ if($_.Exception.Response){ return [int]$_.Exception.Response.StatusCode } else { return 0 } }
+  try{ $r=[Net.HttpWebRequest]::Create($url); $r.Method='GET'; $r.AllowAutoRedirect=$false; $r.Timeout=15000; $resp=$r.GetResponse(); $c=[int]$resp.StatusCode; $resp.Close(); return $c }
+  catch [Net.WebException]{ if($_.Exception.Response){ return [int]$_.Exception.Response.StatusCode } else { return 0 } }
+  catch{ return 0 }
 }
 
 Write-Host ''
