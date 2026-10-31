@@ -49,8 +49,11 @@
   .pwzeile .feld{flex:1;position:relative}
   #pwauge{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--lesbar);font-size:18px;cursor:pointer;padding:6px 8px;line-height:1}
   #pwauge:hover{color:var(--glow)}
-  #zughinweis{text-align:center;font-size:14px;color:var(--lesbar);line-height:1.5;margin-top:14px}
-  #dbstatus{text-align:center;margin-top:30px;font-size:14px;color:var(--lesbar)}
+  /* Texte unter dem Feld liegen ueber der Vignette und tragen einen dunklen Schattenrand - sonst schluckt der Sternenhimmel sie */
+  #zugang,#zughinweis,#dbstatus,#fuss{position:relative;z-index:5}
+  #zughinweis{text-align:center;font-size:15px;font-weight:600;color:#EAF2F5;line-height:1.5;margin-top:16px;text-shadow:0 1px 3px #000,0 0 14px rgba(0,0,0,.95)}
+  #dbstatus{text-align:center;margin-top:28px;font-size:14.5px;font-weight:600;color:#EAF2F5;text-shadow:0 1px 3px #000,0 0 14px rgba(0,0,0,.95)}
+  #fuss a{text-shadow:0 1px 3px #000,0 0 10px rgba(0,0,0,.9)}
   /* ---- Fuss ---- */
   #fuss{position:fixed;left:0;right:0;bottom:0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));
     display:flex;gap:8px;justify-content:center;align-items:center;font-size:13px;color:var(--lesbar);flex-wrap:wrap}
