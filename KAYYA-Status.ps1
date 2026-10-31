@@ -1,6 +1,6 @@
 ﻿# KAYYA-Status.ps1 - Drei-Welten-Abgleich: lokal <-> kayya.org <-> GitHub
 # Aufruf:  powershell -NoProfile -ExecutionPolicy Bypass -File "C:\Users\BKRG\Desktop\KAYYA\KAYYA-Status.ps1"
-# Keine Zugangsdaten noetig (nur lesende HTTP-Abrufe + git status).
+# Keine Zugangsdaten noetig (nur lesende HTTP-Abrufe + git status). Datei bewusst ASCII-only.
 
 $basis='C:\Users\BKRG\Desktop\KAYYA'
 $paare=@(
@@ -8,19 +8,29 @@ $paare=@(
   @('OS\g4.html',           'https://kayya.org/g4.html',           'G4-Schaubild'),
   @('OS\g5.html',           'https://kayya.org/g5.html',           'G5'),
   @('G4\index.html',        'https://kayya.org/g4/index.html',     'G4-App'),
+  @('OS\g5\index.html',     'https://kayya.org/g5/index.html',     'G5-Frontend'),
   @('OS\wartung.html',      'https://kayya.org/wartung.html',      'Wartungsuebersicht'),
   @('OS\docs\invest.html',  'https://kayya.org/docs/invest.html',  'Investor-Deck'),
-  @('OS\docs\abo-modell.html','https://kayya.org/docs/abo-modell.html','Erloesmodell'),
+  @('OS\docs\docs.html',    'https://kayya.org/docs/docs.html',    'Unterlagen-Seite'),
   @('OS\index.html',        'https://kayya.org/beta1.html',        'G3 (beta1)')
 )
+# Muss vom Server mit 403/404 beantwortet werden (Docs-Schutz, Schluessel, Setup-Skripte)
+$gesperrt=@('docs/abo-modell.html','docs/260723_V2_KAYYA_Lastenheft.docx','docs/260721_V1_KAYYA_Ideenpapier.docx',
+  'docs/260721_V1_KAYYA_Investorendeck.pptx','docs/260721_V1_KAYYA_Foerderfahrplan.docx','docs/260721_V1_KAYYA_Einschaetzung.docx',
+  'wartung-setup.php','kayya-setup.php','kayya-key.php','kayya-db.php')
+
+[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12
 $wc=New-Object Net.WebClient
-$sha=[Security.Cryptography.SHA256]::Create()
 $probleme=@()
 # Hash mit normalisierten Zeilenenden (CRLF->LF), damit Git-Normalisierung keine Phantom-Abweichungen erzeugt
 function normHash($bytes){ $t=[Text.Encoding]::UTF8.GetString($bytes) -replace "`r`n","`n"; [BitConverter]::ToString(([Security.Cryptography.SHA256]::Create()).ComputeHash([Text.Encoding]::UTF8.GetBytes($t))) }
+function httpCode($url){
+  try{ $r=[Net.HttpWebRequest]::Create($url); $r.Method='HEAD'; $r.AllowAutoRedirect=$false; $resp=$r.GetResponse(); $c=[int]$resp.StatusCode; $resp.Close(); return $c }
+  catch{ if($_.Exception.Response){ return [int]$_.Exception.Response.StatusCode } else { return 0 } }
+}
 
 Write-Host ''
-Write-Host '=== LOKAL <-> kayya.org (Byte-Vergleich) ==='
+Write-Host '=== LOKAL <-> kayya.org (Inhaltsvergleich) ==='
 foreach($p in $paare){
   $lp=Join-Path $basis $p[0]
   if(-not (Test-Path $lp)){ Write-Host ("  ?  "+$p[2]+" - lokale Datei fehlt: "+$p[0]); continue }
@@ -30,6 +40,15 @@ foreach($p in $paare){
     if($l -eq $r){ Write-Host ("  OK "+$p[2]) }
     else { Write-Host ("  !! "+$p[2]+" - WEICHT AB (lokal != live)"); $probleme+=($p[2]+': lokal != kayya.org') }
   }catch{ Write-Host ("  !! "+$p[2]+" - live nicht erreichbar"); $probleme+=($p[2]+': live nicht erreichbar') }
+}
+
+Write-Host ''
+Write-Host '=== GESPERRT (muss 403/404 liefern) ==='
+foreach($g in $gesperrt){
+  $code=httpCode('https://kayya.org/'+$g)
+  if($code -eq 403 -or $code -eq 404){ Write-Host ("  OK "+$g+" ("+$code+")") }
+  elseif($code -eq 0){ Write-Host ("  ?  "+$g+" (keine Antwort - nicht pruefbar)") }
+  else { Write-Host ("  !! "+$g+" OEFFENTLICH ("+$code+")"); $probleme+=('OEFFENTLICH: '+$g) }
 }
 
 Write-Host ''
@@ -50,6 +69,6 @@ if($ab.Count -ge 2){
 }
 
 Write-Host ''
-if($probleme.Count -eq 0){ Write-Host '>>> ALLES SYNCHRON: lokal = kayya.org = GitHub <<<' -ForegroundColor Green }
+if($probleme.Count -eq 0){ Write-Host '>>> ALLES SYNCHRON: lokal = kayya.org = GitHub, nichts Vertrauliches oeffentlich <<<' -ForegroundColor Green }
 else { Write-Host ('>>> '+$probleme.Count+' ABWEICHUNG(EN): '+($probleme -join ' | ')) -ForegroundColor Yellow }
 Write-Host ''

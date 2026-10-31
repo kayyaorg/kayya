@@ -37,7 +37,11 @@ Set-Content $askpass -Encoding ascii -Value "@echo off`r`npowershell -NoProfile 
 $umbenennen = @{ "index.html" = "beta1.html"; "landing.html" = "index.html" }
 # SEIT 16.10.2026: g5.html (G 0.5, eigenes Zugangswort) wird mit hochgeladen.
 # NICHT hochladen: kayya-setup.php / kayya-upgrade1.php (Tokens, nach Gebrauch loeschen).
-$files = if ($NurIndex) { @("index.html","landing.html") } else { @("index.html","landing.html","g5.html","wartung.html","wartung-api.php","ted-proxy.php","kayya-ki.php","foerder-proxy.php",".htaccess") }
+$files = if ($NurIndex) { @("index.html","landing.html") } else { @("index.html","landing.html","g4.html","g5.html","wartung.html","wartung-api.php","kayya-api.php","ted-proxy.php","kayya-ki.php","foerder-proxy.php",".htaccess") }
+# SEIT 31.10.2026: die Apps liegen in Unterordnern (G4-App: ..\G4\index.html -> g4/, G5-Frontend: g5\index.html -> g5/)
+$apps = @()
+$g4App = Join-Path (Split-Path $PSScriptRoot -Parent) 'G4\index.html'; if (-not $NurIndex -and (Test-Path $g4App)) { $apps += @{ lokal = $g4App; fern = 'g4' } }
+$g5App = Join-Path $PSScriptRoot 'g5\index.html';                          if (-not $NurIndex -and (Test-Path $g5App)) { $apps += @{ lokal = $g5App; fern = 'g5' } }
 $targets = @(Get-Content $ziele | Where-Object { $_ -and $_ -notmatch '^\s*#' })
 if ($targets.Count -eq 0) { Write-Host "ziele.txt enthaelt noch kein aktives Ziel (Beispielzeile entkommentieren)." -ForegroundColor Yellow; exit 2 }
 $ok = $true
@@ -84,7 +88,9 @@ foreach ($t in $targets) {
           $lines += "-mkdir wbilder"
           foreach ($f in $bilderFiles) { $lines += ('put "' + ($f.FullName -replace '\\','/') + '" wbilder/' + $f.Name) }
         }
+        foreach ($a in $apps) { $lines += ("-mkdir " + $a.fern); $lines += ('put "' + ($a.lokal -replace '\\','/') + '" ' + $a.fern + '/index.html') }
         foreach ($w in $docsWeg) { $lines += ("-rm docs/" + $w) }
+        if ($DocsBereinigen) { $lines += "-rm docs/abo-modell.html" }
         Set-Content $bat -Encoding ascii -Value $lines
         $env:KAYYA_SFTP_PW = $m.Groups[2].Value
         $env:SSH_ASKPASS = $askpass; $env:SSH_ASKPASS_REQUIRE = "force"

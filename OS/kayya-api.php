@@ -36,7 +36,7 @@ if($action==='ping'){
 if($action==='login'){
   $login=trim($in['login'] ?? ''); $pass=$in['pass'] ?? '';
   if($login===''||$pass==='') fail(400,'login und pass erforderlich');
-  $st=$db->prepare("SELECT id,pass_hash,name,rolle,tn_id FROM users WHERE login=? AND aktiv=1");
+  $st=$db->prepare("SELECT id,pass_hash,name,rolle,tn_id,kostentraeger_key FROM users WHERE login=? AND aktiv=1");
   $st->bind_param('s',$login); $st->execute(); $u=$st->get_result()->fetch_assoc();
   if(!$u || !password_verify($pass,$u['pass_hash'])){
     usleep(400000); fail(401,'Anmeldung fehlgeschlagen');
@@ -46,16 +46,20 @@ if($action==='login'){
   $st->bind_param('si',$tok,$u['id']); $st->execute();
   $st=$db->prepare("INSERT INTO protokoll(user_id,aktion,detail) VALUES(?,?,?)");
   $ak='login'; $dt='Anmeldung '.$u['rolle']; $st->bind_param('iss',$u['id'],$ak,$dt); $st->execute();
-  echo json_encode(['token'=>$tok,'name'=>$u['name'],'rolle'=>$u['rolle'],'tn_id'=>$u['tn_id']],JSON_UNESCAPED_UNICODE); exit;
+  echo json_encode(['token'=>$tok,'name'=>$u['name'],'rolle'=>$u['rolle'],'tn_id'=>$u['tn_id'],'kostentraeger_key'=>$u['kostentraeger_key']],JSON_UNESCAPED_UNICODE); exit;
 }
 
 /* ---- Auth-Pflicht für alles Weitere ---- */
 $tok=$_SERVER['HTTP_X_KAYYA_TOKEN'] ?? $_GET['token'] ?? $in['token'] ?? '';
 if($tok==='') fail(401,'kein Token');
-$st=$db->prepare("SELECT u.id,u.name,u.rolle,u.tn_id FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token=? AND s.ablauf>NOW() AND u.aktiv=1");
+$st=$db->prepare("SELECT u.id,u.name,u.rolle,u.tn_id,u.kostentraeger_key FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token=? AND s.ablauf>NOW() AND u.aktiv=1");
 $st->bind_param('s',$tok); $st->execute(); $ME=$st->get_result()->fetch_assoc();
 if(!$ME) fail(401,'Sitzung abgelaufen');
 $ROLLE=$ME['rolle'];
+/* Kostenträger sehen serverseitig nur Maßnahmen ihres eigenen Schlüssels; ohne Schlüssel sehen sie nichts. */
+$KTR=($ROLLE==='kostentraeger') ? (string)($ME['kostentraeger_key'] ?? '') : null;
+function ktrWhere($alias){ global $KTR; return ($KTR===null) ? '' : " AND $alias.kostentraeger_key=? "; }
+function ktrBind($st,$types,&$params){ global $KTR; if($KTR!==null){ $types.='s'; $params[]=$KTR; } if($types!==''){ $st->bind_param($types,...$params); } }
 
 function protokoll($db,$uid,$aktion,$detail){
   $st=$db->prepare("INSERT INTO protokoll(user_id,aktion,detail) VALUES(?,?,?)");
@@ -70,8 +74,8 @@ case 'me':
 
 case 'massnahmen':
   nur(['management','kursleiter','kostentraeger','demo']);
-  $st=$db->prepare("SELECT kennung,name,plaetze,belegt,anwesenheit_prozent,fortschritt_prozent,kosten_je_eingliederung,ampel,status FROM massnahmen ORDER BY kennung");
-  $st->execute(); echo json_encode(alle($st),JSON_UNESCAPED_UNICODE); break;
+  $st=$db->prepare("SELECT m.kennung,m.name,m.plaetze,m.belegt,m.anwesenheit_prozent,m.fortschritt_prozent,m.kosten_je_eingliederung,m.ampel,m.status,m.kostentraeger,m.kostentraeger_key FROM massnahmen m WHERE 1=1".ktrWhere('m')." ORDER BY m.kennung");
+  $p=[]; ktrBind($st,'',$p); $st->execute(); echo json_encode(alle($st),JSON_UNESCAPED_UNICODE); break;
 
 case 'teilnehmer':
   nur(['management','kursleiter','demo']);
@@ -94,7 +98,7 @@ case 'mein_stand':
   echo json_encode($me,JSON_UNESCAPED_UNICODE); break;
 
 case 'anwesenheit_setzen':
-  nur(['kursleiter','teilnehmer','demo']);
+  nur(['kursleiter','teilnehmer']);
   $tn=(int)($in['tn_id'] ?? 0); $status=$in['status'] ?? ''; $quelle=$in['quelle'] ?? ($ROLLE==='teilnehmer'?'Teilnehmer-App':'Kursleiter');
   if($ROLLE==='teilnehmer'){ $tn=(int)$ME['tn_id']; if(!in_array($status,['krank','checkin'])) fail(403,'Teilnehmer dürfen nur krank/checkin melden'); }
   if($tn<1 || !in_array($status,['anwesend','krank','fehlt','checkin'])) fail(400,'tn_id/status ungültig');
@@ -120,7 +124,7 @@ case 'meldungen':
   $st->execute(); echo json_encode(alle($st),JSON_UNESCAPED_UNICODE); break;
 
 case 'meldung':
-  nur(['kursleiter','teilnehmer','demo']);
+  nur(['kursleiter','teilnehmer']);
   $tx=trim($in['text'] ?? ''); $ty=trim($in['typ'] ?? 'hinweis');
   $tn=($ROLLE==='teilnehmer') ? (int)$ME['tn_id'] : (int)($in['tn_id'] ?? 0);
   if($tx==='') fail(400,'text erforderlich');
@@ -131,21 +135,42 @@ case 'meldung':
 
 case 'belege':
   nur(['management','kostentraeger','demo']);
-  $st=$db->prepare("SELECT m.kennung,b.typ,b.betrag,DATE_FORMAT(b.datum,'%d.%m.%Y') datum,b.beschreibung,b.status FROM belege b JOIN massnahmen m ON m.id=b.massnahme_id ORDER BY b.datum DESC");
-  $st->execute(); echo json_encode(alle($st),JSON_UNESCAPED_UNICODE); break;
+  $st=$db->prepare("SELECT m.kennung,b.typ,b.betrag,DATE_FORMAT(b.datum,'%d.%m.%Y') datum,b.beschreibung,b.status FROM belege b JOIN massnahmen m ON m.id=b.massnahme_id WHERE 1=1".ktrWhere('m')." ORDER BY b.datum DESC");
+  $p=[]; ktrBind($st,'',$p); $st->execute(); echo json_encode(alle($st),JSON_UNESCAPED_UNICODE); break;
 
 case 'zeugnisse':
   nur(['management','kursleiter','kostentraeger','demo']);
-  $st=$db->prepare("SELECT t.name,z.typ,z.titel,DATE_FORMAT(z.ausgestellt,'%d.%m.%Y') ausgestellt,z.status FROM zeugnisse z JOIN teilnehmer t ON t.id=z.tn_id ORDER BY z.ausgestellt DESC");
-  $st->execute(); echo json_encode(alle($st),JSON_UNESCAPED_UNICODE); break;
+  $st=$db->prepare("SELECT t.name,z.typ,z.titel,DATE_FORMAT(z.ausgestellt,'%d.%m.%Y') ausgestellt,z.status,m.kennung FROM zeugnisse z JOIN teilnehmer t ON t.id=z.tn_id JOIN massnahmen m ON m.id=t.massnahme_id WHERE 1=1".ktrWhere('m')." ORDER BY z.ausgestellt DESC");
+  $p=[]; ktrBind($st,'',$p); $st->execute(); echo json_encode(alle($st),JSON_UNESCAPED_UNICODE); break;
+
+case 'blick_token':
+  /* Teilbarer Lese-Zugang für einen Kostenträger: eigenes Konto mit Rolle kostentraeger + Schlüssel, Sitzung 90 Tage. Nur Management. */
+  nur(['management']);
+  $key=preg_replace('/[^a-z0-9\-]/','',strtolower(trim($in['key'] ?? '')));
+  if($key==='') fail(400,'key erforderlich');
+  $st=$db->prepare("SELECT kostentraeger FROM massnahmen WHERE kostentraeger_key=? LIMIT 1");
+  $st->bind_param('s',$key); $st->execute(); $kt=$st->get_result()->fetch_assoc();
+  if(!$kt) fail(404,'kein Kostenträger mit diesem Schlüssel');
+  $login='blick-'.$key;
+  $st=$db->prepare("SELECT id FROM users WHERE login=?"); $st->bind_param('s',$login); $st->execute(); $u=$st->get_result()->fetch_assoc();
+  if(!$u){
+    $h=password_hash(bin2hex(random_bytes(24)),PASSWORD_DEFAULT); $nm=$kt['kostentraeger'].' · Live-Blick'; $ro='kostentraeger';
+    $st=$db->prepare("INSERT INTO users(login,pass_hash,name,rolle,kostentraeger_key) VALUES(?,?,?,?,?)");
+    $st->bind_param('sssss',$login,$h,$nm,$ro,$key); $st->execute(); $uid=$db->insert_id;
+  } else $uid=(int)$u['id'];
+  $tok2=bin2hex(random_bytes(32));
+  $st=$db->prepare("INSERT INTO sessions(token,user_id,ablauf) VALUES(?,?,DATE_ADD(NOW(),INTERVAL 90 DAY))");
+  $st->bind_param('si',$tok2,$uid); $st->execute();
+  protokoll($db,$ME['id'],'blick_token','Lese-Zugang erzeugt für '.$kt['kostentraeger']);
+  echo json_encode(['ok'=>true,'token'=>$tok2,'kostentraeger'=>$kt['kostentraeger'],'gueltig_tage'=>90],JSON_UNESCAPED_UNICODE); break;
 
 case 'protokoll':
-  nur(['management','kostentraeger','demo']);
+  nur(['management','demo']);
   $st=$db->prepare("SELECT DATE_FORMAT(p.zeit,'%d.%m. %H:%i:%s') zeit,u.name,p.aktion,p.detail FROM protokoll p LEFT JOIN users u ON u.id=p.user_id ORDER BY p.id DESC LIMIT 100");
   $st->execute(); echo json_encode(alle($st),JSON_UNESCAPED_UNICODE); break;
 
 case 'massnahme_anlegen':
-  nur(['management','demo']);
+  nur(['management']);
   $kennung=trim($in['kennung'] ?? ''); $name=trim($in['name'] ?? ''); $pl=(int)($in['plaetze'] ?? 0);
   if($kennung===''||$name===''||$pl<1) fail(400,'kennung, name, plaetze erforderlich');
   $st=$db->prepare("SELECT COUNT(*) c FROM massnahmen WHERE kennung=?");
@@ -157,7 +182,7 @@ case 'massnahme_anlegen':
   echo json_encode(['ok'=>true]); break;
 
 case 'teilnehmer_anlegen':
-  nur(['management','kursleiter','demo']);
+  nur(['management','kursleiter']);
   $name=trim($in['name'] ?? ''); $kennung=trim($in['kennung'] ?? ''); $pfad=trim($in['foerderpfad'] ?? 'Zuweisung');
   if($name===''||$kennung==='') fail(400,'name und kennung erforderlich');
   $st=$db->prepare("SELECT id FROM massnahmen WHERE kennung=?");
@@ -172,7 +197,7 @@ case 'teilnehmer_anlegen':
   echo json_encode(['ok'=>true]); break;
 
 case 'beleg_anlegen':
-  nur(['management','kursleiter','demo']);
+  nur(['management','kursleiter']);
   $kennung=trim($in['kennung'] ?? ''); $typ=trim($in['typ'] ?? 'Sachkosten'); $betrag=(float)($in['betrag'] ?? 0); $besch=trim($in['beschreibung'] ?? '');
   if($kennung===''||$betrag<=0) fail(400,'kennung und betrag erforderlich');
   $st=$db->prepare("SELECT id FROM massnahmen WHERE kennung=?");

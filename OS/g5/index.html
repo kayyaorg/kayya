@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KAȲȲA G5</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico">
+<style>
+@font-face{font-family:'Fraunces';src:url('../fonts/Fraunces-var.woff2') format('woff2');font-weight:400 700;font-display:swap}
+@font-face{font-family:'Inter';src:url('../fonts/Inter-var.woff2') format('woff2');font-weight:400 800;font-display:swap}
+:root{ --bg:#F7F5F0; --karte:#FFFFFF; --ink:#1C1816; --mut:#716A62; --line:#E5E0D7; --akz:#5B1B5B; --akz-flaeche:#EFE7EF;
+  --gruen:#1E7B4D; --gelb:#9A6A00; --rot:#B3261E; --schatten:0 1px 2px rgba(28,24,22,.04) }
+@media (prefers-color-scheme:dark){ :root{ --bg:#161311; --karte:#201C19; --ink:#EDE8E2; --mut:#9B938A; --line:#2E2925; --akz:#D9A8D9; --akz-flaeche:#32242F;
+  --gruen:#4CC98A; --gelb:#E8B94A; --rot:#FF7A70; --schatten:0 1px 2px rgba(0,0,0,.2) } }
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink)}
+body{font:15.5px/1.55 'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px 70px}
+header{display:flex;align-items:center;justify-content:space-between;padding:22px 0;border-bottom:1px solid var(--line);margin-bottom:28px;flex-wrap:wrap;gap:12px}
+.marke{display:flex;align-items:center;gap:12px}
+.marke svg{height:30px;width:auto;display:block}
+.marke .ka{fill:var(--ink)} .marke .yy{fill:var(--akz)}
+.chip{font:600 10.5px 'Inter',sans-serif;letter-spacing:.1em;color:var(--mut);border:1px solid var(--line);border-radius:99px;padding:4px 11px}
+.kopfr{display:flex;gap:16px;align-items:center;font-size:13.5px;color:var(--mut);flex-wrap:wrap}
+.kopfr b{color:var(--ink);font-weight:600}
+.kopfr a,.kopfr span[onclick]{cursor:pointer;padding-bottom:1px;border-bottom:1px solid transparent}
+.kopfr a:hover,.kopfr span[onclick]:hover{color:var(--akz);border-bottom-color:var(--akz)}
+h1{font:600 clamp(26px,3.6vw,36px)/1.15 'Fraunces',serif;letter-spacing:-.015em}
+h1 em{font-style:italic;color:var(--akz)}
+h2{font:600 19px/1.25 'Fraunces',serif;margin-bottom:12px}
+.sub{color:var(--mut);margin:6px 0 22px;max-width:680px}
+.eyebrow{font:700 12px 'Inter',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin:30px 0 12px;border-top:1px solid var(--line);padding-top:16px}
+.karte{background:var(--karte);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:14px;box-shadow:var(--schatten)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:14px}
+.kpi{background:var(--karte);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.kpi b{display:block;font:600 28px/1.1 'Fraunces',serif;margin-bottom:4px}
+.kpi span{font-size:12.5px;color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);padding:7px 8px;border-bottom:1px solid var(--line);font-weight:700}
+td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.tabelle{overflow-x:auto}
+.tag{display:inline-block;font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;border:1px solid var(--line);color:var(--mut);white-space:nowrap}
+.tag.gruen{color:var(--gruen);border-color:var(--gruen)} .tag.gelb{color:var(--gelb);border-color:var(--gelb)} .tag.rot{color:var(--rot);border-color:var(--rot)} .tag.akz{color:var(--akz);border-color:var(--akz)}
+.balken{height:6px;background:var(--line);border-radius:3px;overflow:hidden;min-width:70px}
+.balken i{display:block;height:100%;background:var(--gruen)} .balken i.gelb{background:var(--gelb)} .balken i.rot{background:var(--rot)}
+.btn{display:inline-block;font:600 13.5px 'Inter',sans-serif;border-radius:10px;padding:9px 16px;border:1.5px solid var(--ink);background:none;color:var(--ink);cursor:pointer;transition:all .15s}
+.btn:hover{border-color:var(--akz);color:var(--akz)}
+.btn.voll{background:var(--ink);color:var(--bg)} .btn.voll:hover{background:var(--akz);border-color:var(--akz);color:#fff}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+label{font-size:12px;font-weight:700;color:var(--mut);display:block;margin:12px 0 5px}
+.zeile{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.hinweis{font-size:12.5px;color:var(--mut);line-height:1.5}
+.login{max-width:420px;margin:50px auto}
+.link{font-family:ui-monospace,Consolas,monospace;font-size:12.5px;word-break:break-all;background:var(--akz-flaeche);border-radius:8px;padding:10px 12px;margin-top:10px}
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--ink);color:var(--bg);font-size:13.5px;border-radius:10px;padding:10px 18px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:60;max-width:90vw}
+#toast.an{opacity:1}
+footer{margin-top:50px;border-top:1px solid var(--line);padding:18px 0;font-size:12.5px;color:var(--mut);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+@media (max-width:640px){ .kpis{grid-template-columns:1fr 1fr} td,th{padding:7px 5px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a class="marke" href="../g5.html" title="Zur Übersicht"><svg viewBox="-8 -26 276.19 134" role="img" aria-label="KAȲȲA"><g class="ka"><path d="M4.200 53.768 L42.994 100.000 L48.476 100.000 L6.521 50.000 L48.476 0.000 L42.994 0.000 L4.200 46.232 L4.200 0.000 L0.000 0.000 L0.000 100.000 L4.200 100.000 Z"/><path d="M79.072 0.000 L49.072 74.253 L49.072 85.464 L79.072 11.212 L109.072 85.464 L109.072 74.253 Z"/><path d="M230.190 0.000 L260.190 74.253 L260.190 85.464 L230.190 11.212 L200.190 85.464 L200.190 74.253 Z"/></g><g class="yy"><path d="M120.972 62.394 L95.764 0.000 L91.234 0.000 L118.872 68.408 L118.872 100.000 L123.072 100.000 L123.072 68.408 L150.711 0.000 L146.181 0.000 Z"/><path d="M188.290 62.394 L213.499 0.000 L218.029 0.000 L190.390 68.408 L190.390 100.000 L186.190 100.000 L186.190 68.408 L158.551 0.000 L163.081 0.000 Z"/><rect x="99.56" y="-16.0" width="42.82" height="4.2" rx="2.1"/><rect x="166.88" y="-16.0" width="42.82" height="4.2" rx="2.1"/></g></svg><span class="chip">G5 β.2.0.0 · DB</span></a>
+  <div class="kopfr"><span id="k-wer"></span><span id="k-ab" onclick="abmelden()" hidden>Abmelden</span><a href="../g5.html">Übersicht</a></div>
+</header>
+<div id="app"><div class="hinweis">Lade …</div></div>
+<footer><span>KAȲȲA · Bildungs- und Eingliederungsträger, Berlin</span><span><a href="/">Impressum &amp; Datenschutz auf kayya.org</a></span></footer>
+</div>
+<div id="toast"></div>
+
+<script>
+/* G5-Frontend: eine Datenbasis (kayya-api.php), Rolle und Sichtbarkeit entscheidet der Server.
+   Kostenträger sehen nur ihre eigenen Maßnahmen (serverseitig gefiltert); die Demo-Rolle ist nur lesend. */
+var TOK=null; try{ TOK=sessionStorage.getItem('g5_tok'); }catch(e){}
+var WER=null, C={};
+var $=function(id){ return document.getElementById(id); };
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function toast(t){ var e=$('toast'); e.textContent=t; e.classList.add('an'); clearTimeout(e._t); e._t=setTimeout(function(){ e.classList.remove('an'); },4000); }
+function api(body){
+  return fetch('/kayya-api.php',{method:'POST',headers:{'Content-Type':'application/json','X-KAYYA-Token':TOK||''},body:JSON.stringify(body)})
+    .then(function(r){ return r.json(); })
+    .then(function(j){ if(j&&j.error){ if(/Token|Sitzung/.test(j.error)){ TOK=null; WER=null; try{ sessionStorage.removeItem('g5_tok'); }catch(e){} route(); } throw new Error(j.error); } return j; });
+}
+function amp(a){ return a==='rot'?'<span class="tag rot">Rot</span>':a==='gelb'?'<span class="tag gelb">Gelb</span>':'<span class="tag gruen">Grün</span>'; }
+function prozent(p){ p=+p||0; var k=p>=85?'':p>=70?'gelb':'rot'; return '<div class="zeile" style="gap:8px"><div class="balken" style="flex:1"><i class="'+k+'" style="width:'+p+'%"></i></div><span style="font-size:12.5px;min-width:38px">'+p+' %</span></div>'; }
+function kopf(){ $('k-wer').innerHTML=WER?('<b>'+esc(WER.name)+'</b> · '+esc(WER.rolle)):''; $('k-ab').hidden=!WER; }
+
+/* ---------- Anmeldung ---------- */
+function vLogin(){
+  kopf();
+  $('app').innerHTML='<div class="karte login"><h2>Anmelden</h2><div class="hinweis">Die Rolle des Kontos bestimmt, was der Server liefert. Beta-Konten: <b>bernhard</b> (Management) · <b>jobcenter</b> (Kostenträger) · saglam · tn-bernhard.</div>'
+   +'<label>Konto</label><input id="l-u" autocomplete="username"><label>Passwort</label><input id="l-p" type="password" autocomplete="current-password">'
+   +'<div id="l-err" class="hinweis" style="color:var(--rot);min-height:18px;margin-top:6px"></div>'
+   +'<button class="btn voll" style="margin-top:6px" onclick="login()">Anmelden</button></div>';
+  $('l-p').addEventListener('keydown',function(e){ if(e.key==='Enter') login(); });
+}
+function login(){
+  var u=$('l-u').value.trim(), p=$('l-p').value;
+  if(!u||!p){ $('l-err').textContent='Konto und Passwort eingeben.'; return; }
+  api({action:'login',login:u,pass:p}).then(function(j){
+    TOK=j.token; WER=j; try{ sessionStorage.setItem('g5_tok',TOK); }catch(e){}
+    location.hash=heim(); route();
+  }).catch(function(){ $('l-err').textContent='Anmeldung fehlgeschlagen.'; });
+}
+function abmelden(){ api({action:'logout'}).catch(function(){}); TOK=null; WER=null; try{ sessionStorage.removeItem('g5_tok'); }catch(e){} location.hash=''; route(); }
+function heim(){ return WER&&WER.rolle==='kostentraeger'?'#/ktr':'#/m'; }
+
+/* ---------- Kostenträger: Live-Report (Server liefert nur die eigenen Maßnahmen) ---------- */
+function vKtr(vorschauKey){
+  Promise.all([api({action:'massnahmen'}),api({action:'belege'}),api({action:'zeugnisse'})]).then(function(r){
+    var ms=r[0], bl=r[1], zg=r[2];
+    if(vorschauKey){ ms=ms.filter(function(m){ return m.kostentraeger_key===vorschauKey; }); var kn=ms.map(function(m){ return m.kennung; }); bl=bl.filter(function(b){ return kn.indexOf(b.kennung)>=0; }); zg=zg.filter(function(z){ return kn.indexOf(z.kennung)>=0; }); }
+    var name=ms.length?ms[0].kostentraeger:(WER.name||'Kostenträger');
+    var pl=ms.reduce(function(a,m){ return a+(+m.plaetze); },0), bel=ms.reduce(function(a,m){ return a+(+m.belegt); },0);
+    var anw=ms.filter(function(m){ return +m.anwesenheit_prozent>0; }); var anwD=anw.length?Math.round(anw.reduce(function(a,m){ return a+(+m.anwesenheit_prozent); },0)/anw.length):null;
+    var rot=ms.filter(function(m){ return m.ampel==='rot'; }).length;
+    var h='<h1>'+esc(name)+' · <em>Live-Report</em></h1><div class="sub">Ist-Daten aus der laufenden Durchführung — kein Selbstbericht des Trägers. '+(vorschauKey?'<span class="tag akz">Vorschau aus Management-Sicht</span>':'Sie sehen ausschließlich die Maßnahmen, die Ihr Haus finanziert; die Zuordnung prüft der Server.')+'</div>';
+    h+='<div class="kpis"><div class="kpi"><b>'+ms.length+'</b><span>finanzierte Maßnahmen</span></div><div class="kpi"><b>'+bel+' / '+pl+'</b><span>Plätze belegt</span></div><div class="kpi"><b>'+(anwD===null?'—':anwD+' %')+'</b><span>Ø Anwesenheit</span></div><div class="kpi"><b style="color:'+(rot?'var(--rot)':'var(--gruen)')+'">'+rot+'</b><span>Maßnahmen mit roter Ampel</span></div></div>';
+    h+='<div class="karte"><h2>Maßnahmen</h2><div class="tabelle"><table><tr><th>Kennung</th><th>Maßnahme</th><th>Plätze</th><th>Anwesenheit</th><th>Fortschritt</th><th>€ / Eingliederung</th><th>Ampel</th></tr>';
+    if(!ms.length) h+='<tr><td colspan="7" class="hinweis">Keine Maßnahmen für dieses Konto zugeordnet.</td></tr>';
+    ms.forEach(function(m){ h+='<tr><td>'+esc(m.kennung)+'</td><td><b>'+esc(m.name)+'</b></td><td>'+m.belegt+' / '+m.plaetze+'</td><td style="min-width:130px">'+prozent(m.anwesenheit_prozent)+'</td><td style="min-width:130px">'+prozent(m.fortschritt_prozent)+'</td><td>'+esc(m.kosten_je_eingliederung||'—')+'</td><td>'+amp(m.ampel)+'</td></tr>'; });
+    h+='</table></div></div>';
+    h+='<div class="karte"><h2>Belegkette</h2><div class="tabelle"><table><tr><th>Datum</th><th>Maßnahme</th><th>Typ</th><th>Beschreibung</th><th>Betrag</th><th>Status</th></tr>';
+    if(!bl.length) h+='<tr><td colspan="6" class="hinweis">Keine Belege.</td></tr>';
+    bl.slice(0,25).forEach(function(b){ h+='<tr><td>'+esc(b.datum)+'</td><td>'+esc(b.kennung)+'</td><td>'+esc(b.typ)+'</td><td>'+esc(b.beschreibung||'')+'</td><td style="white-space:nowrap">'+(+b.betrag).toLocaleString('de-DE',{minimumFractionDigits:2})+' €</td><td><span class="tag">'+esc(b.status)+'</span></td></tr>'; });
+    h+='</table></div></div>';
+    h+='<div class="karte"><h2>Eingliederungs- und Erfolgsnachweise</h2><div class="tabelle"><table><tr><th>Teilnehmer:in</th><th>Maßnahme</th><th>Nachweis</th><th>ausgestellt</th><th>Status</th></tr>';
+    if(!zg.length) h+='<tr><td colspan="5" class="hinweis">Noch keine Nachweise.</td></tr>';
+    zg.forEach(function(z){ h+='<tr><td>'+esc(z.name)+'</td><td>'+esc(z.kennung)+'</td><td>'+esc(z.titel)+'</td><td>'+esc(z.ausgestellt||'—')+'</td><td><span class="tag gruen">'+esc(z.status)+' · eIDAS</span></td></tr>'; });
+    h+='</table></div></div>';
+    $('app').innerHTML=h;
+  }).catch(function(e){ $('app').innerHTML='<div class="karte hinweis">Daten nicht verfügbar: '+esc(e.message)+'</div>'; });
+}
+
+/* ---------- Management ---------- */
+function vMgmt(){
+  var lesend=WER.rolle!=='management';
+  Promise.all([api({action:'massnahmen'}),api({action:'belege'}),api({action:'protokoll'}).catch(function(){ return []; })]).then(function(r){
+    var ms=r[0], bl=r[1], pr=r[2]; C.ms=ms;
+    var kts={}; ms.forEach(function(m){ if(m.kostentraeger_key) kts[m.kostentraeger_key]=m.kostentraeger; });
+    var h='<h1>Management · <em>Maßnahmen &amp; Kostenträger</em></h1><div class="sub">Alle Maßnahmen des Trägers, die Zuordnung zum Geldgeber und der Lese-Zugang, den Sie dem Kostenträger geben.'+(lesend?' <span class="tag akz">Demo-Rundgang · nur lesend</span>':'')+'</div>';
+    h+='<div class="kpis"><div class="kpi"><b>'+ms.length+'</b><span>Maßnahmen</span></div><div class="kpi"><b>'+Object.keys(kts).length+'</b><span>Kostenträger</span></div><div class="kpi"><b>'+ms.reduce(function(a,m){ return a+(+m.belegt); },0)+'</b><span>Teilnehmerplätze belegt</span></div><div class="kpi"><b style="color:var(--rot)">'+ms.filter(function(m){ return m.ampel==='rot'; }).length+'</b><span>rote Ampeln</span></div></div>';
+    h+='<div class="karte"><h2>Maßnahmen</h2><div class="tabelle"><table><tr><th>Kennung</th><th>Maßnahme</th><th>Kostenträger</th><th>Plätze</th><th>Anwesenheit</th><th>Ampel</th><th></th></tr>';
+    ms.forEach(function(m){ h+='<tr><td>'+esc(m.kennung)+'</td><td><b>'+esc(m.name)+'</b></td><td>'+esc(m.kostentraeger||'<span class="hinweis">nicht zugeordnet</span>')+'</td><td>'+m.belegt+' / '+m.plaetze+'</td><td style="min-width:120px">'+prozent(m.anwesenheit_prozent)+'</td><td>'+amp(m.ampel)+'</td><td>'+(m.kostentraeger_key?'<a href="#/ktr/'+esc(m.kostentraeger_key)+'" style="color:var(--akz);font-weight:600;white-space:nowrap">Kostenträger-Sicht ›</a>':'')+'</td></tr>'; });
+    h+='</table></div></div>';
+    h+='<div class="karte"><h2>Lese-Zugang für einen Kostenträger</h2><div class="hinweis">Erzeugt einen Link mit eigenem Lese-Konto, 90 Tage gültig. Der Server liefert darüber ausschließlich die Maßnahmen dieses Kostenträgers.</div>'
+     +'<div class="zeile" style="margin-top:12px"><select id="bl-key" style="width:auto;min-width:240px">'+Object.keys(kts).map(function(k){ return '<option value="'+esc(k)+'">'+esc(kts[k])+'</option>'; }).join('')+'</select><button class="btn voll" onclick="blick()" '+(lesend?'disabled':'')+'>Link erzeugen</button></div><div id="bl-out"></div></div>';
+    h+='<div class="karte"><h2>Maßnahme anlegen</h2><div class="hinweis">Aus Zuschlag wird Maßnahme — ohne Neuerfassung an anderer Stelle.</div><div class="zeile" style="margin-top:10px;align-items:flex-end"><div style="flex:0 0 120px"><label>Kennung</label><input id="m-k" placeholder="M-4716"></div><div style="flex:1 1 220px"><label>Name</label><input id="m-n" placeholder="z. B. FbW Pflegebasiskurs (Los 3)"></div><div style="flex:0 0 100px"><label>Plätze</label><input id="m-p" type="number" min="1" value="20"></div><button class="btn voll" onclick="anlegen()" '+(lesend?'disabled':'')+'>Anlegen</button></div></div>';
+    h+='<div class="karte"><h2>Letzte Belege</h2><div class="tabelle"><table><tr><th>Datum</th><th>Maßnahme</th><th>Typ</th><th>Beschreibung</th><th>Betrag</th><th>Status</th></tr>';
+    bl.slice(0,12).forEach(function(b){ h+='<tr><td>'+esc(b.datum)+'</td><td>'+esc(b.kennung)+'</td><td>'+esc(b.typ)+'</td><td>'+esc(b.beschreibung||'')+'</td><td style="white-space:nowrap">'+(+b.betrag).toLocaleString('de-DE',{minimumFractionDigits:2})+' €</td><td><span class="tag">'+esc(b.status)+'</span></td></tr>'; });
+    h+='</table></div></div>';
+    if(pr.length){ h+='<div class="karte"><h2>Ereignisprotokoll</h2><div class="tabelle"><table><tr><th>Zeit</th><th>Wer</th><th>Aktion</th><th>Detail</th></tr>'; pr.slice(0,15).forEach(function(p){ h+='<tr><td style="white-space:nowrap">'+esc(p.zeit)+'</td><td>'+esc(p.name||'System')+'</td><td>'+esc(p.aktion)+'</td><td>'+esc(p.detail||'')+'</td></tr>'; }); h+='</table></div><div class="hinweis" style="margin-top:8px">Append-only: Einträge werden nie geändert oder gelöscht.</div></div>'; }
+    $('app').innerHTML=h;
+  }).catch(function(e){ $('app').innerHTML='<div class="karte hinweis">Daten nicht verfügbar: '+esc(e.message)+'</div>'; });
+}
+function blick(){
+  var key=$('bl-key').value; if(!key) return;
+  api({action:'blick_token',key:key}).then(function(j){
+    var url=location.origin+'/g5/?t='+j.token;
+    $('bl-out').innerHTML='<div class="link">'+esc(url)+'</div><div class="zeile" style="margin-top:8px"><button class="btn" onclick="navigator.clipboard&&navigator.clipboard.writeText(\''+url+'\').then(function(){toast(\'Link kopiert.\')})">Kopieren</button><span class="hinweis">'+esc(j.kostentraeger)+' · gültig '+j.gueltig_tage+' Tage · Lese-Konto, protokolliert</span></div>';
+  }).catch(function(e){ toast('Fehlgeschlagen: '+e.message); });
+}
+function anlegen(){
+  var k=$('m-k').value.trim(), n=$('m-n').value.trim(), p=+$('m-p').value;
+  if(!k||!n||!p){ toast('Kennung, Name und Plätze eingeben.'); return; }
+  api({action:'massnahme_anlegen',kennung:k,name:n,plaetze:p}).then(function(j){ toast(j.hinweis?('Maßnahme '+k+' existiert bereits.'):('Maßnahme '+k+' angelegt — sichtbar für alle Rollen.')); vMgmt(); }).catch(function(e){ toast('Fehlgeschlagen: '+e.message); });
+}
+
+/* ---------- Andere Rollen: Frontend folgt ---------- */
+function vFolgt(){
+  $('app').innerHTML='<div class="karte"><h2>'+esc(WER.name)+' · '+esc(WER.rolle)+'</h2><div class="hinweis">Das G5-Frontend für diese Rolle ist in Arbeit. Zuerst kommen Kostenträger-Report und Management; Kursleitung und Teilnehmer folgen.</div></div>';
+}
+
+/* ---------- Router ---------- */
+function route(){
+  var lt=null; try{ lt=new URLSearchParams(location.search).get('t'); }catch(e){}
+  if(lt&&/^[0-9a-f]{64}$/.test(lt)){ TOK=lt; try{ sessionStorage.setItem('g5_tok',TOK); }catch(e){} history.replaceState(null,'',location.pathname+'#/ktr'); }
+  if(!TOK){ vLogin(); return; }
+  if(!WER){ api({action:'me'}).then(function(j){ WER=j; kopf(); route(); }).catch(function(){ vLogin(); }); return; }
+  kopf();
+  var h=location.hash.replace('#/',''), teile=h.split('/'), k=teile[0]||'';
+  if(!k){ location.hash=heim(); return; }
+  if(k==='ktr'){ if(WER.rolle==='kostentraeger') vKtr(null); else if(WER.rolle==='management'||WER.rolle==='demo') vKtr(teile[1]||null); else vFolgt(); return; }
+  if(k==='m'){ if(WER.rolle==='management'||WER.rolle==='demo') vMgmt(); else if(WER.rolle==='kostentraeger') location.hash='#/ktr'; else vFolgt(); return; }
+  vFolgt();
+}
+window.addEventListener('hashchange',route);
+route();
+</script>
+</body>
+</html>

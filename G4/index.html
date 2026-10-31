@@ -10740,6 +10740,9 @@ window.DBA=(function(){
   }
   function start(){
     var s=null; try{ s=JSON.parse(sessionStorage.getItem('kayya_db_sess')||'null'); }catch(e){}
+    /* Live-Blick-Link (?t=TOKEN): serverseitiges Lese-Konto des Kostenträgers, Sitzung 90 Tage */
+    var lt=null; try{ lt=new URLSearchParams(location.search).get('t'); }catch(e){}
+    if(lt&&/^[0-9a-f]{64}$/.test(lt)){ s={t:lt}; try{ sessionStorage.setItem('kayya_db_sess',JSON.stringify(s)); }catch(e){} }
     if(s&&s.t){
       token=s.t;
       api({action:'me'},function(j){
@@ -10783,10 +10786,14 @@ window.KTR_MAP={
 })();
 window.ktr_link=function(key){
   var k=window.KTR_MAP[key]; if(!k) return;
-  var url=location.origin+'/g4/?blick='+key;
-  var fertig=function(){ toast('Live-Link kopiert: '+k.n+' sieht nur die eigenen Maßnahmen — in Echtzeit, nur lesend.'); };
-  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(fertig,function(){ prompt('Link kopieren:',url); });
-  else prompt('Link kopieren:',url);
+  if(!(window.DBA&&DBA.wer()&&DBA.wer().rolle==='management')){ toast('Live-Links erzeugt nur ein angemeldetes Management-Konto (⎆ Anmelden).'); return; }
+  DBA.api({action:'blick_token',key:key},function(j){
+    if(!j||!j.token){ toast('Live-Link konnte nicht erzeugt werden.'); return; }
+    var url=location.origin+'/g4/?t='+j.token;
+    var fertig=function(){ toast('Live-Link kopiert: '+j.kostentraeger+' sieht serverseitig nur die eigenen Maßnahmen, nur lesend, '+j.gueltig_tage+' Tage gültig.'); };
+    if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(fertig,function(){ prompt('Link kopieren:',url); });
+    else prompt('Link kopieren:',url);
+  });
 };
 /* ==== AZAV-Audit-Export: Nachweispaket aus der laufenden Datenbasis ==== */
 window.m_azavExport=function(){
