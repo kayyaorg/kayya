@@ -1,0 +1,28 @@
+Options -Indexes
+# KAYYA OS - Schluesseldatei nie direkt ausliefern (Deploy laedt diese Datei mit hoch)
+<Files "kayya-key.php">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order deny,allow
+    Deny from all
+  </IfModule>
+</Files>
+
+# ALLE .html nie cachen - Aenderungen sofort sichtbar (auch iPhone); Bilder/JS bleiben cachebar
+<IfModule mod_headers.c>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+</IfModule>
+# KAYYA DB-Zugangsdaten nie ausliefern
+<Files "kayya-db.php">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order deny,allow
+    Deny from all
+  </IfModule>
+</Files>
