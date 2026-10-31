@@ -56,10 +56,9 @@ foreach ($t in $targets) {
     $toUpload = @($files | ForEach-Object { Join-Path $PSScriptRoot $_ })
     if ($Key) { $kf = Join-Path $zugang "kayya-key.php"; if (Test-Path $kf) { $toUpload += $kf } else { Write-Host "  -Key: $kf fehlt (Inhalt: <?php return 'sk-ant-...';)" -ForegroundColor Yellow } }
     $docsDir = Join-Path $PSScriptRoot 'docs'
-    # SEIT 21.10.2026: nur Seiten (.html) und der One-Pager gehen auf den Server; interne Unterlagen bleiben lokal.
-    $docsFrei = "260823_V1_KAYYA_One-Pager_Kostentraeger.docx"
-    $docsFiles = @(); if (-not $NurIndex -and (Test-Path $docsDir)) { $docsFiles = @(Get-ChildItem $docsDir -File | Where-Object { $_.Extension -ieq ".html" -or $_.Name -eq $docsFrei }) }
-    $docsWeg = @(); if ($DocsBereinigen -and (Test-Path $docsDir)) { $docsWeg = @(Get-ChildItem $docsDir -File | Where-Object { $_.Extension -match "^\.(docx|pptx|xlsx|pdf|zip)$" -and $_.Name -ne $docsFrei } | ForEach-Object { $_.Name }) }
+    # SEIT 31.10.2026: docs/ liegt komplett hinter dem Server-Tor (gate.php liefert nur mit Cookie); alle Dateien gehen hoch.
+    $docsFiles = @(); if (-not $NurIndex -and (Test-Path $docsDir)) { $docsFiles = @(Get-ChildItem $docsDir -File) }
+    $docsWeg = @()  # -DocsBereinigen ist seit 31.10. ohne Funktion (Unterlagen sind gewollt online, geschuetzt durch das Tor)
     $bilderDir = Join-Path $PSScriptRoot 'wbilder'
     $bilderFiles = @(); if (-not $NurIndex -and (Test-Path $bilderDir)) { $bilderFiles = @(Get-ChildItem $bilderDir -File | Where-Object { $_.Extension -match '\.(jpe?g|png)$' }) }
 
@@ -90,7 +89,6 @@ foreach ($t in $targets) {
         }
         foreach ($a in $apps) { $lines += ("-mkdir " + $a.fern); $lines += ('put "' + ($a.lokal -replace '\\','/') + '" ' + $a.fern + '/index.html') }
         foreach ($w in $docsWeg) { $lines += ("-rm docs/" + $w) }
-        if ($DocsBereinigen) { $lines += "-rm docs/abo-modell.html" }
         Set-Content $bat -Encoding ascii -Value $lines
         $env:KAYYA_SFTP_PW = $m.Groups[2].Value
         $env:SSH_ASKPASS = $askpass; $env:SSH_ASKPASS_REQUIRE = "force"

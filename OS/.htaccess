@@ -12,7 +12,8 @@ Options -Indexes
   RewriteCond %{HTTP_HOST} ^www\.kayya\.org$ [NC]
   RewriteRule ^ https://kayya.org%{REQUEST_URI} [R=301,L]
   RewriteCond %{REQUEST_URI} !^/gate\.php
-  RewriteRule ^(g4/.*|g5/.*|g4\.html|g5\.html|beta1\.html|wartung\.html|docs/[^/]+\.html)$ gate.php?p=$1 [L,QSA,NC]
+  RewriteCond %{REQUEST_URI} !One-Pager_Kostentraeger
+  RewriteRule ^(g4/.*|g5/.*|g4\.html|g5\.html|beta1\.html|wartung\.html|docs/[^/]+\.(html|docx|pptx|xlsx|pdf))$ gate.php?p=$1 [L,QSA,NC]
 </IfModule>
 
 # KAYYA OS - Schluesseldatei nie direkt ausliefern (Deploy laedt diese Datei mit hoch)

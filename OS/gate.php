@@ -24,9 +24,12 @@ function bereichVon($p){
   if(preg_match('#^g5(/|\.html$)#',$p)) return 'g5';
   if($p==='beta1.html') return 'g3';
   if($p==='wartung.html') return 'wartung';
-  if(preg_match('#^docs/[^/]+\.html$#',$p)) return 'invest';
+  if(preg_match('#^docs/[^/]+\.(html|docx|pptx|xlsx|pdf)$#i',$p)) return 'invest';
   return null;
 }
+$MIME=['html'=>'text/html; charset=utf-8','docx'=>'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'pptx'=>'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  'xlsx'=>'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','pdf'=>'application/pdf'];
 function offen(){ global $SECRET;
   $c=$_COOKIE['kayya_tor'] ?? ''; if($c==='') return [];
   $t=explode('.',$c); if(count($t)!==3) return [];
@@ -79,11 +82,13 @@ if(!$erlaubt){
   header('Location: /?bereich='.rawurlencode($bereich).'&tor=1',true,302); exit;
 }
 
-/* Datei sicher aufloesen: nur innerhalb des Webroots, nur .html */
+/* Datei sicher aufloesen: nur innerhalb des Webroots, nur bekannte Typen */
 $p=ltrim($p,'/'); if($p==='' || substr($p,-1)==='/') $p.='index.html';
 $datei=realpath(__DIR__.'/'.$p);
-if($datei===false || strpos($datei,realpath(__DIR__).DIRECTORY_SEPARATOR)!==0 || !is_file($datei) || !preg_match('/\.html$/',$datei)){ http_response_code(404); echo 'Nicht gefunden.'; exit; }
-header('Content-Type: text/html; charset=utf-8');
+$ext=strtolower(pathinfo($p,PATHINFO_EXTENSION));
+if($datei===false || strpos($datei,realpath(__DIR__).DIRECTORY_SEPARATOR)!==0 || !is_file($datei) || !isset($MIME[$ext])){ http_response_code(404); echo 'Nicht gefunden.'; exit; }
+header('Content-Type: '.$MIME[$ext]);
 header('Cache-Control: no-cache, must-revalidate');
 header('X-KAYYA-Tor: '.$bereich);
+if($ext!=='html'){ header('Content-Disposition: attachment; filename="'.basename($datei).'"'); header('Content-Length: '.filesize($datei)); }
 readfile($datei);
