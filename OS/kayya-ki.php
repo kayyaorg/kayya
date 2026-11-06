@@ -20,7 +20,8 @@ const MAX_TOKENS = 600;
 $allowed = ['kayya.de', 'www.kayya.de', 'kayya.org', 'www.kayya.org', 'localhost'];
 $refHost = parse_url($_SERVER['HTTP_REFERER'] ?? '', PHP_URL_HOST) ?: '';
 $origin  = parse_url($_SERVER['HTTP_ORIGIN']  ?? '', PHP_URL_HOST) ?: '';
-$hostOk  = in_array($refHost, $allowed) || in_array($origin, $allowed);
+$secf    = $_SERVER['HTTP_SEC_FETCH_SITE'] ?? '';
+$hostOk  = in_array($refHost, $allowed) || in_array($origin, $allowed) || $secf==='same-origin' || $secf==='same-site';
 header('Content-Type: application/json; charset=utf-8');
 
 /* ---- Ping: Demo prueft, ob der Proxy bereit ist ---- */

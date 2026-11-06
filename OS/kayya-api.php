@@ -10,7 +10,9 @@ header('Content-Type: application/json; charset=utf-8');
 $allowed=['kayya.de','www.kayya.de','kayya.org','www.kayya.org','localhost'];
 $refHost=parse_url($_SERVER['HTTP_REFERER'] ?? '', PHP_URL_HOST) ?: '';
 $origin =parse_url($_SERVER['HTTP_ORIGIN']  ?? '', PHP_URL_HOST) ?: '';
-if(!in_array($refHost,$allowed) && !in_array($origin,$allowed)){ http_response_code(403); echo json_encode(['error'=>'forbidden']); exit; }
+/* Browser mit Referer-Blocker senden keinen Referer, aber Sec-Fetch-Site: same-origin */
+$secf=$_SERVER['HTTP_SEC_FETCH_SITE'] ?? '';
+if($secf!=='same-origin' && $secf!=='same-site' && !in_array($refHost,$allowed) && !in_array($origin,$allowed)){ http_response_code(403); echo json_encode(['error'=>'forbidden']); exit; }
 
 $cfg=is_file(__DIR__.'/kayya-db.php') ? include __DIR__.'/kayya-db.php' : null;
 if(!$cfg){ http_response_code(503); echo json_encode(['error'=>'keine Datenbank konfiguriert']); exit; }
