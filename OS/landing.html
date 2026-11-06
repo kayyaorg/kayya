@@ -184,7 +184,7 @@ function pruef(){
   if(MOBIL){ offen('m-babe'); return; }
   f.style.display='none'; ok.disabled=true; ok.textContent='…';
   fetch('/gate.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({wort:v})})
-    .then(function(r){ return r.json(); })
+    .then(function(r){ return r.json().catch(function(){ return null; }); })
     .then(function(j){
       var ziel=j&&j.ok?ZIEL_VON[j.bereich]:null;
       if(ziel){
@@ -193,10 +193,11 @@ function pruef(){
           if(ziel==='docs/invest.html'){ sessionStorage.setItem('kayya_invest','open2'); }
         }catch(e){}
         location.href=ziel;
-      } else { throw 0; }
+      } else { throw (j&&j.grund)||0; }
     })
-    .catch(function(){
+    .catch(function(grund){
       ok.disabled=false; ok.textContent='>>>';
+      f.textContent=(grund==='abgelaufen')?'Abgelaufen — dieses Zugangswort ist verbraucht.':'Kein Zutritt — falsches Zugangswort.';
       f.style.display='block';
       z.classList.remove('zitter'); void z.offsetWidth; z.classList.add('zitter');
       p.focus();

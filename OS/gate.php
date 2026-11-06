@@ -14,6 +14,12 @@ $BEREICHE=[
   'wartung'=>'a8014fe24738a6f95210a73f40aef6b54b6300fa01c71aee899a73336db166ce',
   'invest'=>'336cedd39d365341372e9318615c4521a6d9025656fd9d7e06fa5f3171332fd6'
 ];
+/* Zusatz-Wörter mit Nutzungslimit (Gast-Zugänge): SHA-256 => [bereich, limit].
+   Der Zähler liegt in der Datenbank (Tabelle tor_limit); nach Erreichen des Limits
+   antwortet das Tor mit grund=abgelaufen. Zurücksetzen: Zeile in tor_limit löschen. */
+$LIMITIERT=[
+  'bc22151440ff4b7494cc760240eed67d70de20589af711907083265c4c4958c5'=>['bereich'=>'g4','limit'=>5]
+];
 $cfg=is_file(__DIR__.'/kayya-db.php') ? include __DIR__.'/kayya-db.php' : null;
 $SECRET=hash('sha256',($cfg['pass'] ?? 'kein-geheimnis').'|kayya-tor|2026');
 $DAUER=12*3600;
@@ -54,6 +60,28 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
   $ok=false; $kandidaten=isset($BEREICHE[$b]) ? [$b] : array_keys($BEREICHE);
   foreach($kandidaten as $kb){
     foreach([$w,trim($w),mb_strtoupper(trim($w))] as $k){ if(hash_equals($BEREICHE[$kb],hash('sha256',$k))){ $ok=true; $b=$kb; break 2; } }
+  }
+  /* Limitierte Zusatz-Wörter: jede korrekte Eingabe zählt, nach dem Limit "abgelaufen" */
+  if(!$ok){
+    foreach([$w,trim($w),mb_strtoupper(trim($w))] as $k){
+      $h=hash('sha256',$k);
+      if(isset($LIMITIERT[$h])){
+        $lw=$LIMITIERT[$h]; $benutzt=null;
+        if($cfg){ try{
+          mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+          $db=new mysqli($cfg['host'],$cfg['user'],$cfg['pass'],$cfg['name'],$cfg['port']);
+          $db->query("CREATE TABLE IF NOT EXISTS tor_limit (wort CHAR(64) PRIMARY KEY, benutzt INT NOT NULL DEFAULT 0)");
+          $st=$db->prepare("INSERT INTO tor_limit(wort,benutzt) VALUES(?,1) ON DUPLICATE KEY UPDATE benutzt=benutzt+1");
+          $st->bind_param('s',$h); $st->execute();
+          $st=$db->prepare("SELECT benutzt FROM tor_limit WHERE wort=?");
+          $st->bind_param('s',$h); $st->execute(); $benutzt=(int)$st->get_result()->fetch_row()[0];
+        }catch(Throwable $e){ $benutzt=null; } }
+        if($benutzt===null){ http_response_code(503); echo json_encode(['ok'=>false]); exit; }
+        if($benutzt>$lw['limit']){ http_response_code(403); echo json_encode(['ok'=>false,'grund'=>'abgelaufen']); exit; }
+        freischalten($lw['bereich']);
+        echo json_encode(['ok'=>true,'bereich'=>$lw['bereich'],'verbleibend'=>$lw['limit']-$benutzt]); exit;
+      }
+    }
   }
   if(!$ok){ usleep(500000); http_response_code(403); echo json_encode(['ok'=>false]); exit; }
   freischalten($b);

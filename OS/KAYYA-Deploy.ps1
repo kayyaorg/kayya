@@ -141,13 +141,21 @@ foreach ($t in $targets) {
 
   # Pruefung von aussen (Inhalt, Groesse, Proxys)
   try {
+    # Geschuetzte Seiten (Tor): ohne Cookie antwortet der Server mit 302 zur Startseite - das ist OK.
+    function Test-Geschuetzt([string]$name, [string]$url, [long]$lokal) {
+      try {
+        $req = [System.Net.WebRequest]::Create($url)
+        $req.AllowAutoRedirect = $false; $req.Timeout = 30000
+        $resp = $req.GetResponse(); $code = [int]$resp.StatusCode; $len = $resp.ContentLength; $resp.Close()
+        if ($code -ge 300 -and $code -lt 400) { Write-Host ("  " + $name + ": HTTP " + $code + " - Tor aktiv (Umleitung zur Startseite) OK") -ForegroundColor Green }
+        elseif ($code -eq 200) { Write-Host ("  " + $name + ": HTTP 200 - " + $len + " B direkt erreichbar (Tor greift NICHT!)") -ForegroundColor Yellow; $script:ok = $false }
+        else { Write-Host ("  " + $name + ": HTTP " + $code) -ForegroundColor Yellow; $script:ok = $false }
+      } catch {
+        Write-Host ("  " + $name + ": Pruefung fehlgeschlagen (" + $_.Exception.Message + ")") -ForegroundColor Yellow; $script:ok = $false
+      }
+    }
     $local = Get-Item (Join-Path $PSScriptRoot "index.html")
-    $r = Invoke-WebRequest -Uri ($check.TrimEnd('/') + "/beta1.html?nocache=" + (Get-Date -Format HHmmss)) -UseBasicParsing -TimeoutSec 30
-    $html = [Text.Encoding]::UTF8.GetString($r.RawContentStream.ToArray())
-    $ver = [regex]::Match($html, 'KA..A OS \S+').Value
-    $same = ($r.RawContentStream.Length -eq $local.Length)
-    $msg = "  App (beta1.html): HTTP " + $r.StatusCode + " - " + $ver + " - " + $r.RawContentStream.Length + " B "
-    if ($same) { Write-Host ($msg + "= lokal OK") -ForegroundColor Green } else { Write-Host ($msg + "<> lokal " + $local.Length + " B (noch alt oder Cache)") -ForegroundColor Yellow; $ok = $false }
+    Test-Geschuetzt "App (beta1.html)" ($check.TrimEnd('/') + "/beta1.html?nocache=" + (Get-Date -Format HHmmss)) $local.Length
     $localL = Get-Item (Join-Path $PSScriptRoot "landing.html")
     $rl = Invoke-WebRequest -Uri ($check.TrimEnd('/') + "/?nocache=" + (Get-Date -Format HHmmss)) -UseBasicParsing -TimeoutSec 30
     $htmlL = [Text.Encoding]::UTF8.GetString($rl.RawContentStream.ToArray())
@@ -157,10 +165,7 @@ foreach ($t in $targets) {
     else { Write-Host ("  Landing (/): HTTP " + $rl.StatusCode + " - Tore " + $torOk + " - " + $rl.RawContentStream.Length + " B <> lokal " + $localL.Length + " B") -ForegroundColor Yellow; $ok = $false }
     $localG5 = Join-Path $PSScriptRoot "g5.html"
     if (Test-Path $localG5) {
-      $rg = Invoke-WebRequest -Uri ($check.TrimEnd('/') + "/g5.html?nocache=" + (Get-Date -Format HHmmss)) -UseBasicParsing -TimeoutSec 30
-      $sameG = ($rg.RawContentStream.Length -eq (Get-Item $localG5).Length)
-      if ($sameG) { Write-Host ("  G 0.5 (g5.html): HTTP " + $rg.StatusCode + " - " + $rg.RawContentStream.Length + " B = lokal OK") -ForegroundColor Green }
-      else { Write-Host ("  G 0.5 (g5.html): HTTP " + $rg.StatusCode + " - " + $rg.RawContentStream.Length + " B <> lokal " + (Get-Item $localG5).Length + " B") -ForegroundColor Yellow; $ok = $false }
+      Test-Geschuetzt "G 0.5 (g5.html)" ($check.TrimEnd('/') + "/g5.html?nocache=" + (Get-Date -Format HHmmss)) (Get-Item $localG5).Length
     }
     foreach ($px in "ted-proxy.php","kayya-ki.php") {
       try { $j = Invoke-WebRequest -Uri ($check.TrimEnd('/') + "/" + $px + "?ping=1") -Headers @{Referer=$check} -UseBasicParsing -TimeoutSec 20
