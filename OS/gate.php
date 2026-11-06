@@ -8,11 +8,11 @@
    - Live-Link ?t=<token>: gueltige API-Sitzung (Kostentraeger) oeffnet g4/ und g5/ ohne Wort.
    ============================================================ */
 $BEREICHE=[
-  'g5'=>'573ca3a55765ace33c84fa3da2f28903d535e94101b594e7c6501c751a243fc3',
-  'g4'=>'2f57281814888d4b2647f500186da277ede1526cf9c2c3c610d62925efb808ec',
-  'g3'=>'58fdd58efa59fe0079430c59d0e811bc3ecce472c772acadb67c281f5c93c0b4',
+  'g5'=>'c25bddcba4b03073c9c3626abcc42cc4b19a48a481672079f69865f7fa189d1f',
+  'g4'=>'df9004701c9ed897b65af37093062559c8c5b33b80aa1c51bc7e0e58298579a4',
+  'g3'=>'9974e928721e916b2c9b5ea6391db3e6458ee870286547b2ebf17ae478539a42',
   'wartung'=>'a8014fe24738a6f95210a73f40aef6b54b6300fa01c71aee899a73336db166ce',
-  'invest'=>'b5e418681c8c1bffb6c43090e9503acde28a7669484e70dcdeddcf2395c487b2'
+  'invest'=>'336cedd39d365341372e9318615c4521a6d9025656fd9d7e06fa5f3171332fd6'
 ];
 $cfg=is_file(__DIR__.'/kayya-db.php') ? include __DIR__.'/kayya-db.php' : null;
 $SECRET=hash('sha256',($cfg['pass'] ?? 'kein-geheimnis').'|kayya-tor|2026');
