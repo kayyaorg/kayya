@@ -54,3 +54,7 @@ Jobcenter Region Nord · programlar canlı	Tüm finansörler · programlar canl�
 Jobcenter Region Nord · live na tanaw	Lahat ng tagapondo · live na tanaw
 Jobcenter Region Nord · działania w podglądzie	Wszyscy płatnicy · działania w podglądzie
 Jobcenter Region Nord · البرامج في عرض	جميع الجهات الممولة · البرامج في عرض
+window.m_open=function(id){ const t=T.find	window.G5VG={T:T,WFD:WFD,ERT:ERT,neu:function(){ R(); },log:logE}; window.m_open=function(id){ const t=T.find
+Unterlage öffnen · unterschriftsreif	Angebotsmappe öffnen
+✳ Angebot entwerfen lassen	Angebot erstellen
+<b>zur Unterzeichnung vorbereitet</b>	<b>Angebotsmappe erstellt</b> · Abgabereife wird in der Mappe geprüft

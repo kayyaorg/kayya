@@ -10,6 +10,7 @@ $css=[IO.File]::ReadAllText("$basis\OS\g5\g5-theme.css",[Text.Encoding]::UTF8)
 $zusatz=[IO.File]::ReadAllText("$basis\OS\g5\g5-zusatz.html",[Text.Encoding]::UTF8)
 $details=[IO.File]::ReadAllText("$basis\OS\g5\g5-details.html",[Text.Encoding]::UTF8)
 $details+="`n"+[IO.File]::ReadAllText("$basis\OS\g5\g5-details2.html",[Text.Encoding]::UTF8)
+$details+="`n"+[IO.File]::ReadAllText("$basis\OS\g5\g5-angebot.html",[Text.Encoding]::UTF8)
 $version='G5 &beta;.3.0.0'
 function Zaehl($name,$n){ Write-Host ("  {0,-34} {1}" -f $name,$n) }
 

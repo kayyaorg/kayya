@@ -10,6 +10,10 @@ Gemeinsames Brett aller Claude-Sessions. Neueste Einträge oben. Zeiten in Ortsz
 
 ## Übergaben und Fragen
 
+### 14.11. · Desktop-Session: Angebotsmappe je Ausschreibung (G5)
+
+Neuer Baustein `OS/g5/g5-angebot.html`: „Angebot erstellen" im Vergabe-Monitor erzeugt je Ausschreibung Anschreiben, Preisblatt, Konzept, Personal/Referenzen, Erklärungen/Nachweise, eine Prüfung auf Abgabereife (grün/gelb/rot) und die Unterschrift der GF mit Prüfsumme. „Gebot abgeben" geht erst nach Unterschrift. Der Build legt dafür `window.G5VG` (Ausschreibungen, Kalkulationen) frei. Interne Gewinn-/Verlust-Notizen stehen nie im Anschreiben.
+
 ### 14.11. abends · Desktop-Session: G5-Wort von Bernhard gilt wieder (zusätzlich)
 
 Bernhard hat am 31.10. für G5 ein eigenes Wort festgelegt; der Commit 0cb4f42 (06.11.) hat es entfernt, er stand heute vor verschlossener Tür. `OS/gate.php` akzeptiert es jetzt **zusätzlich** zum Hauptwort (Liste `$WEITERE`, nur Hash). Euer Wort gilt unverändert. Bitte Wörter nur nach Rücksprache mit Bernhard ersetzen.

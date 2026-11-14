@@ -143,3 +143,37 @@ html:not([lang="de"]) .zeile.g5klick::after{display:none}
 
 /* Eingeschraenkte Rollen (Live-Link): kein Sprung zur Uebersicht */
 .g5-eng #kopf .marke{pointer-events:none;cursor:default}
+
+/* Angebotsmappe */
+.gglas.g5a{max-width:880px!important;width:94vw;max-height:92vh;overflow:auto}
+.g5a h3 .tag{vertical-align:middle;margin-left:8px}
+.g5a-sub{color:var(--mut);font-size:13.5px;margin:2px 0 14px}
+.g5a .tab-bar{flex-wrap:wrap}
+.g5a h4{font:700 11px 'Inter',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin:20px 0 8px}
+.g5a h4:first-child{margin-top:4px}
+.g5a-text{width:100%;min-height:340px!important;padding:16px!important;font-size:14px!important;line-height:1.6!important;resize:vertical}
+.g5a-text.hoch{min-height:440px!important}
+.g5a-akt{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.g5a-fuss{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px;padding-top:16px;border-top:1px solid var(--linie)}
+.g5a-urteil{border:1px solid var(--linie);border-left-width:4px;border-radius:10px;padding:14px 16px;font-size:14.5px;line-height:1.5;margin-bottom:16px}
+.g5a-urteil.gruen{border-left-color:#4CC98A} .g5a-urteil.gelb{border-left-color:var(--gold)} .g5a-urteil.rot{border-left-color:#FF7A70}
+.g5a-urteil code{font-size:12.5px;color:var(--mut)}
+.g5a-check>div{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--linie)}
+.g5a-check>div:last-child{border-bottom:none}
+.g5a-check b{font-size:14.5px} .g5a-check p{margin:3px 0 0;font-size:13.5px;line-height:1.5;color:var(--mut)}
+.g5a-p{flex:none;width:10px;height:10px;border-radius:50%;margin-top:6px;background:var(--mut);display:inline-block}
+.g5a-p.gruen{background:#4CC98A} .g5a-p.gelb{background:var(--gold)} .g5a-p.rot{background:#FF7A70}
+.g5a-liste>div{display:flex;gap:10px;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--linie);font-size:14px}
+.g5a-liste .g5a-p{margin-top:0}
+.g5a-sig{margin:22px 0 6px;font-size:14px}
+.g5a-linie{margin-top:44px;border-top:1px solid var(--txt);width:300px;padding-top:5px;font-size:12.5px;color:var(--mut)}
+#g5druck{display:none}
+@media print{
+  html.g5-druck body>*{display:none!important}
+  html.g5-druck #g5druck{display:block!important;color:#000;background:#fff;font:13px/1.5 'Inter',Arial,sans-serif;padding:0 8mm}
+  html.g5-druck,html.g5-druck body{background:#fff!important}
+  html.g5-druck #g5druck h1{font:600 22px 'Fraunces',serif} html.g5-druck #g5druck h2{font:600 16px 'Fraunces',serif;margin-top:22px;border-bottom:1px solid #999;padding-bottom:3px;break-after:avoid}
+  html.g5-druck #g5druck *{color:#000!important;background:none!important;border-color:#999!important}
+  html.g5-druck #g5druck table{width:100%;border-collapse:collapse} html.g5-druck #g5druck td,html.g5-druck #g5druck th{border-bottom:1px solid #ccc;padding:5px 6px;text-align:left}
+  html.g5-druck #g5druck .g5a-p{display:none}
+}
