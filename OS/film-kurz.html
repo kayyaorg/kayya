@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>KAȲȲA OS · Film</title>
+<style>
+@font-face{font-family:'Fraunces';src:url('fonts/Fraunces-var.woff2') format('woff2');font-weight:400 700;font-display:block}
+@font-face{font-family:'Inter';src:url('fonts/Inter-var.woff2') format('woff2');font-weight:400 800;font-display:block}
+:root{--bg:#0F0D0B;--pan:#1C1815;--pan2:#252019;--lin:#3A332C;--txt:#F1ECE5;--mut:#9E958A;--akz:#D9A8D9;--gold:#E8B94A;--gruen:#4CC98A;--rot:#FF7A70}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#000;overflow:hidden}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--txt);-webkit-font-smoothing:antialiased}
+/* Buehne 1920x1080, per Skript eingepasst */
+#b{position:absolute;left:50%;top:50%;width:1920px;height:1080px;margin:-540px 0 0 -960px;background:var(--bg);overflow:hidden;transform-origin:center}
+.sz{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:90px 120px}
+.sz.an{display:flex}
+.t{opacity:0}
+.sz.an .t{animation:rein .26s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d,0ms)}
+.sz.an .k{animation:knall .22s cubic-bezier(.2,.9,.3,1.3) both;animation-delay:var(--d,0ms)}
+@keyframes rein{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes knall{from{opacity:0;transform:scale(1.22)}to{opacity:1;transform:none}}
+@keyframes strich{from{width:0}to{width:104%}}
+@keyframes an{to{opacity:1}}
+@keyframes farbe{to{color:var(--txt);border-color:var(--gruen)}}
+@keyframes gruen{to{background:var(--gruen);border-color:var(--gruen)}}
+@keyframes gold{to{background:var(--gold);border-color:var(--gold)}}
+@keyframes flug{0%{opacity:0;transform:translateX(-120px)}25%{opacity:1}100%{opacity:1;transform:none}}
+@keyframes puls{0%,100%{box-shadow:0 0 0 0 rgba(217,168,217,.0)}50%{box-shadow:0 0 0 14px rgba(217,168,217,.28)}}
+
+.h{font:600 150px/1.02 'Fraunces',serif;letter-spacing:-.025em;text-align:center}
+.h em{font-style:italic;color:var(--akz)}
+.h.m{font-size:118px}
+.sub{font:500 34px/1.35 'Inter',sans-serif;color:var(--mut);margin-top:34px;text-align:center}
+.nr{font:700 30px 'Inter',sans-serif;letter-spacing:.3em;color:var(--akz);margin-bottom:22px}
+.weg{position:relative;display:inline-block;color:var(--mut)}
+.weg::after{content:'';position:absolute;left:-2%;top:54%;height:9px;width:0;background:var(--rot)}
+.sz.an .weg::after{animation:strich .2s linear both;animation-delay:calc(var(--d,0ms) + 330ms)}
+.marke svg{height:230px;width:auto;display:block}
+.marke .ka{fill:var(--txt)} .marke .yy{fill:var(--akz)}
+
+/* Produktbild */
+.ui{width:1560px;background:var(--pan);border:1px solid var(--lin);border-radius:26px;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,.55)}
+.ui .kopf{display:flex;align-items:center;gap:18px;padding:22px 34px;border-bottom:1px solid var(--lin);font:600 22px 'Inter',sans-serif;color:var(--mut)}
+.ui .kopf b{font:600 30px 'Fraunces',serif;color:var(--txt)}
+.ui .kopf i{margin-left:auto;font-style:normal;font-size:17px;font-weight:700;letter-spacing:.1em;border:1.5px solid var(--gruen);color:var(--gruen);border-radius:99px;padding:5px 16px}
+.ui .in{padding:30px 34px 34px;display:grid;gap:28px}
+.zw{grid-template-columns:1fr 1fr}
+.z{display:flex;align-items:center;gap:18px;padding:17px 4px;border-bottom:1px solid var(--lin);font-size:28px;font-weight:500}
+.z:last-child{border-bottom:none}
+.z small{display:block;font-size:21px;font-weight:400;color:var(--mut);margin-top:3px}
+.z .r{margin-left:auto;font-weight:700;white-space:nowrap}
+.kn{font:700 20px 'Inter',sans-serif;border-radius:12px;padding:12px 20px;background:var(--txt);color:#111;white-space:nowrap}
+.sz.an .kn.p{animation:puls .5s ease 2;animation-delay:var(--d,0ms)}
+.sz.an .z.mark{animation:mark .01s both;animation-delay:var(--d,0ms)}
+@keyframes mark{to{background:rgba(217,168,217,.1)}}
+.p{flex:none;width:18px;height:18px;border-radius:50%;border:2px solid var(--lin)}
+.sz.an .p.g{animation:gruen .01s both;animation-delay:var(--d,0ms)}
+.stempel{font:700 44px 'Fraunces',serif;color:var(--gruen);border:3px solid var(--gruen);border-radius:16px;padding:14px 30px;display:inline-block;transform:rotate(-3deg);margin-top:18px}
+.bu{font:600 54px/1.15 'Fraunces',serif;letter-spacing:-.015em;margin-top:44px;text-align:center}
+.bu em{font-style:italic;color:var(--akz)}
+
+.gitter{display:grid;grid-template-columns:repeat(9,1fr);gap:14px}
+.gitter b{height:86px;border-radius:14px;border:2px solid var(--lin);background:var(--pan2)}
+.sz.an .gitter b{animation:gruen .01s both;animation-delay:var(--d,0ms)}
+.sz.an .gitter b.kr{animation-name:gold}
+.gz{font:600 190px/1 'Fraunces',serif;color:var(--gruen);letter-spacing:-.03em}
+.wort{font:700 30px 'Inter',sans-serif;letter-spacing:.06em;color:var(--lin);border:2px solid var(--lin);border-radius:99px;padding:12px 26px}
+.sz.an .wort{animation:farbe .01s both;animation-delay:var(--d,0ms)}
+
+.kette{display:grid;grid-template-columns:1fr 70px 1fr 70px 1fr;align-items:center;width:1560px}
+.st{background:var(--pan);border:2px solid var(--lin);border-radius:22px;padding:30px 30px 28px}
+.st i{font:700 19px 'Inter',sans-serif;letter-spacing:.2em;color:var(--akz);font-style:normal}
+.st b{display:block;font:600 46px 'Fraunces',serif;margin:8px 0 6px}
+.st span{font-size:22px;color:var(--mut);line-height:1.35;display:block}
+.pf{font:300 60px 'Inter',sans-serif;color:var(--akz);text-align:center}
+.alarm{width:1560px;display:grid;gap:12px;margin-top:34px}
+.alarm div{display:grid;grid-template-columns:1fr 60px 1fr;align-items:center;font:600 30px 'Inter',sans-serif;background:var(--pan);border-left:6px solid var(--rot);border-radius:12px;padding:16px 26px}
+.alarm div span:nth-child(2){color:var(--rot);text-align:center;font-weight:300;font-size:36px}
+.alarm div span:last-child{color:var(--gold)}
+
+.datei{display:grid;grid-template-columns:1fr 90px 1fr;align-items:center;gap:0;font:700 40px 'Inter',sans-serif;margin-top:6px}
+.datei span{background:var(--pan2);border:2px solid var(--lin);border-radius:16px;padding:22px 28px;text-align:center}
+.datei span.ziel{border-color:var(--akz);color:var(--akz);font-family:'Fraunces',serif;font-weight:600;font-size:48px}
+.datei u{text-decoration:none;font-weight:300;font-size:56px;color:var(--akz);text-align:center}
+.sz.an .datei{animation:flug .34s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d,0ms)}
+.sig{font:700 21px 'Inter',sans-serif;color:var(--lin);border:2px solid var(--lin);border-radius:99px;padding:8px 18px}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.kpi{background:var(--pan2);border:1px solid var(--lin);border-radius:18px;padding:26px 26px 22px}
+.kpi b{font:600 66px 'Fraunces',serif;display:block;letter-spacing:-.02em}
+.kpi>span{font-size:20px;color:var(--mut)}
+.pfad{font:600 24px 'Inter',sans-serif;color:var(--mut)}
+.pfad b{color:var(--akz)}
+
+/* Realbild: kurzer Clip im Vollbild, Text liegt darüber */
+.clip video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.clip::after{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(15,13,11,.25) 0%,rgba(15,13,11,.2) 45%,rgba(15,13,11,.82) 100%)}
+.clip.dunkel::after{background:rgba(15,13,11,.74)}
+.clip>*:not(video){position:relative;z-index:2}
+.clip .h,.clip .nr{text-shadow:0 4px 40px rgba(0,0,0,.6)}
+.clip.dunkel .weg{color:#CFC7BC}
+.ct{position:absolute!important;left:120px;right:120px;bottom:120px;font:600 118px/1.04 'Fraunces',serif;letter-spacing:-.025em;text-shadow:0 4px 40px rgba(0,0,0,.7)}
+.ct em{font-style:italic;color:var(--akz)}
+#mod{font:600 170px/1 'Fraunces',serif;letter-spacing:-.03em;text-align:center}
+#lauf{position:absolute;left:0;bottom:0;height:5px;width:0;background:var(--akz);z-index:5}
+#nochmal{display:none;position:absolute;left:50%;bottom:80px;transform:translateX(-50%);font:600 26px 'Inter',sans-serif;color:var(--txt);background:none;border:2px solid var(--txt);border-radius:99px;padding:14px 34px;cursor:pointer}
+</style>
+</head>
+<body>
+<div id="b">
+
+<!-- 1 -->
+<div class="sz" data-ms="2500"><div class="h k">Öffentliches Geld<br>fliegt blind.</div></div>
+
+<!-- 2 -->
+<div class="sz clip dunkel" data-ms="2500" data-v="0.4"><video src="video/c1.mp4" muted playsinline preload="auto"></video>
+  <div class="h m t" style="--d:0ms"><span class="weg" style="--d:0ms">Quartalsbericht.</span></div>
+  <div class="h m t" style="--d:520ms"><span class="weg" style="--d:520ms">Excel-Liste.</span></div>
+  <div class="h m t" style="--d:1040ms"><span class="weg" style="--d:1040ms">Aktenordner.</span></div>
+</div>
+
+<!-- 3 -->
+<div class="sz" data-ms="1500"><div class="h k"><em>Bis jetzt.</em></div></div>
+
+<!-- 4 -->
+<div class="sz" data-ms="2500">
+  <div class="marke k"><svg viewBox="-8 -26 276.19 134" role="img" aria-label="KAȲȲA"><g class="ka"><path d="M4.200 53.768 L42.994 100.000 L48.476 100.000 L6.521 50.000 L48.476 0.000 L42.994 0.000 L4.200 46.232 L4.200 0.000 L0.000 0.000 L0.000 100.000 L4.200 100.000 Z"/><path d="M79.072 0.000 L49.072 74.253 L49.072 85.464 L79.072 11.212 L109.072 85.464 L109.072 74.253 Z"/><path d="M230.190 0.000 L260.190 74.253 L260.190 85.464 L230.190 11.212 L200.190 85.464 L200.190 74.253 Z"/></g><g class="yy"><path d="M120.972 62.394 L95.764 0.000 L91.234 0.000 L118.872 68.408 L118.872 100.000 L123.072 100.000 L123.072 68.408 L150.711 0.000 L146.181 0.000 Z"/><path d="M188.290 62.394 L213.499 0.000 L218.029 0.000 L190.390 68.408 L190.390 100.000 L186.190 100.000 L186.190 68.408 L158.551 0.000 L163.081 0.000 Z"/><rect x="99.56" y="-16.0" width="42.82" height="4.2" rx="2.1"/><rect x="166.88" y="-16.0" width="42.82" height="4.2" rx="2.1"/></g></svg></div>
+  <div class="sub t" style="--d:500ms">Ein System für den ganzen Bildungsträger.<br>Vom ersten Angebot bis zum letzten Beleg.</div>
+</div>
+
+<!-- 5 -->
+<div class="sz" data-ms="1100"><div class="nr k">01</div><div class="h k">Gewinnen.</div></div>
+
+<!-- 6 Vergabe -->
+<div class="sz" data-ms="5600">
+  <div class="ui">
+    <div class="kopf"><b>Vergabe-Monitor</b> Echte Ausschreibungen <i>LIVE</i></div>
+    <div class="in zw">
+      <div>
+        <div class="z"><div>Coaching für Arbeit und Alltag<small>Jobcenter · Frist in 27 Tagen</small></div></div>
+        <div class="z mark" style="--d:500ms"><div>Aktivierung und berufliche Eingliederung<small>Landkreis · 10 Plätze · 12 Monate · Frist in 11 Tagen</small></div><span class="kn p r" style="--d:900ms">Angebot erstellen</span></div>
+        <div class="z"><div>Berufssprachkurs B2 Pflege<small>BAMF · Frist in 19 Tagen</small></div></div>
+        <div class="z"><div>Umschulung Pflegefachkraft<small>Agentur für Arbeit · Frist in 16 Tagen</small></div></div>
+      </div>
+      <div>
+        <div class="z t" style="--d:1500ms"><span class="p g" style="--d:1650ms"></span><div>Bekanntmachung online geholt</div></div>
+        <div class="z t" style="--d:1950ms"><span class="p g" style="--d:2100ms"></span><div>8 verlangte Unterlagen erkannt</div></div>
+        <div class="z t" style="--d:2400ms"><span class="p g" style="--d:2550ms"></span><div>Anschreiben, Konzept, Preis erstellt</div></div>
+        <div class="z t" style="--d:2850ms"><span class="p g" style="--d:3000ms"></span><div>Personal und Frist geprüft</div></div>
+        <div class="k" style="--d:3600ms"><span class="stempel">Unterschriftsreif.</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="bu t" style="--d:3900ms">Ausschreibung rein. <em>Angebot raus.</em></div>
+</div>
+
+<!-- 7 -->
+<div class="sz clip" data-ms="1500" data-v="1.0"><video src="video/c2.mp4" muted playsinline preload="auto"></video><div class="nr k">02</div><div class="h k">Durchführen.</div></div>
+
+<!-- 7b Clip: Check-in -->
+<div class="sz clip" data-ms="1400" data-v="1.5"><video src="video/c4.mp4" muted playsinline preload="auto"></video><div class="ct k">Check-in. <em>Per App.</em></div></div>
+
+<!-- 8 Anwesenheit -->
+<div class="sz" data-ms="4800">
+  <div class="ui">
+    <div class="kopf"><b>Kursleitung</b> M-4711 · Umschulung Pflege · heute <i>CHECK-IN</i></div>
+    <div class="in" style="grid-template-columns:1.5fr 1fr;align-items:center">
+      <div class="gitter" id="gitter"></div>
+      <div style="text-align:center"><div class="gz" id="quote">0 %</div><div class="sub" style="margin-top:6px;font-size:26px">Anwesenheit, tagesaktuell</div></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:16px;margin-top:40px">
+    <span class="wort" style="--d:1900ms">dokumentiert</span><span class="wort" style="--d:2300ms">nachgewiesen</span><span class="wort" style="--d:2700ms">abgerechnet</span>
+  </div>
+  <div class="bu t" style="--d:3000ms;margin-top:26px">Eine Stunde halten. <em>Dreimal erledigt.</em></div>
+</div>
+
+<!-- 9 -->
+<div class="sz" data-ms="1100"><div class="nr k">03</div><div class="h k">Eskalation.</div></div>
+
+<!-- 9b Clip: Gespraech -->
+<div class="sz clip" data-ms="1500" data-v="2.0"><video src="video/c5.mp4" muted playsinline preload="auto"></video><div class="ct k">Erst reden. <em>Dann melden.</em></div></div>
+
+<!-- 10 Eskalation -->
+<div class="sz" data-ms="6200">
+  <div class="kette">
+    <div class="st t" style="--d:200ms"><i>STUFE 1</i><b>Erinnerung</b><span>automatisch, freundlich, protokolliert</span></div>
+    <div class="pf t" style="--d:900ms">›</div>
+    <div class="st t" style="--d:1100ms"><i>STUFE 2</i><b>Gespräch</b><span>Begleitung statt Sanktion</span></div>
+    <div class="pf t" style="--d:1800ms">›</div>
+    <div class="st t" style="--d:2000ms"><i>STUFE 3</i><b>Meldung</b><span>an den Kostenträger, Entwurf liegt bereit</span></div>
+  </div>
+  <div class="alarm">
+    <div class="k" style="--d:3000ms"><span>Führungszeugnis abgelaufen</span><span>›</span><span>Einsatzsperre</span></div>
+    <div class="k" style="--d:3450ms"><span>Widerspruchsfrist in 14 Tagen</span><span>›</span><span>tägliche Erinnerung</span></div>
+    <div class="k" style="--d:3900ms"><span>Rechnung auffällig</span><span>›</span><span>Zahlung gestoppt</span></div>
+  </div>
+  <div class="bu t" style="--d:4500ms;margin-top:34px">Keine Stufe zündet <em>ohne einen Menschen.</em></div>
+</div>
+
+<!-- 11 -->
+<div class="sz" data-ms="1100"><div class="nr k">04</div><div class="h k">Geld.</div></div>
+
+<!-- 12 Zahllauf -->
+<div class="sz" data-ms="6200">
+  <div class="ui">
+    <div class="kopf"><b>Buchhaltung</b> Zahllauf · 3 Zahlungen · 13.567,90 € <span class="sig wort" style="--d:700ms;margin-left:auto">Freigabe 1</span><span class="sig wort" style="--d:1300ms">Freigabe 2</span></div>
+    <div class="in" style="gap:18px">
+      <div>
+        <div class="z"><div>Vermietung Nord GmbH<small>Miete · Umlage auf alle Maßnahmen</small></div><span class="r">12.400,00 €</span></div>
+        <div class="z"><div>Telekom Deutschland<small>Anschlüsse</small></div><span class="r">289,90 €</span></div>
+        <div class="z"><div>SimMed GmbH<small>Pflegesimulator · M-4711</small></div><span class="r">878,00 €</span></div>
+      </div>
+      <div class="datei" style="--d:2000ms"><span>pain.001 · Sammelüberweisung</span><u>›</u><span class="ziel">S-Firm</span></div>
+      <div class="datei" style="--d:2900ms"><span>EXTF · Buchungsstapel</span><u>›</u><span class="ziel">DATEV</span></div>
+    </div>
+  </div>
+  <div class="bu t" style="--d:3900ms">Zwei Unterschriften. <em>Null Abtippen.</em></div>
+</div>
+
+<!-- 13 -->
+<div class="sz" data-ms="1100"><div class="nr k">05</div><div class="h k">Nachweisen.</div></div>
+
+<!-- 13b Clip: Kostentraeger schaut zu -->
+<div class="sz clip" data-ms="1500" data-v="3.0"><video src="video/c3.mp4" muted playsinline preload="auto"></video><div class="ct k">Der Kostenträger <em>schaut zu. Live.</em></div></div>
+
+<!-- 14 Kostentraeger -->
+<div class="sz" data-ms="5800">
+  <div class="ui">
+    <div class="kopf"><b>Kostenträger</b> Ihre Maßnahmen <i>NUR LESEN · LIVE</i></div>
+    <div class="in">
+      <div class="kpis">
+        <div class="kpi"><b style="color:var(--gruen)"><span data-z="71">0</span> %</b><span>Eingliederungsquote</span></div>
+        <div class="kpi"><b><span data-z="88">0</span> %</b><span>Anwesenheit</span></div>
+        <div class="kpi"><b style="color:var(--gold)"><span data-z="9760" data-t="1">0</span> €</b><span>Kosten je Eingliederung</span></div>
+        <div class="kpi"><b><span data-z="66">0</span> / 73</b><span>Belegte Plätze</span></div>
+      </div>
+      <div>
+        <div class="pfad t" style="--d:2000ms"><b>Kennzahl</b> › Maßnahme › Einzelbeleg</div>
+        <div class="z t" style="--d:2300ms"><div>M-4711 · Umschulung Pflegehelfer/in<small>18 von 20 Plätzen · Anwesenheit 94 %</small></div><span class="r" style="color:var(--akz)">Beleg ›</span></div>
+        <div class="z t" style="--d:2700ms"><div>Zeitbuchung Fachkraft Pflege<small>mit Maßnahme, Kostenstelle und Unterschrift</small></div><span class="r" style="color:var(--gruen)">Original</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="bu t" style="--d:3300ms">Jede Zahl führt <em>bis zum Beleg.</em></div>
+</div>
+
+<!-- 15 Module -->
+<div class="sz" data-ms="3200" data-mod="1"><div id="mod"></div></div>
+
+<!-- 16 -->
+<div class="sz" data-ms="2600"><div class="h m k">KI entwirft.<br><em>Menschen entscheiden.</em></div></div>
+
+<!-- 17 -->
+<div class="sz" data-ms="3600">
+  <div class="marke k"><svg viewBox="-8 -26 276.19 134" role="img" aria-label="KAȲȲA"><g class="ka"><path d="M4.200 53.768 L42.994 100.000 L48.476 100.000 L6.521 50.000 L48.476 0.000 L42.994 0.000 L4.200 46.232 L4.200 0.000 L0.000 0.000 L0.000 100.000 L4.200 100.000 Z"/><path d="M79.072 0.000 L49.072 74.253 L49.072 85.464 L79.072 11.212 L109.072 85.464 L109.072 74.253 Z"/><path d="M230.190 0.000 L260.190 74.253 L260.190 85.464 L230.190 11.212 L200.190 85.464 L200.190 74.253 Z"/></g><g class="yy"><path d="M120.972 62.394 L95.764 0.000 L91.234 0.000 L118.872 68.408 L118.872 100.000 L123.072 100.000 L123.072 68.408 L150.711 0.000 L146.181 0.000 Z"/><path d="M188.290 62.394 L213.499 0.000 L218.029 0.000 L190.390 68.408 L190.390 100.000 L186.190 100.000 L186.190 68.408 L158.551 0.000 L163.081 0.000 Z"/><rect x="99.56" y="-16.0" width="42.82" height="4.2" rx="2.1"/><rect x="166.88" y="-16.0" width="42.82" height="4.2" rx="2.1"/></g></svg></div>
+  <div class="h m t" style="--d:700ms;margin-top:50px;font-size:84px">Ein Update war <em>überfällig.</em></div>
+</div>
+
+<div id="lauf"></div>
+<button id="nochmal" onclick="start()">Noch einmal ansehen</button>
+</div>
+
+<script>
+/* KAȲȲA OS · Film: Szenen laufen nacheinander, harte Schnitte. Am Ende meldet der Film sich bei der Startseite. */
+var B=document.getElementById('b'), SZ=[].slice.call(document.querySelectorAll('.sz')), lauf=document.getElementById('lauf');
+var GES=SZ.reduce(function(a,s){ return a+(+s.getAttribute('data-ms')); },0), timer=null, modT=null, raf=null, t0=0;
+var VID=[].slice.call(document.querySelectorAll('video'));
+var MODULE=['Vergabe','Fördermittel','Kursleitung','Teilnehmer','Selbstlernen','Begleitung','Krisenhilfe','Auslandscampus','Management','Buchhaltung','Personal','Recht','Kostenträger','Zeugnisse','Arbeitgeber'];
+function passe(){ var s=Math.min(innerWidth/1920, innerHeight/1080); B.style.transform='scale('+s+')'; }
+addEventListener('resize',passe); passe();
+/* Anwesenheitsraster: 18 Plätze, zwei krank */
+(function(){ var g=document.getElementById('gitter'), h=''; for(var i=0;i<18;i++){ h+='<b'+((i===6||i===13)?' class="kr"':'')+' style="--d:'+(300+i*75)+'ms"></b>'; } g.innerHTML=h; })();
+function zaehle(el,ziel,ms,tausend){ var a=performance.now(); (function f(n){ var p=Math.min(1,(n-a)/ms), v=Math.round(ziel*(1-Math.pow(1-p,3))); el.textContent=tausend?v.toLocaleString('de-DE'):v; if(p<1) requestAnimationFrame(f); })(a); }
+function zeige(i){
+  SZ.forEach(function(s,j){ s.classList.toggle('an',i===j); });
+  clearInterval(modT);
+  VID.forEach(function(v){ try{ v.pause(); }catch(e){} });
+  if(i>=SZ.length){ ende(); return; }
+  var s=SZ[i];
+  var sv=s.querySelector('video'); if(sv){ try{ sv.currentTime=+s.getAttribute('data-v')||0; var pp=sv.play(); if(pp&&pp.catch) pp.catch(function(){}); }catch(e){} }
+  s.querySelectorAll('[data-z]').forEach(function(e){ zaehle(e,+e.getAttribute('data-z'),1500,!!e.getAttribute('data-t')); });
+  var q=s.querySelector('#quote'); if(q){ q.textContent='0 %'; setTimeout(function(){ var a=performance.now(); (function f(n){ var p=Math.min(1,(n-a)/1300); q.textContent=Math.round(94*p)+' %'; if(p<1&&s.classList.contains('an')) requestAnimationFrame(f); })(a); },400); }
+  if(s.getAttribute('data-mod')){ var m=document.getElementById('mod'), n=0; m.textContent=MODULE[0]; modT=setInterval(function(){ n++; if(n<MODULE.length){ m.textContent=MODULE[n]; m.style.color=(n%3===1)?'var(--akz)':'var(--txt)'; } else { m.innerHTML='15 Module.<br><em style="color:var(--akz);font-style:italic">Eine Datenbasis.</em>'; m.style.fontSize='120px'; clearInterval(modT); } },170); }
+  timer=setTimeout(function(){ zeige(i+1); },+s.getAttribute('data-ms'));
+}
+function balken(n){ var p=Math.min(1,(n-t0)/GES); lauf.style.width=(p*100)+'%'; if(p<1) raf=requestAnimationFrame(balken); }
+function ende(){
+  try{ if(parent!==window) parent.postMessage('kayya-film-ende',location.origin); }catch(e){}
+  if(parent===window){ SZ[SZ.length-1].classList.add('an'); document.getElementById('nochmal').style.display='block'; }
+}
+function start(){
+  clearTimeout(timer); clearInterval(modT); cancelAnimationFrame(raf);
+  document.getElementById('nochmal').style.display='none'; var m=document.getElementById('mod'); m.style.fontSize=''; m.style.color='';
+  t0=performance.now(); raf=requestAnimationFrame(balken); zeige(0);
+}
+/* erst starten, wenn die Schriften da sind, sonst springt das erste Bild */
+/* Clips vorladen, höchstens vier Sekunden warten */
+var bereit=Promise.all(VID.map(function(v){ return new Promise(function(r){ if(v.readyState>=3) return r(); v.addEventListener('canplaythrough',r,{once:true}); v.addEventListener('error',r,{once:true}); }); }));
+Promise.all([(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()), Promise.race([bereit,new Promise(function(r){ setTimeout(r,4000); })])]).then(function(){ setTimeout(start,150); });
+</script>
+</body>
+</html>

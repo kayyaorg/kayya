@@ -203,6 +203,9 @@ function offen(id){ document.getElementById(id).classList.add('auf'); }
 function zu(id){ document.getElementById(id).classList.remove('auf'); }
 function gateHash(s){ let h=5381; for(let i=0;i<s.length;i++){ h=((h<<5)+h+s.charCodeAt(i))>>>0; } return h; }
 var MOBIL=('ontouchstart' in window)&&Math.min(screen.width,screen.height)<820;
+/* Handy: eigene, fuer kleine Bildschirme gebaute Seite. kayya.org/?desktop=1 zeigt trotzdem diese Startseite. */
+if(MOBIL && !/[?&](desktop|bereich|tor|film)=/.test(location.search)) location.replace('mobil.html');
+window.addEventListener('load',function(){ if(location.hash==='#impressum') offen('m-imp'); if(location.hash==='#datenschutz') offen('m-ds'); });
 /* Ein Zugangsfeld: das Wort (als Hash) bestimmt den Bereich */
 /* Das Zugangswort prueft der SERVER (gate.php): richtiges Wort -> signiertes Cookie fuer den Bereich,
    erst damit liefert der Server die geschuetzten Seiten aus. Der gewaehlte Bereich bestimmt das Ziel. */
@@ -267,7 +270,7 @@ function vsStart(){ var v=document.getElementById('vs-film'); v.muted=false; doc
 (function(){
   try{
     var q=new URLSearchParams(location.search), nochmal=q.get('film')==='1';
-    if(q.get('bereich') || q.get('tor')) return;
+    if(q.get('bereich') || q.get('tor') || q.get('desktop')) return;
     if(!nochmal && sessionStorage.getItem('kayya_film')==='1'){ document.body.classList.add('nachfilm'); return; }
     /* Zuerst der Produktfilm (film.html, animiert, ohne Ton). Fehlt er, greift die Videodatei darunter. */
     fetch('film.html',{method:'HEAD',cache:'no-store'}).then(function(r){
