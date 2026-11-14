@@ -258,6 +258,7 @@ function vsEnde(){
   try{ if(document.fullscreenElement) document.exitFullscreen(); }catch(e){}
   try{ sessionStorage.setItem('kayya_film','1'); }catch(e){}
   o.classList.add('weg'); document.body.classList.add('nachfilm');
+  setTimeout(function(){ var f=document.getElementById('vs-seite'); if(f) f.remove(); },800);
   setTimeout(function(){ o.classList.remove('an'); var p=document.getElementById('pw'); if(p && !MOBIL) p.focus(); },750);
 }
 function vsVollbild(){ try{ var o=document.getElementById('vorspann'); if(o.requestFullscreen && !document.fullscreenElement) o.requestFullscreen().catch(function(){}); }catch(e){} }
@@ -268,7 +269,18 @@ function vsStart(){ var v=document.getElementById('vs-film'); v.muted=false; doc
     var q=new URLSearchParams(location.search), nochmal=q.get('film')==='1';
     if(q.get('bereich') || q.get('tor')) return;
     if(!nochmal && sessionStorage.getItem('kayya_film')==='1'){ document.body.classList.add('nachfilm'); return; }
-    fetch(VS_DATEI,{method:'HEAD',cache:'no-store'}).then(function(r){
+    /* Zuerst der Produktfilm (film.html, animiert, ohne Ton). Fehlt er, greift die Videodatei darunter. */
+    fetch('film.html',{method:'HEAD',cache:'no-store'}).then(function(r){
+      if(!r.ok) throw 0;
+      var o=document.getElementById('vorspann'), v=document.getElementById('vs-film');
+      v.style.display='none';
+      var f=document.createElement('iframe'); f.id='vs-seite'; f.src='film.html'; f.title='KAȲȲA OS Film'; f.setAttribute('scrolling','no');
+      f.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:0;background:#000';
+      o.insertBefore(f,o.firstChild);
+      window.addEventListener('message',function(e){ if(e.origin===location.origin && e.data==='kayya-film-ende') vsEnde(); });
+      document.addEventListener('keydown',function(e){ if(e.key==='Escape' && o.classList.contains('an') && !o.classList.contains('weg')) vsEnde(); });
+      o.classList.add('an');
+    }).catch(function(){ return fetch(VS_DATEI,{method:'HEAD',cache:'no-store'}).then(function(r){
       if(!r.ok || !/video/i.test(r.headers.get('content-type')||'')) return;
       var o=document.getElementById('vorspann'), v=document.getElementById('vs-film');
       v.src=VS_DATEI; v.poster=VS_BILD;
@@ -285,7 +297,7 @@ function vsStart(){ var v=document.getElementById('vs-film'); v.muted=false; doc
         document.getElementById('vs-ton').classList.add('an');
         if(p2 && p2.catch){ p2.catch(function(){ document.getElementById('vs-ton').classList.remove('an'); document.getElementById('vs-start').classList.add('an'); }); }
       }); }
-    }).catch(function(){});
+    }); }).catch(function(){});
   }catch(e){}
 })();
 </script>
