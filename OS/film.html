@@ -94,6 +94,15 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--txt);-webkit-font-smoo
 .pfad{font:600 24px 'Inter',sans-serif;color:var(--mut)}
 .pfad b{color:var(--akz)}
 
+/* Realbild: kurzer Clip im Vollbild, Text liegt darüber */
+.clip video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.clip::after{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(15,13,11,.25) 0%,rgba(15,13,11,.2) 45%,rgba(15,13,11,.82) 100%)}
+.clip.dunkel::after{background:rgba(15,13,11,.74)}
+.clip>*:not(video){position:relative;z-index:2}
+.clip .h,.clip .nr{text-shadow:0 4px 40px rgba(0,0,0,.6)}
+.clip.dunkel .weg{color:#CFC7BC}
+.ct{position:absolute!important;left:120px;right:120px;bottom:120px;font:600 118px/1.04 'Fraunces',serif;letter-spacing:-.025em;text-shadow:0 4px 40px rgba(0,0,0,.7)}
+.ct em{font-style:italic;color:var(--akz)}
 #mod{font:600 170px/1 'Fraunces',serif;letter-spacing:-.03em;text-align:center}
 #lauf{position:absolute;left:0;bottom:0;height:5px;width:0;background:var(--akz);z-index:5}
 #nochmal{display:none;position:absolute;left:50%;bottom:80px;transform:translateX(-50%);font:600 26px 'Inter',sans-serif;color:var(--txt);background:none;border:2px solid var(--txt);border-radius:99px;padding:14px 34px;cursor:pointer}
@@ -106,7 +115,7 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--txt);-webkit-font-smoo
 <div class="sz" data-ms="2500"><div class="h k">Öffentliches Geld<br>fliegt blind.</div></div>
 
 <!-- 2 -->
-<div class="sz" data-ms="2500">
+<div class="sz clip dunkel" data-ms="2500" data-v="0.4"><video src="video/c1.mp4" muted playsinline preload="auto"></video>
   <div class="h m t" style="--d:0ms"><span class="weg" style="--d:0ms">Quartalsbericht.</span></div>
   <div class="h m t" style="--d:520ms"><span class="weg" style="--d:520ms">Excel-Liste.</span></div>
   <div class="h m t" style="--d:1040ms"><span class="weg" style="--d:1040ms">Aktenordner.</span></div>
@@ -148,7 +157,10 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--txt);-webkit-font-smoo
 </div>
 
 <!-- 7 -->
-<div class="sz" data-ms="1100"><div class="nr k">02</div><div class="h k">Durchführen.</div></div>
+<div class="sz clip" data-ms="1500" data-v="1.0"><video src="video/c2.mp4" muted playsinline preload="auto"></video><div class="nr k">02</div><div class="h k">Durchführen.</div></div>
+
+<!-- 7b Clip: Check-in -->
+<div class="sz clip" data-ms="1400" data-v="1.5"><video src="video/c4.mp4" muted playsinline preload="auto"></video><div class="ct k">Check-in. <em>Per App.</em></div></div>
 
 <!-- 8 Anwesenheit -->
 <div class="sz" data-ms="4800">
@@ -167,6 +179,9 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--txt);-webkit-font-smoo
 
 <!-- 9 -->
 <div class="sz" data-ms="1100"><div class="nr k">03</div><div class="h k">Eskalation.</div></div>
+
+<!-- 9b Clip: Gespraech -->
+<div class="sz clip" data-ms="1500" data-v="2.0"><video src="video/c5.mp4" muted playsinline preload="auto"></video><div class="ct k">Erst reden. <em>Dann melden.</em></div></div>
 
 <!-- 10 Eskalation -->
 <div class="sz" data-ms="6200">
@@ -207,6 +222,9 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--txt);-webkit-font-smoo
 
 <!-- 13 -->
 <div class="sz" data-ms="1100"><div class="nr k">05</div><div class="h k">Nachweisen.</div></div>
+
+<!-- 13b Clip: Kostentraeger schaut zu -->
+<div class="sz clip" data-ms="1500" data-v="3.0"><video src="video/c3.mp4" muted playsinline preload="auto"></video><div class="ct k">Der Kostenträger <em>schaut zu. Live.</em></div></div>
 
 <!-- 14 Kostentraeger -->
 <div class="sz" data-ms="5800">
@@ -249,6 +267,7 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--txt);-webkit-font-smoo
 /* KAȲȲA OS · Film: Szenen laufen nacheinander, harte Schnitte. Am Ende meldet der Film sich bei der Startseite. */
 var B=document.getElementById('b'), SZ=[].slice.call(document.querySelectorAll('.sz')), lauf=document.getElementById('lauf');
 var GES=SZ.reduce(function(a,s){ return a+(+s.getAttribute('data-ms')); },0), timer=null, modT=null, raf=null, t0=0;
+var VID=[].slice.call(document.querySelectorAll('video'));
 var MODULE=['Vergabe','Fördermittel','Kursleitung','Teilnehmer','Selbstlernen','Begleitung','Krisenhilfe','Auslandscampus','Management','Buchhaltung','Personal','Recht','Kostenträger','Zeugnisse','Arbeitgeber'];
 function passe(){ var s=Math.min(innerWidth/1920, innerHeight/1080); B.style.transform='scale('+s+')'; }
 addEventListener('resize',passe); passe();
@@ -258,8 +277,10 @@ function zaehle(el,ziel,ms,tausend){ var a=performance.now(); (function f(n){ va
 function zeige(i){
   SZ.forEach(function(s,j){ s.classList.toggle('an',i===j); });
   clearInterval(modT);
+  VID.forEach(function(v){ try{ v.pause(); }catch(e){} });
   if(i>=SZ.length){ ende(); return; }
   var s=SZ[i];
+  var sv=s.querySelector('video'); if(sv){ try{ sv.currentTime=+s.getAttribute('data-v')||0; var pp=sv.play(); if(pp&&pp.catch) pp.catch(function(){}); }catch(e){} }
   s.querySelectorAll('[data-z]').forEach(function(e){ zaehle(e,+e.getAttribute('data-z'),1500,!!e.getAttribute('data-t')); });
   var q=s.querySelector('#quote'); if(q){ q.textContent='0 %'; setTimeout(function(){ var a=performance.now(); (function f(n){ var p=Math.min(1,(n-a)/1300); q.textContent=Math.round(94*p)+' %'; if(p<1&&s.classList.contains('an')) requestAnimationFrame(f); })(a); },400); }
   if(s.getAttribute('data-mod')){ var m=document.getElementById('mod'), n=0; m.textContent=MODULE[0]; modT=setInterval(function(){ n++; if(n<MODULE.length){ m.textContent=MODULE[n]; m.style.color=(n%3===1)?'var(--akz)':'var(--txt)'; } else { m.innerHTML='15 Module.<br><em style="color:var(--akz);font-style:italic">Eine Datenbasis.</em>'; m.style.fontSize='120px'; clearInterval(modT); } },170); }
@@ -276,7 +297,9 @@ function start(){
   t0=performance.now(); raf=requestAnimationFrame(balken); zeige(0);
 }
 /* erst starten, wenn die Schriften da sind, sonst springt das erste Bild */
-(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(function(){ setTimeout(start,150); });
+/* Clips vorladen, höchstens vier Sekunden warten */
+var bereit=Promise.all(VID.map(function(v){ return new Promise(function(r){ if(v.readyState>=3) return r(); v.addEventListener('canplaythrough',r,{once:true}); v.addEventListener('error',r,{once:true}); }); }));
+Promise.all([(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()), Promise.race([bereit,new Promise(function(r){ setTimeout(r,4000); })])]).then(function(){ setTimeout(start,150); });
 </script>
 </body>
 </html>
