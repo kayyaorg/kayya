@@ -10,6 +10,12 @@ Gemeinsames Brett aller Claude-Sessions. Neueste Einträge oben. Zeiten in Ortsz
 
 ## Übergaben und Fragen
 
+### 14.11. · Desktop-Session: Echte Ausschreibungen online holen (`OS/vergabe-import.php`)
+- **Neu:** `vergabe-import.php` holt zu einer Detailseite von service.bund.de die Bekanntmachung, folgt bei Bedarf dem dort verlinkten Vergabeportal, sucht die Vergabeunterlagen (PDF/ZIP, soweit frei abrufbar) und wertet alles aus. Zugang nur mit Tor-Cookie (g5/g4), Rate-Limit, Abruf nur von öffentlichen Adressen. In `KAYYA-Deploy.ps1` eingetragen.
+- **Auswertung:** zuerst KI (Claude, strukturierte Ausgabe, auch PDF). Fällt die KI aus, greift eine Auswertung nach festen Regeln. `POST aktion=entwurf` schreibt Anschreiben und Konzept.
+- **ACHTUNG, am 14.11. gemessen:** Die Anthropic-API antwortet mit „credit balance is too low“. Damit läuft derzeit **keine** KI-Funktion auf kayya.org wirklich, auch `kayya-ki.php` nicht – das Abzeichen „KI ECHT“ prüft nur, ob ein Key eingetragen ist. Bernhard muss Guthaben aufladen.
+- **G5:** Im Vergabe-Monitor steht oben die Karte „Echte Ausschreibungen“ (live). „Angebot erstellen“ baut die Angebotsmappe aus den echten Daten (Baustein `OS/g5/g5-angebot.html`).
+
 ### 14.11. · Desktop-Session: Angebotsmappe je Ausschreibung (G5)
 
 Neuer Baustein `OS/g5/g5-angebot.html`: „Angebot erstellen" im Vergabe-Monitor erzeugt je Ausschreibung Anschreiben, Preisblatt, Konzept, Personal/Referenzen, Erklärungen/Nachweise, eine Prüfung auf Abgabereife (grün/gelb/rot) und die Unterschrift der GF mit Prüfsumme. „Gebot abgeben" geht erst nach Unterschrift. Der Build legt dafür `window.G5VG` (Ausschreibungen, Kalkulationen) frei. Interne Gewinn-/Verlust-Notizen stehen nie im Anschreiben.

@@ -1128,6 +1128,11 @@ html:not([lang="de"]) .zeile.g5klick::after{display:none}
   html.g5-druck #g5druck .g5a-p{display:none}
 }
 
+.g5a-satz{display:flex;align-items:center;gap:10px;margin:4px 0 6px;font-size:14px}
+.g5a-satz input{width:110px;padding:8px 10px;font-size:15px;text-align:right}
+.g5a a.btn{text-decoration:none;display:inline-block}
+#g5echt .zeile .btn{flex:none}
+
 </style>
 </head>
 <body>
@@ -1603,7 +1608,19 @@ html:not([lang="de"]) .zeile.g5klick::after{display:none}
     if(/Pflege/i.test(s)) return 'pflege';
     return 'allg';
   }
+  /* Echte Ausschreibung: online geholte Daten (Bekanntmachung, Unterlagen) */
+  function L(t){ var a=stand(t.id); return (t.link&&a.live&&a.live.daten)?a.live:null; }
+  var SATZ={pflege:1350, bsk:640, ik:640, akt:950, log:1100, reha:1500, schul:1300, intl:2000, allg:1000};  /* Preis je Platz und Monat: aus eigenen Maßnahmen abgeleiteter Vorschlag */
+  function satz(t){ var a=stand(t.id); return a.satz||SATZ[profilKey(t)]||1000; }
+  function fristText(t){ var l=L(t); return (l&&l.daten.angebotsfrist)?l.daten.angebotsfrist:tag(t.off); }
+  function bindeText(t){ var l=L(t); return (l&&l.daten.bindefrist)?l.daten.bindefrist:tag(t.off+60); }
+  function zahlenLive(t){
+    var d=L(t).daten, p=PROFIL[profilKey(t)], pl=+d.teilnehmerplaetze||0, dauer=+d.laufzeit_monate||0, s=satz(t), erl=pl*dauer*s, db=Math.round(erl*.05), k=erl-db;
+    return {erl:erl, dauer:dauer||p.dauer, pl:pl, db:db, marge:erl?5:0, echt:false, vorschlag:true, jePlatz:(erl&&pl)?erl/pl:0, jeMonat:s,
+      rows:[['Angebotspreis gesamt',erl],['Personal Durchführung (66 % der Kosten)',-Math.round(k*.66)],['Räume und Energie (16 %)',-Math.round(k*.16)],['Lehrmittel und Material (8 %)',-Math.round(k*.08)],['Verwaltung (10 %)',-Math.round(k*.10)]]};
+  }
   function zahlen(t){
+    if(L(t)) return zahlenLive(t);
     var g=vg(), w=t.wf&&g.WFD[t.wf], e=t.wf&&g.ERT[t.wf], p=PROFIL[profilKey(t)];
     var erl=e?e.rows[0][1]:(+t.vol||0), dauer=e?e.m:p.dauer, pl=(+t.pl)||0, rows, db;
     if(e){ rows=e.rows.map(function(r){ return [r[0],r[1]]; }); db=rows.reduce(function(a,r){ return a+r[1]; },0); }
@@ -1630,9 +1647,41 @@ html:not([lang="de"]) .zeile.g5klick::after{display:none}
   function stand(id){ if(!ANG[id]) ANG[id]={tab:'check', imp:false, ok:{}, sig:null, texte:{}}; return ANG[id]; }
 
   /* ---------- Texte: aus der konkreten Ausschreibung ---------- */
+  function anschreibenLive(t){
+    var d=L(t).daten, z=zahlen(t), m=refM(t), zl=zulassung(t), vs=d.vergabestelle||{};
+    var mit=(d.einzureichen||[]).filter(function(x){ return x.zeitpunkt==='mit_angebot'; });
+    var ref=(m&&+m.anwesenheit_prozent>=85)?('In der laufenden Maßnahme '+m.kennung+' ('+m.name+', '+m.kostentraeger+') sind '+m.belegt+' von '+m.plaetze+' Plätzen belegt, die Anwesenheit liegt bei '+m.anwesenheit_prozent+' %. '):'';
+    return (vs.name||t.tr)+'\n'+(vs.anschrift?vs.anschrift.replace(/, /g,'\n')+'\n':'')+'\n'+BIETER.stadt+', den '+tag(0)+'\n\n'
+     +'Angebot zur Vergabe '+(d.vergabenummer||t.id)+'\n'+(d.titel||t.titel)+'\n'+(d.verfahrensart?d.verfahrensart+' · ':'')+'Angebotsfrist '+fristText(t)+'\n\n'
+     +'Sehr geehrte Damen und Herren,\n\n'
+     +'auf Ihre Bekanntmachung geben wir unser Angebot für die oben genannte Leistung ab'+(z.pl?' ('+z.pl+' Teilnehmerplätze'+(d.teilnehmer_gesamt?', insgesamt '+d.teilnehmer_gesamt+' Teilnehmende':'')+')':'')+'. '
+     +((d.beginn&&d.ende)?'Wir führen die Leistung im Ausführungszeitraum vom '+d.beginn+' bis '+d.ende+' durch. ':'')
+     +(z.erl?'Unser Angebotspreis beträgt '+eur(z.erl)+' ('+eur(z.jeMonat)+' je Teilnehmerplatz und Monat). Die Preisangaben stehen im Preisblatt. ':'')+'\n\n'
+     +'Unser Angebot stützt sich auf belegte Ergebnisse. '+(ref||'Vergleichbare Leistungen führen wir bereits durch. ')+'Die Referenzliste reichen wir auf Verlangen nach.\n\n'
+     +(zl?'Eignung: '+zl+'. ':'')
+     +'An unser Angebot halten wir uns bis zum '+bindeText(t)+' gebunden. '+(d.nebenangebote&&/nicht/i.test(d.nebenangebote)?'Nebenangebote geben wir nicht ab. ':'')+'Rückfragen beantwortet die Geschäftsführung.\n\n'
+     +(mit.length?'Anlagen\n'+mit.map(function(x,i){ return (i+1)+'. '+x.unterlage; }).join('\n')+'\n\n':'')
+     +'Mit freundlichen Grüßen\n\n'+BIETER.gf+'\n'+BIETER.rolle+'\n'+BIETER.name+'\n'+BIETER.str+' · '+BIETER.ort;
+  }
+  function konzeptLive(t){
+    var d=L(t).daten, p=PROFIL[profilKey(t)], z=zahlen(t), anf=(d.anforderungen&&d.anforderungen.length)?d.anforderungen:[];
+    var pers=p.pers.map(function(k){ return PERS[k][0]+' ('+PERS[k][1]+')'; }).join(', ');
+    var zk=(d.zuschlagskriterien||[]).map(function(x){ return '– '+x.kriterium+(x.gewicht?' ('+x.gewicht+')':''); }).join('\n');
+    return 'Angebotskonzept zur Vergabe '+(d.vergabenummer||t.id)+'\n'+(d.titel||t.titel)+' · '+((d.vergabestelle||{}).name||t.tr)+'\n\n'
+     +'1. Auftrag und Zielgruppe\n'+(d.leistung||p.ziel)+(d.rechtsgrundlage?' Rechtsgrundlage: '+d.rechtsgrundlage+'.':'')+'\n\n'
+     +'2. Umfang und Ablauf\n'+(z.pl?z.pl+' Teilnehmerplätze':'Platzzahl laut Leistungsbeschreibung')+((d.beginn&&d.ende)?', Ausführung vom '+d.beginn+' bis '+d.ende:'')+(z.dauer?' ('+z.dauer+' Monate)':'')+'. '+(d.verlaengerung||'')+'\n'+p.inhalt+'\n\n'
+     +'3. Durchführung\nDer Betrieb läuft digital gestützt. Anwesenheit wird täglich per Check-in erfasst, der Stand je Teilnehmerin und Teilnehmer geführt. Fachkräfte arbeiten mit einem Tagesplan, Teilnehmende sehen ihren Stand in der eigenen App, auf Wunsch in ihrer Sprache.\n\n'
+     +'4. Personal und Durchführungsort\nVorgesehen: '+pers+'. '+(d.leistungsort?'Durchführungsort laut Bekanntmachung: '+d.leistungsort+'. [Standort und Personal vor Ort bestätigen]':'[Durchführungsort laut Leistungsbeschreibung bestätigen]')+'\n\n'
+     +'5. Erfolgssicherung und Übergang\n'+p.erfolg+'\n\n'
+     +'6. Nachweisführung gegenüber dem Auftraggeber\nSie erhalten einen eigenen Lese-Zugang und sehen Belegung, Anwesenheit und Fortschritt Ihrer Maßnahme tagesaktuell. Jede Kennzahl führt bis zum einzelnen Beleg. '+(d.zahlungsbedingungen?'Die Abrechnung folgt Ihren Zahlungsbedingungen: '+d.zahlungsbedingungen:'')+'\n\n'
+     +(zk?'7. Zuschlagskriterien\n'+zk+'\n\n':'')
+     +(anf.length?(zk?'8':'7')+'. Anforderungen der Leistungsbeschreibung\n'+anf.map(function(x){ return '– '+x+'\n  Umsetzung: [aus dem Konzept des Trägers ergänzen oder von der KI schreiben lassen]'; }).join('\n')
+       :(zk?'8':'7')+'. Anforderungen der Leistungsbeschreibung\n[Die Leistungsbeschreibung lag beim Abruf nicht vor. Nach dem Herunterladen im Vergabeportal hier Punkt für Punkt beantworten.]');
+  }
   function anschreiben(t){
+    if(L(t)) return anschreibenLive(t);
     var p=PROFIL[profilKey(t)], z=zahlen(t), m=refM(t), zl=zulassung(t);
-    var ref=m?('In der laufenden Maßnahme '+m.kennung+' ('+m.name+', '+m.kostentraeger+') sind '+m.belegt+' von '+m.plaetze+' Plätzen belegt, die Anwesenheit liegt bei '+m.anwesenheit_prozent+' %. '):'';
+    var ref=(m&&+m.anwesenheit_prozent>=85)?('In der laufenden Maßnahme '+m.kennung+' ('+m.name+', '+m.kostentraeger+') sind '+m.belegt+' von '+m.plaetze+' Plätzen belegt, die Anwesenheit liegt bei '+m.anwesenheit_prozent+' %. '):'';
     return t.tr+'\n– Vergabestelle –\n\n'+BIETER.stadt+', den '+tag(0)+'\n\n'
      +'Angebot zur Ausschreibung '+t.id+': '+t.titel+'\n'+t.los+' · Region '+(t.reg||'laut Bekanntmachung')+' · Abgabefrist '+tag(t.off)+'\n\n'
      +'Sehr geehrte Damen und Herren,\n\n'
@@ -1645,6 +1694,7 @@ html:not([lang="de"]) .zeile.g5klick::after{display:none}
      +'Mit freundlichen Grüßen\n\n'+BIETER.gf+'\n'+BIETER.rolle+'\n'+BIETER.name+'\n'+BIETER.str+' · '+BIETER.ort;
   }
   function konzept(t){
+    if(L(t)) return konzeptLive(t);
     var p=PROFIL[profilKey(t)], z=zahlen(t), anf=anforderungen(t);
     var pers=p.pers.map(function(k){ return PERS[k][0]+' ('+PERS[k][1]+')'; }).join(', ');
     return 'Durchführungskonzept zur Ausschreibung '+t.id+'\n'+t.titel+' · '+t.tr+'\n\n'
@@ -1684,7 +1734,55 @@ html:not([lang="de"]) .zeile.g5klick::after{display:none}
   }
 
   /* ---------- Abgabereife: was fehlt noch bis zur Unterschrift ---------- */
+  function tageBis(s){ var m=String(s||'').match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/); if(!m) return null; var d=new Date(+m[3],+m[2]-1,+m[1]), h=new Date(); h.setHours(0,0,0,0); return Math.round((d-h)/864e5); }
+  function untStatus(x){   /* wer liefert die Unterlage */
+    if(x.art==='anschreiben') return ['gruen','von KAȲȲA erstellt (Anschreiben)'];
+    if(x.art==='konzept') return ['gruen','von KAȲȲA erstellt (Konzept)'];
+    if(x.art==='preis') return ['gelb','Werte von KAȲȲA gerechnet, in das Preisblatt der Vergabestelle übertragen'];
+    if(x.art==='formblatt') return ['gelb','Formblatt der Vergabestelle: im Vergabeportal herunterladen und ausfüllen'];
+    if(x.art==='erklaerung') return ['gelb','Erklärung auf dem Vordruck der Vergabestelle abgeben, Inhalt liegt vor'];
+    if(x.art==='referenz') return ['gruen','Referenzliste aus den laufenden Maßnahmen'];
+    if(x.art==='nachweis') return ['gruen','Nachweis aus den Stammdaten des Trägers'];
+    return ['gelb','vom Träger beizufügen'];
+  }
+  function pruefungLive(t){
+    var a=stand(t.id), c=[], l=L(t), p=PROFIL[profilKey(t)];
+    if(a.laedt){ c.push({s:'gelb', t:'Ausschreibung wird online geholt …', d:'Bekanntmachung auf service.bund.de, Vergabeportal und Vergabeunterlagen werden abgerufen und ausgewertet.'}); return c; }
+    if(!l){ c.push({s:'rot', t:'Ausschreibung noch nicht geholt', d:(a.fehler?'Der Abruf ist fehlgeschlagen: '+a.fehler+'. ':'')+'Ohne die Bekanntmachung gibt es kein Angebot.', akt:['holen','Jetzt online holen']}); return c; }
+    var d=l.daten, q=l.quelle||{}, z=zahlen(t), docs=(q.dokumente||[]).filter(function(x){ return x.gelesen; });
+    c.push({s:'gruen', t:'Bekanntmachung online geholt', d:'Quelle: service.bund.de'+(q.portal?' und '+q.portal.replace(/^https?:\/\/([^\/]+).*/,'$1'):'')+', Stand '+l.stand+'. Ausgewertet '+(l.auswertung==='ki'?'von der KI':'nach festen Regeln')+'. Vergabenummer '+(d.vergabenummer||'nicht genannt')+'.'});
+    if(l.auswertung!=='ki') c.push({s:(a.ok.ki?'gruen':'gelb'), t:'KI-Auswertung nicht verfügbar', d:'Die KI hat nicht geantwortet ('+(l.ki_fehler||'kein Zugang')+'). Die Bekanntmachung ist nach festen Regeln ausgewertet. Inhaltliche Anforderungen und Zuschlagskriterien bitte selbst gegenlesen.'+(a.ok.ki?' Von der Geschäftsführung bestätigt.':''), akt:a.ok.ki?null:['ok:ki','Gegengelesen, passt']});
+    if(docs.length&&l.auswertung!=='ki') c.push({s:(a.ok.unt?'gruen':'gelb'), t:'Vergabeunterlagen geladen, noch nicht ausgewertet', d:docs.length+(docs.length===1?' Dokument':' Dokumente')+' aus dem Vergabeportal geladen ('+docs.map(function(x){ return x.name; }).join(', ')+'). Ohne KI werden sie nicht gelesen. Bitte selbst prüfen.'+(a.ok.unt?' Von der Geschäftsführung bestätigt.':''), akt:a.ok.unt?null:['ok:unt','Unterlagen sind geprüft'], url:q.unterlagen_url});
+    else if(docs.length) c.push({s:'gruen', t:'Vergabeunterlagen gelesen', d:docs.length+(docs.length===1?' Dokument':' Dokumente')+' aus dem Vergabeportal ausgewertet: '+docs.map(function(x){ return x.name; }).join(', ')+'.'});
+    else c.push({s:(a.ok.unt?'gruen':'gelb'), t:'Vergabeunterlagen im Portal abholen', d:(q.unterlagen_stand||'Die Unterlagen waren nicht frei abrufbar')+'. Leistungsbeschreibung, Preisblatt und Formblätter stehen im Vergabeportal.'+(a.ok.unt?' Von der Geschäftsführung bestätigt: Unterlagen liegen vor.':''), akt:a.ok.unt?null:['ok:unt','Unterlagen liegen vor und sind geprüft'], url:q.unterlagen_url});
+    var zl=zulassung(t);
+    c.push(zl?{s:'gruen', t:'Eignung belegt', d:zl+'.'}:{s:(a.ok.eig?'gruen':'gelb'), t:'Eignung über Referenzen', d:'Für diese Leistungsart gibt es keine Trägerzulassung. Die Eignung wird über Referenzen und Personalqualifikation nachgewiesen.'+(a.ok.eig?' Bestätigt.':''), akt:a.ok.eig?null:['ok:eig','Geprüft und in Ordnung']});
+    c.push({s:(a.ok.pers?'gruen':'gelb'), t:'Personal und Standort zuweisen', d:(d.leistungsort?'Durchführungsort: '+d.leistungsort+'. ':'')+'Für '+(z.pl||'die ausgeschriebenen')+' Plätze'+((d.beginn)?' ab '+d.beginn:'')+' müssen Personal und Räume vor Ort stehen. Vorschlag: '+p.pers.map(function(k){ return PERS[k][0]; }).join(', ')+'.'+(a.ok.pers?' Von der Geschäftsführung bestätigt.':''), akt:a.ok.pers?null:['ok:pers','Personal und Standort sind gesichert'], ziel:a.ok.pers?null:['m/personal','Zur Einsatzplanung']});
+    if(!z.erl) c.push({s:'rot', t:'Preis nicht rechenbar', d:'Platzzahl oder Laufzeit stehen nicht in der Bekanntmachung. Den Preis im Reiter Preisblatt festlegen, sobald die Leistungsbeschreibung vorliegt.'});
+    else c.push({s:(a.ok.preis?'gruen':'gelb'), t:'Preis bestätigen', d:'Vorschlag: '+eur(z.erl)+' für '+z.pl+' Plätze über '+z.dauer+' Monate, das sind '+eur(z.jeMonat)+' je Platz und Monat. Der Satz stammt aus den eigenen Maßnahmen und lässt sich im Reiter Preisblatt ändern.'+(a.ok.preis?' Von der Geschäftsführung bestätigt.':''), akt:a.ok.preis?null:['ok:preis','Preis ist in Ordnung']});
+    var mit=(d.einzureichen||[]).filter(function(x){ return x.zeitpunkt==='mit_angebot'; }), hand=mit.filter(function(x){ return untStatus(x)[0]==='gelb'; });
+    if(mit.length) c.push({s:(!hand.length||a.ok.form?'gruen':'gelb'), t:mit.length+' Unterlagen mit dem Angebot verlangt', d:(mit.length-hand.length)+' erstellt KAȲȲA. '+(hand.length?hand.length+' sind Vordrucke der Vergabestelle: '+hand.map(function(x){ return x.unterlage; }).join('; ')+'.':'')+(a.ok.form?' Von der Geschäftsführung bestätigt: Vordrucke sind ausgefüllt.':''), akt:(!hand.length||a.ok.form)?null:['ok:form','Vordrucke sind ausgefüllt und liegen bei'], tab:'unt'});
+    var n=tageBis(d.angebotsfrist);
+    if(n==null) c.push({s:'gelb', t:'Angebotsfrist prüfen', d:'In der Bekanntmachung wurde keine Frist erkannt.'});
+    else if(n<0) c.push({s:'rot', t:'Angebotsfrist abgelaufen', d:'Die Frist endete am '+d.angebotsfrist+'.'});
+    else if(n<=2) c.push({s:'rot', t:'Frist zu knapp', d:'Abgabe bis '+d.angebotsfrist+'. Das sind '+n+' Tage.'});
+    else c.push({s:'gruen', t:'Frist eingehalten', d:'Abgabe bis '+d.angebotsfrist+', noch '+n+' Tage. '+(d.abgabeform?'Abgabe: '+d.abgabeform+'.':'')});
+    return c;
+  }
+  function untHtml(t){
+    var l=L(t); if(!l) return '<p class="hinweis">Die Ausschreibung ist noch nicht geholt.</p>';
+    var d=l.daten, q=l.quelle||{}, namen={mit_angebot:'Mit dem Angebot', auf_verlangen:'Auf Verlangen der Vergabestelle', vor_beginn:'Vor Maßnahmebeginn'}, h='';
+    ['mit_angebot','auf_verlangen','vor_beginn'].forEach(function(zp){ var xs=(d.einzureichen||[]).filter(function(x){ return x.zeitpunkt===zp; }); if(!xs.length) return;
+      h+='<h4>'+namen[zp]+'</h4><div class="g5a-check">'+xs.map(function(x){ var s=untStatus(x); return '<div><i class="g5a-p '+(zp==='mit_angebot'?s[0]:'')+'"></i><div><b>'+esc(x.unterlage)+'</b><p>'+esc(s[1])+'</p></div></div>'; }).join('')+'</div>'; });
+    if(!h) h='<p class="hinweis">In der Bekanntmachung steht keine Liste der einzureichenden Unterlagen. Sie steht dann in den Vergabeunterlagen.</p>';
+    var docs=q.dokumente||[];
+    h+='<h4>Quellen</h4>'+tabelle(null,[['Bekanntmachung',{h:'<a href="'+esc(q.url)+'" target="_blank" rel="noopener">service.bund.de</a>'}]].concat(q.portal?[['Vergabeportal',{h:'<a href="'+esc(q.portal)+'" target="_blank" rel="noopener">'+esc(q.portal.replace(/^https?:\/\/([^\/]+).*/,'$1'))+'</a>'}]]:[]).concat(q.unterlagen_url?[['Vergabeunterlagen',{h:'<a href="'+esc(q.unterlagen_url)+'" target="_blank" rel="noopener">'+esc(q.unterlagen_url.replace(/^https?:\/\/([^\/]+).*/,'$1'))+'</a> · '+esc(q.unterlagen_stand||'')}]]:[]).concat(docs.map(function(x){ return [x.name,{h:x.gelesen?'<span class="tag gruen">geladen</span> '+(x.kb||'')+' KB':'<span class="tag">nicht gelesen</span> '+esc(x.grund||'')}]; })))
+      +'<p class="hinweis">Abruf '+esc(l.stand)+'. '+(l.schritte||[]).map(esc).join(' · ')+'</p>'
+      +((d.offen&&d.offen.length)?'<h4>Noch offen für ein vollständiges Angebot</h4><div class="g5a-liste">'+d.offen.map(function(x){ return '<div><i class="g5a-p gelb"></i>'+esc(x)+'</div>'; }).join('')+'</div>':'');
+    return h;
+  }
   function pruefung(t){
+    if(t.link) return pruefungLive(t);
     var a=stand(t.id), z=zahlen(t), p=PROFIL[profilKey(t)], c=[], ui=unterlagenInfo(t);
     if(ui) c.push({s:'gruen', t:'Vergabeunterlagen ausgewertet', d:ui+'.'});
     else if(!z.erl) c.push({s:'rot', t:'Vergabeunterlagen fehlen', d:'Für diese Ausschreibung liegen weder Auftragswert noch Leistungsbeschreibung vor. Ohne die Unterlagen aus dem Vergabeportal lässt sich kein Preisblatt rechnen.'});
@@ -1710,17 +1808,18 @@ html:not([lang="de"]) .zeile.g5klick::after{display:none}
   function reif(t){ var c=pruefung(t), rot=0, gelb=0; c.forEach(function(x){ if(x.s==='rot') rot++; if(x.s==='gelb') gelb++; }); return {c:c, rot:rot, gelb:gelb, ok:!rot&&!gelb}; }
 
   /* ---------- Darstellung ---------- */
-  var TABS=[['check','Abgabereife'],['brief','Anschreiben'],['preis','Preisblatt'],['konz','Konzept'],['pers','Personal & Referenzen'],['erkl','Erklärungen & Nachweise'],['sig','Unterschrift']];
+  var TABS=[['check','Abgabereife'],['brief','Anschreiben'],['preis','Preisblatt'],['konz','Konzept'],['unt','Unterlagen'],['pers','Personal & Referenzen'],['erkl','Erklärungen & Nachweise'],['sig','Unterschrift']];
   function text(t,k){ var a=stand(t.id); if(a.texte[k]==null) a.texte[k]=(k==='brief'?anschreiben(t):konzept(t)); return a.texte[k]; }
   function tabelle(kopf,zeilen){ return '<div class="tabelle"><table>'+(kopf?'<thead><tr>'+kopf.map(function(k){ return '<th>'+esc(k)+'</th>'; }).join('')+'</tr></thead>':'')+'<tbody>'+zeilen.map(function(z){ return '<tr>'+z.map(function(x,i){ return '<td'+(typeof x==='object'&&x.r?' style="text-align:right;white-space:nowrap"':'')+'>'+(typeof x==='object'?x.h:esc(x))+'</td>'; }).join('')+'</tr>'; }).join('')+'</tbody></table></div>'; }
   function preisHtml(t){
     var z=zahlen(t); if(!z.erl) return '<p class="hinweis">Kein Auftragswert bekannt. Das Preisblatt entsteht, sobald die Vergabeunterlagen vorliegen.</p>';
-    var kopf=[['Angebotspreis gesamt',{h:'<b>'+eur(z.erl)+'</b>',r:1}],['Teilnehmerplätze',{h:String(z.pl||'–'),r:1}],['Laufzeit',{h:z.dauer+' Monate'+(z.echt||stand(t.id).imp?'':' (Annahme)'),r:1}]];
+    var kopf=[['Angebotspreis gesamt',{h:'<b>'+eur(z.erl)+'</b>',r:1}],['Teilnehmerplätze',{h:String(z.pl||'–'),r:1}],['Laufzeit',{h:z.dauer+' Monate'+(z.echt||stand(t.id).imp||z.vorschlag?'':' (Annahme)'),r:1}]];
     if(z.jePlatz) kopf.push(['Preis je Teilnehmerplatz',{h:eur(z.jePlatz),r:1}]);
     if(z.jeMonat) kopf.push(['Preis je Platz und Monat',{h:eur(z.jeMonat),r:1}]);
     var kal=z.rows.map(function(r){ return [r[0],{h:(r[1]<0?'− ':'')+eur(Math.abs(r[1])),r:1}]; });
     kal.push([{h:'<b>Deckungsbeitrag</b>'},{h:'<b>'+(z.db<0?'− ':'+ ')+eur(Math.abs(z.db))+'</b> · '+z.marge.toFixed(1).replace('.',',')+' %',r:1}]);
-    return '<h4>Preisblatt</h4>'+tabelle(null,kopf)+'<h4>Interne Kalkulation (nicht Teil der Abgabe)</h4>'+tabelle(null,kal)
+    var vor=z.vorschlag?'<div class="g5a-satz"><label>Preis je Teilnehmerplatz und Monat</label><input type="number" min="100" step="10" value="'+Math.round(z.jeMonat)+'" onchange="g5aSatz(\x27'+t.id+'\x27,this.value)"> €</div><p class="hinweis">Vorschlag aus den eigenen Maßnahmen dieser Leistungsart. Plätze und Laufzeit stammen aus der Bekanntmachung. Das Preisblatt der Vergabestelle gibt vor, in welcher Form der Preis anzugeben ist.</p>':'';
+    return '<h4>Preisblatt</h4>'+vor+tabelle(null,kopf)+'<h4>Interne Kalkulation (nicht Teil der Abgabe)</h4>'+tabelle(null,kal)
       +'<p class="hinweis">'+(z.echt?'Gerechnet aus Einsatzplanung, Raumumlage und den Ergebnissen vergleichbarer Lose.':'Gerechnet nach dem Standard-Kostenschlüssel aus dem bekannt gemachten Volumen.')+'</p><p class="hinweis"><b>Intern, nicht Teil der Abgabe:</b> '+esc(t.beweis)+'</p>';
   }
   function persHtml(t){
@@ -1741,6 +1840,8 @@ html:not([lang="de"]) .zeile.g5klick::after{display:none}
       :'<div class="g5a-urteil gelb"><b>Fast fertig.</b> '+r.gelb+(r.gelb===1?' Punkt braucht':' Punkte brauchen')+' noch eine Entscheidung, dann ist die Mappe unterschriftsreif.</div>';
     return kopf+'<div class="g5a-check">'+r.c.map(function(x){
       var b=''; if(x.akt) b+='<button class="btn" onclick="g5aAkt(\''+t.id+'\',\''+x.akt[0]+'\')">'+esc(x.akt[1])+'</button>';
+      if(x.url) b+='<a class="btn geist" href="'+esc(x.url)+'" target="_blank" rel="noopener">Vergabeportal öffnen ›</a>';
+      if(x.tab) b+='<button class="btn geist" onclick="g5aTab(\x27'+t.id+'\x27,\x27'+x.tab+'\x27)">Liste ansehen ›</button>';
       if(x.ziel) b+='<button class="btn geist" onclick="g5aZu();tief(\''+x.ziel[0]+'\')">'+esc(x.ziel[1])+' ›</button>';
       return '<div><i class="g5a-p '+x.s+'"></i><div><b>'+esc(x.t)+'</b><p>'+esc(x.d)+'</p>'+(b?'<div class="g5a-akt">'+b+'</div>':'')+'</div></div>'; }).join('')+'</div>'
       +(r.ok?'<div class="g5a-akt"><button class="btn primaer" onclick="g5aTab(\''+t.id+'\',\'sig\')">Zur Unterschrift ›</button></div>':'');
@@ -1749,7 +1850,7 @@ html:not([lang="de"]) .zeile.g5klick::after{display:none}
     var a=stand(t.id), r=reif(t), z=zahlen(t);
     var anl=['Anschreiben','Preisblatt','Durchführungskonzept','Personal und Referenzen','Eigenerklärungen ('+ERKL.length+')','Nachweise ('+nachweise(t).length+')'];
     var h='<h4>Angebotsmappe</h4><div class="g5a-liste">'+anl.map(function(x){ return '<div><i class="g5a-p gruen"></i>'+esc(x)+'</div>'; }).join('')+'</div>'
-      +tabelle(null,[['Ausschreibung',t.id+' · '+t.titel],['Vergabestelle',t.tr],['Angebotspreis',z.erl?eur(z.erl):'–'],['Abgabefrist',tag(t.off)+' · noch '+t.off+' Tage'],['Bindefrist bis',tag(t.off+60)]]);
+      +tabelle(null,[['Ausschreibung',((L(t)&&L(t).daten.vergabenummer)||t.id)+' · '+t.titel],['Vergabestelle',t.tr],['Angebotspreis',z.erl?eur(z.erl):'–'],['Abgabefrist',fristText(t)],['Bindefrist bis',bindeText(t)]]);
     if(a.sig){
       h+='<div class="g5a-urteil gruen"><b>Unterzeichnet.</b> '+esc(a.sig.name)+', '+esc(BIETER.rolle)+', am '+esc(a.sig.zeit)+'.<br>Prüfsumme der Mappe: <code>'+esc(a.sig.hash)+'</code></div>'
         +(t.st==='geboten'?'<p class="hinweis">Das Gebot ist abgegeben.</p>':'<div class="g5a-akt"><button class="btn primaer" onclick="g5aAbgabe(\''+t.id+'\')">Gebot abgeben</button><button class="btn geist" onclick="g5aAkt(\''+t.id+'\',\'unsig\')">Unterschrift zurückziehen</button></div><p class="hinweis">Die Abgabe erfolgt über das Vergabeportal der Vergabestelle. Jede Änderung an Anschreiben oder Konzept hebt die Unterschrift auf.</p>');
@@ -1766,7 +1867,8 @@ html:not([lang="de"]) .zeile.g5klick::after{display:none}
     if(a.tab==='check') return checkHtml(t);
     if(a.tab==='brief') return '<textarea class="g5a-text" id="g5a-brief" oninput="g5aEdit(\''+t.id+'\',\'brief\',this.value)">'+esc(text(t,'brief'))+'</textarea><div class="g5a-akt"><button class="btn geist" onclick="g5aNeu(\''+t.id+'\',\'brief\')">Text neu aus den Ausschreibungsdaten erzeugen</button></div>';
     if(a.tab==='preis') return preisHtml(t);
-    if(a.tab==='konz') return '<textarea class="g5a-text hoch" id="g5a-konz" oninput="g5aEdit(\''+t.id+'\',\'konz\',this.value)">'+esc(text(t,'konz'))+'</textarea><div class="g5a-akt"><button class="btn" onclick="g5aKi(\''+t.id+'\')">Mit KAȲȲA-KI schärfen</button><button class="btn geist" onclick="g5aNeu(\''+t.id+'\',\'konz\')">Text neu aus den Ausschreibungsdaten erzeugen</button></div>';
+    if(a.tab==='konz') return '<textarea class="g5a-text hoch" id="g5a-konz" oninput="g5aEdit(\''+t.id+'\',\'konz\',this.value)">'+esc(text(t,'konz'))+'</textarea><div class="g5a-akt"><button class="btn" onclick="g5aKi(\''+t.id+'\')">Anschreiben und Konzept von der KI schreiben lassen</button><button class="btn geist" onclick="g5aNeu(\''+t.id+'\',\'konz\')">Text neu aus den Ausschreibungsdaten erzeugen</button></div>';
+    if(a.tab==='unt') return untHtml(t);
     if(a.tab==='pers') return persHtml(t);
     if(a.tab==='erkl') return erklHtml(t);
     return sigHtml(t);
@@ -1777,15 +1879,15 @@ html:not([lang="de"]) .zeile.g5klick::after{display:none}
     if(!d){ d=document.createElement('div'); d.className='gdeck'; d.id='g5ang'; d.addEventListener('click',function(ev){ if(ev.target===d) g5aZu(); }); document.body.appendChild(d); }
     var ampel=a.sig?'<span class="tag gruen">unterzeichnet</span>':r.ok?'<span class="tag gruen">unterschriftsreif</span>':r.rot?'<span class="tag rot">nicht abgabereif</span>':'<span class="tag ex">'+r.gelb+' offen</span>';
     d.innerHTML='<div class="gglas g5a"><h3>Angebot '+esc(t.id)+' '+ampel+'<button class="gx" onclick="g5aZu()">×</button></h3>'
-      +'<p class="g5a-sub">'+esc(t.titel)+' · '+esc(t.tr)+' · Abgabe bis '+tag(t.off)+'</p>'
-      +'<div class="tab-bar">'+TABS.map(function(x){ return '<button class="'+(a.tab===x[0]?'an':'')+'" onclick="g5aTab(\''+id+'\',\''+x[0]+'\')">'+x[1]+'</button>'; }).join('')+'</div>'
+      +'<p class="g5a-sub">'+esc(t.titel)+' · '+esc(t.tr)+' · Abgabe bis '+esc(fristText(t))+'</p>'
+      +'<div class="tab-bar">'+TABS.filter(function(x){ return x[0]!=='unt'||t.link; }).map(function(x){ return '<button class="'+(a.tab===x[0]?'an':'')+'" onclick="g5aTab(\''+id+'\',\''+x[0]+'\')">'+x[1]+'</button>'; }).join('')+'</div>'
       +'<div class="g5a-k">'+koerper(t)+'</div>'
       +'<div class="g5a-fuss"><button class="btn geist" onclick="g5aDruck(\''+id+'\')">Mappe drucken / PDF</button><button class="btn geist" onclick="g5aDatei(\''+id+'\')">Mappe herunterladen</button><button class="btn geist" onclick="g5aZu()">Schließen</button></div></div>';
     d.classList.add('auf');
   }
   function mappe(t){
     var a=stand(t.id), pre=function(s){ return '<div style="white-space:pre-wrap;line-height:1.55">'+esc(s)+'</div>'; };
-    return '<h1>Angebot '+esc(t.id)+'</h1><p>'+esc(t.titel)+' · '+esc(t.tr)+' · Abgabe bis '+tag(t.off)+'</p>'
+    return '<h1>Angebot '+esc(t.id)+'</h1><p>'+esc(t.titel)+' · '+esc(t.tr)+' · Abgabe bis '+esc(fristText(t))+'</p>'
       +'<h2>1 Anschreiben</h2>'+pre(text(t,'brief'))+'<h2>2 Preisblatt</h2>'+preisHtml(t).split('<h4>Interne Kalkulation')[0].replace('<h4>Preisblatt</h4>','')
       +'<h2>3 Durchführungskonzept</h2>'+pre(text(t,'konz'))+'<h2>4 Personal und Referenzen</h2>'+persHtml(t)+'<h2>5 Erklärungen und Nachweise</h2>'+erklHtml(t)
       +'<h2>6 Unterschrift</h2>'+(a.sig?'<p>Unterzeichnet von '+esc(a.sig.name)+', '+esc(BIETER.rolle)+', am '+esc(a.sig.zeit)+'.<br>Prüfsumme: '+esc(a.sig.hash)+'</p>':'<p>'+esc(BIETER.stadt)+', den '+tag(0)+'</p><p style="margin-top:48px;border-top:1px solid #000;width:300px;padding-top:4px">'+esc(BIETER.gf)+' · '+esc(BIETER.rolle)+'</p>');
@@ -1800,6 +1902,7 @@ html:not([lang="de"]) .zeile.g5klick::after{display:none}
   window.g5aNeu=function(id,k){ var a=stand(id); a.texte[k]=null; a.sig=null; zeichne(id); };
   window.g5aAkt=function(id,was){
     var a=stand(id), t=tender(id);
+    if(was==='holen'){ g5aHolen(id,true); return; }
     if(was==='imp'){ a.imp=true; a.texte.konz=null; protokoll('KAȲȲA','Vergabeunterlagen importiert',id+' · '+anforderungen(t).length+' Anforderungen erkannt'); }
     else if(was==='unsig'){ a.sig=null; }
     else if(was.indexOf('ok:')===0){ a.ok[was.slice(3)]=true; protokoll(BIETER.gf+' (GF)','Prüfpunkt bestätigt',id+' · '+was.slice(3)); }
@@ -1813,13 +1916,91 @@ html:not([lang="de"]) .zeile.g5klick::after{display:none}
     catch(e){ fertig('nicht berechnet'); }
   };
   window.g5aAbgabe=function(id){ var a=stand(id); if(!a.sig) return; if(window.__g5goAlt) window.__g5goAlt(id); g5aZu(); };
-  window.g5aKi=function(id){
-    var t=tender(id), ta=document.getElementById('g5a-konz'); if(!t||!ta) return;
-    if(!(window.KI&&KI.frag)){ if(window.toast) toast('Die KAȲȲA-KI ist gerade nicht erreichbar. Der vorbereitete Text bleibt.'); return; }
-    var alt=ta.value, p=PROFIL[profilKey(t)]; ta.value='KAȲȲA schärft das Konzept für diese Ausschreibung …'; ta.disabled=true;
-    KI.frag('Vergabe-Assistenz','Überarbeite dieses Durchführungskonzept eines Bildungsträgers für genau diese Ausschreibung. Behalte die sieben nummerierten Abschnitte, alle Namen, Zahlen und Fakten. Erfinde nichts dazu. Schreibe sachlich, konkret und ohne Werbesprache, höchstens 420 Wörter. Ausschreibung: '+t.id+' · '+t.titel+' · Vergabestelle '+t.tr+' · '+t.los+' · '+t.pl+' Plätze · Region '+t.reg+' · Leistungsart: '+p.n+'.\n\nKonzept:\n'+alt,'Vergabe-Monitor',
-      function(txt){ ta.disabled=false; if(txt&&txt.length>200){ ta.value=txt; g5aEdit(id,'konz',txt); } else { ta.value=alt; if(window.toast) toast('Die KI-Antwort kam nicht durch. Der vorbereitete Text bleibt.'); } });
+  /* ---------- Online: Ausschreibung holen, Preis setzen, Texte von der KI ---------- */
+  window.g5aHolen=function(id,neu){
+    var t=tender(id), a=stand(id); if(!t||!t.link||a.laedt) return;
+    a.laedt=true; a.fehler=''; zeichne(id);
+    fetch('/vergabe-import.php?url='+encodeURIComponent(t.link.replace(/#.*$/,''))+(neu?'&neu=1':''),{cache:'no-store'})
+      .then(function(r){ return r.json().catch(function(){ return {error:'Antwort nicht lesbar ('+r.status+')'}; }); })
+      .then(function(j){
+        a.laedt=false;
+        if(!j||!j.ok){ a.fehler=(j&&j.error)||'keine Antwort'; }
+        else { a.live=j; a.texte={}; a.sig=null; var d=j.daten||{};
+          if(d.titel) t.titel=d.titel; if(d.vergabestelle&&d.vergabestelle.name) t.tr=d.vergabestelle.name;
+          if(d.teilnehmerplaetze) t.pl=d.teilnehmerplaetze; if(d.leistungsort) t.reg=d.leistungsort;
+          var n=tageBis(d.angebotsfrist); if(n!=null) t.off=n; var z=zahlen(t); if(z.erl){ t.vol=z.erl; t.rent='+5,0 %'; }
+          protokoll('KAȲȲA','Ausschreibung online geholt',(d.vergabenummer||id)+' · '+(j.auswertung==='ki'?'KI-Auswertung':'Auswertung nach Regeln')+' · '+((d.einzureichen||[]).length)+' Unterlagen verlangt');
+          liste(); }
+        var o=document.getElementById('g5ang'); if(o&&o.classList.contains('auf')) zeichne(id);
+      })
+      .catch(function(){ a.laedt=false; a.fehler='Server nicht erreichbar'; zeichne(id); });
   };
+  window.g5aSatz=function(id,v){ var a=stand(id), n=Math.round(+v); if(!(n>=100&&n<=20000)) return; a.satz=n; a.ok.preis=false; a.texte.brief=null; a.sig=null; var t=tender(id), z=zahlen(t); if(z.erl) t.vol=z.erl; liste(); zeichne(id); };
+  function traegerFakten(t){
+    var p=PROFIL[profilKey(t)], z=zahlen(t), zl=zulassung(t), l=L(t);
+    return 'Bieter: '+BIETER.name+', '+BIETER.str+', '+BIETER.ort+'. Unterzeichner: '+BIETER.gf+', '+BIETER.rolle+'. Ort und Datum des Schreibens: '+BIETER.stadt+', '+tag(0)+'.\n'
+      +(zl?'Zulassung: '+zl+'.\n':'Keine Trägerzulassung für diese Leistungsart; Eignung über Referenzen.\n')
+      +'Vorgesehenes Personal: '+p.pers.map(function(k){ return PERS[k][0]+' ('+PERS[k][1]+', '+PERS[k][2]+')'; }).join('; ')+'.\n'
+      +'Eigene Räume: '+p.raum+'.\n'
+      +'Laufende Referenzmaßnahmen: '+(referenzen(t).map(function(r){ return r.join(', '); }).join(' | ')||'keine in dieser Leistungsart')+'.\n'
+      +(z.erl?'Angebotspreis: '+eur(z.erl)+(z.jeMonat?' ('+eur(z.jeMonat)+' je Teilnehmerplatz und Monat)':'')+'.\n':'Angebotspreis: noch nicht festgelegt.\n')
+      +'Bindefrist: bis '+bindeText(t)+'.\n'
+      +'Arbeitsweise: tägliche Anwesenheit per Check-in, Lernstand je Kompetenz, eigene App für Teilnehmende in mehreren Sprachen, Frühwarnsignale bei drohendem Abbruch mit sozialpädagogischer Begleitung, Lese-Zugang für den Auftraggeber mit tagesaktueller Belegung, Anwesenheit und Belegkette, revisionssichere Dokumentation.\n'
+      +'Fachlicher Ansatz: '+p.inhalt+' '+p.erfolg;
+  }
+  window.g5aKiText=function(id){
+    var t=tender(id), a=stand(id); if(!t||a.kiLaeuft) return; var l=L(t), z=zahlen(t);
+    var daten=l?l.daten:{titel:t.titel, vergabenummer:t.id, vergabestelle:{name:t.tr}, leistung:PROFIL[profilKey(t)].n+'. '+PROFIL[profilKey(t)].ziel, rechtsgrundlage:PROFIL[profilKey(t)].recht, leistungsort:t.reg, lose:t.los, teilnehmerplaetze:z.pl, laufzeit_monate:z.dauer, angebotsfrist:tag(t.off), bindefrist:tag(t.off+60), anforderungen:anforderungen(t), einzureichen:[{unterlage:'Anschreiben'},{unterlage:'Preisblatt'},{unterlage:'Durchführungskonzept'},{unterlage:'Eigenerklärungen'},{unterlage:'Nachweise'}]};
+    a.kiLaeuft=true; if(window.toast) toast('Die KI schreibt Anschreiben und Konzept auf diese Ausschreibung. Das dauert bis zu einer Minute.');
+    document.querySelectorAll('#g5ang .g5a-akt button').forEach(function(b){ b.disabled=true; });
+    fetch('/vergabe-import.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({aktion:'entwurf',daten:daten,traeger:traegerFakten(t)})})
+      .then(function(r){ return r.json().catch(function(){ return {error:'Antwort nicht lesbar ('+r.status+')'}; }); })
+      .then(function(j){ a.kiLaeuft=false;
+        if(j&&j.ok&&j.konzept&&j.konzept.length>300){ a.texte.brief=j.anschreiben; a.texte.konz=j.konzept; a.sig=null; a.kiText=true; protokoll('KAȲȲA-KI','Anschreiben und Konzept geschrieben',id); if(window.toast) toast('Anschreiben und Konzept sind neu geschrieben. Bitte gegenlesen.'); }
+        else if(window.toast) toast('Die KI ist nicht verfügbar: '+((j&&j.error)||'keine Antwort')+'. Der vorbereitete Text bleibt.');
+        var o=document.getElementById('g5ang'); if(o&&o.classList.contains('auf')) zeichne(id); })
+      .catch(function(){ a.kiLaeuft=false; if(window.toast) toast('Die KI ist nicht erreichbar. Der vorbereitete Text bleibt.'); zeichne(id); });
+  };
+  window.g5aKi=window.g5aKiText;
+
+  /* ---------- Echte Ausschreibungen im Vergabe-Monitor (service.bund.de, live) ---------- */
+  var ECHT={sw:'Eingliederung', items:[], laedt:false, stand:'', fehler:''};
+  var SUCH=['Eingliederung','Aktivierung','Qualifizierung','Bildung','Sprachkurs','Pflege','Coaching','Jugendhilfe'];
+  function echtZeichne(){
+    var box=document.getElementById('g5echt'); if(!box) return;
+    var h='<div class="k-titel">Echte Ausschreibungen <span class="tag gruen">live · service.bund.de</span></div>'
+      +'<div class="hinweis" style="margin-bottom:10px">Aktuelle Bekanntmachungen öffentlicher Auftraggeber. „Angebot erstellen“ holt die Bekanntmachung und die Vergabeunterlagen online und baut daraus die Angebotsmappe.</div>'
+      +'<div class="m-row" style="margin-bottom:8px">'+SUCH.map(function(s){ return '<button class="btn '+(ECHT.sw===s?'primaer':'geist')+'" onclick="g5aSuche(\''+s+'\')">'+s+'</button>'; }).join('')+'</div>';
+    if(ECHT.laedt) h+='<p class="hinweis">Suche läuft …</p>';
+    else if(ECHT.fehler) h+='<p class="hinweis">'+esc(ECHT.fehler)+'</p>';
+    else if(!ECHT.items.length) h+='<p class="hinweis">Keine laufenden Bekanntmachungen zu diesem Stichwort.</p>';
+    else h+=ECHT.items.map(function(x,i){ var n=tageBis(x.frist), g=vg(), drin=g&&g.T.some(function(y){ return y.link===x.link; });
+      return '<div class="zeile" style="align-items:flex-start;gap:12px"><div style="flex:1;min-width:0"><div class="zn">'+esc(x.titel)+'</div><div class="zf">'+esc(x.stelle)+' · Frist '+esc(x.frist||'–')+(n!=null?' · noch '+n+' Tage':'')+'</div></div>'
+        +(x.link?'<button class="btn '+(drin?'geist':'gold')+'" onclick="g5aEcht('+i+')">'+(drin?'Angebotsmappe öffnen':'Angebot erstellen')+'</button>':'')+'</div>'; }).join('')
+      +'<p class="hinweis" style="margin-top:8px">Stand '+esc(ECHT.stand)+'</p>';
+    box.innerHTML=h;
+  }
+  window.g5aSuche=function(sw){
+    ECHT.sw=sw; ECHT.laedt=true; ECHT.fehler=''; echtZeichne();
+    fetch('/foerder-proxy.php?q=bund&sw='+encodeURIComponent(sw),{cache:'no-store'}).then(function(r){ return r.json(); })
+      .then(function(j){ ECHT.laedt=false; ECHT.items=(j&&j.items||[]).filter(function(x){ return /service\.bund\.de\/IMPORTE\/Ausschreibungen\//.test(x.link||''); }); ECHT.stand=(j&&j.stand)||''; if(j&&j.error) ECHT.fehler='service.bund.de antwortet gerade nicht.'; echtZeichne(); })
+      .catch(function(){ ECHT.laedt=false; ECHT.fehler='service.bund.de antwortet gerade nicht.'; echtZeichne(); });
+  };
+  window.g5aEcht=function(i){
+    var x=ECHT.items[i], g=vg(); if(!x||!g) return; var link=x.link.replace(/#.*$/,'');
+    var t=g.T.filter(function(y){ return y.link===x.link||y.link===link; })[0];
+    if(!t){ var nr=(link.match(/\/([A-Za-z0-9]+)\.html$/)||[])[1]||String(Date.now()).slice(-6), n=tageBis(x.frist);
+      t={id:'SB-'+nr, titel:x.titel, tr:x.stelle, los:'Öffentliche Ausschreibung · service.bund.de', reg:'—', pl:'–', off:(n!=null?n:21), vol:0, pass:70, rent:'± offen', emp:'pruefen', st:'angebot', open:false, kap:'zu prüfen', link:link,
+        beweis:'Echte Ausschreibung. Kein eigenes Referenzlos hinterlegt.', warum:'Von service.bund.de übernommen. Preis, Personal und Standort bestätigt die Geschäftsführung in der Angebotsmappe.'};
+      g.T.push(t); protokoll(BIETER.gf+' (GF)','Echte Ausschreibung übernommen',t.id+' · '+String(x.titel).slice(0,70)); liste(); }
+    stand(t.id).tab='check'; zeichne(t.id); if(!stand(t.id).live) g5aHolen(t.id); echtZeichne();
+  };
+  function echtEinbau(){
+    if(document.getElementById('g5echt')) return true; var liste0=document.getElementById('m-tlist'); if(!liste0) return false;
+    var k=document.createElement('div'); k.className='karte'; k.id='g5echt'; k.style.marginBottom='18px'; liste0.parentNode.insertBefore(k,liste0);
+    echtZeichne(); g5aSuche(ECHT.sw); return true;
+  }
+  var ei=setInterval(function(){ if(vg()&&echtEinbau()) clearInterval(ei); },600);
   window.g5aDatei=function(id){
     var t=tender(id); if(!t) return;
     var blob=new Blob(['<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Angebot '+esc(t.id)+'</title><style>body{font-family:Segoe UI,Arial,sans-serif;max-width:760px;margin:40px auto;color:#111;font-size:14px}h1{font-size:24px}h2{font-size:17px;margin-top:28px;border-bottom:1px solid #999;padding-bottom:4px}h4{margin:16px 0 6px}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #ccc;padding:6px 8px;text-align:left;font-size:13px}.hinweis{color:#555;font-size:12.5px}.g5a-p{display:none}.tag{font-size:11px;border:1px solid #999;border-radius:99px;padding:1px 8px}</style></head><body>'+mappe(t)+'</body></html>'],{type:'text/html'});
