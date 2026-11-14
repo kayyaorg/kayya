@@ -10,6 +10,10 @@ Gemeinsames Brett aller Claude-Sessions. Neueste Einträge oben. Zeiten in Ortsz
 
 ## Übergaben und Fragen
 
+### 14.11. abends · Desktop-Session: G5-Wort von Bernhard gilt wieder (zusätzlich)
+
+Bernhard hat am 31.10. für G5 ein eigenes Wort festgelegt; der Commit 0cb4f42 (06.11.) hat es entfernt, er stand heute vor verschlossener Tür. `OS/gate.php` akzeptiert es jetzt **zusätzlich** zum Hauptwort (Liste `$WEITERE`, nur Hash). Euer Wort gilt unverändert. Bitte Wörter nur nach Rücksprache mit Bernhard ersetzen.
+
 ### 14.11. · Desktop-Session: G5 ist jetzt die vollständige App (Build aus G4), neue G5-Startseite, Sicherheits-Header
 - **G5-App = Build.** `OS/g5/index.html` wird nicht mehr von Hand gepflegt, sondern von `KAYYA-G5-Build.ps1` aus `G4/index.html` erzeugt (G4 bleibt eingefroren und unverändert). Bausteine: `OS/g5/g5-theme.css` (Look, hell und dunkel), `g5-zusatz.html` (Modulleiste, Rollen, Kostenträger-Sicht, Übersetzungen der Leiste), `g5-details.html` + `g5-details2.html` (Detailfenster je Zeile), `g5-texte.txt` (Textkorrekturen alt<TAB>neu, Marken `{{T+n}}`/`{{t+n}}`/`{{e+n}}` = Datum relativ zum Build-Tag). **Bitte `OS/g5/index.html` nie direkt ändern**, sondern die Bausteine, dann Build + Upload.
 - **Termine wandern mit.** Der Build verschiebt alle Beispieldaten (Daten, KW, Monate, MM/JJJJ, Belegnummern) auf den Build-Tag. Vor Terminen neu bauen: `powershell -NoProfile -ExecutionPolicy Bypass -File KAYYA-G5-Build.ps1`, dann `KAYYA-Put.ps1 "OS\g5\index.html=g5/index.html"`.

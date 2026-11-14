@@ -61,6 +61,10 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
   foreach($kandidaten as $kb){
     foreach([$w,trim($w),mb_strtoupper(trim($w))] as $k){ if(hash_equals($BEREICHE[$kb],hash('sha256',$k))){ $ok=true; $b=$kb; break 2; } }
   }
+  /* Weitere gueltige Woerter je Bereich (seit 14.11.2026): Bernhards eigenes G5-Wort gilt neben dem Hauptwort */
+  if(!$ok){ $WEITERE=['573ca3a55765ace33c84fa3da2f28903d535e94101b594e7c6501c751a243fc3'=>'g5'];
+    foreach([$w,trim($w),mb_strtoupper(trim($w))] as $k){ $hk=hash('sha256',$k); if(isset($WEITERE[$hk]) && ($b==='' || !isset($BEREICHE[$b]) || $b===$WEITERE[$hk])){ $ok=true; $b=$WEITERE[$hk]; break; } }
+  }
   /* Limitierte Zusatz-Wörter: jede korrekte Eingabe zählt, nach dem Limit "abgelaufen" */
   if(!$ok){
     foreach([$w,trim($w),mb_strtoupper(trim($w))] as $k){
