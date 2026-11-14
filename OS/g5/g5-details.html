@@ -1,0 +1,185 @@
+<script>
+/* G5: Detailebene für Recht & Compliance, Personal und Zeugnisse — jede Zeile öffnet ihren Vorgang.
+   Inhalte sind Beispieldaten, in sich stimmig mit den übrigen Modulen (M-4711 Pflege, M-4712 Logistik, M-4713 Sprache). */
+(function(){
+  function tag(n){ return (typeof dtag==='function') ? dtag(n) : ''; }
+  var D=[
+   /* ---- Recht & Compliance: Posteingang ---- */
+   {v:'lc', re:/Aufhebungs- & Erstattungsbescheid/, f:[
+     ['Worum es geht','Das Jobcenter Nord hebt die Bewilligung für eine Teilnehmerin der Maßnahme M-4711 rückwirkend auf und fordert 2.840 € zurück (§§ 48, 50 SGB X). Begründung: angeblich unentschuldigte Fehlzeiten.'],
+     ['Einschätzung','Die Anwesenheit ist für den fraglichen Zeitraum lückenlos belegt (tägliche Check-ins, zwei ärztlich bescheinigte Krankheitstage). Erfolgsaussicht des Widerspruchs: hoch.'],
+     ['Frist','Widerspruch binnen eines Monats nach Bekanntgabe (§ 84 SGG) — es bleiben 14 Tage, Fristende '+tag(14)+'.'],
+     ['Nächster Schritt','Widerspruchsentwurf prüfen und freigeben. Der Beleg-Export zur Anwesenheit hängt bereits an.']], z:['lc/verfahren','Zum Widerspruchsentwurf']},
+   {v:'lc', re:/Beschwerde einer Teilnehmerin/, f:[
+     ['Worum es geht','Eine Teilnehmerin der Maßnahme M-4712 beschwert sich über die Anleitung in der Praxisphase (Umgangston, fehlende Einweisung am Stapler).'],
+     ['Stand','Eingang bestätigt, Anhörung der Fachanleitung entworfen. Der Vorgang ist vertraulich: Einsicht haben nur Geschäftsführung und Beschwerdestelle.'],
+     ['Frist','Rückmeldung an die Teilnehmerin binnen 14 Tagen nach Eingang — im Plan.'],
+     ['Nächster Schritt','Anhörung freigeben, Gespräch mit der Teilnehmerin terminieren, Ergebnis im Beschwerderegister (AZAV) dokumentieren.']], z:['lc/verfahren','Zu den Verfahren']},
+   {v:'lc', re:/Klage vor dem Arbeitsgericht/, f:[
+     ['Worum es geht','Eine ehemalige Honorarkraft klagt auf Feststellung eines Arbeitsverhältnisses (Statusfrage, mögliche Scheinselbstständigkeit) für die Zeit ihres Einsatzes.'],
+     ['Stand','Wegen des Risikos an die Kanzlei übergeben. Vertrag, Einsatzpläne und Rechnungen liegen der Kanzlei vollständig vor.'],
+     ['Risiko','Bei Erfolg: Nachzahlung von Sozialversicherungsbeiträgen. Rückstellung ist in der Buchhaltung gebildet.'],
+     ['Nächster Schritt','Gütetermin abwarten (§ 54 ArbGG), Vergleichsrahmen mit der Kanzlei abstimmen.']], z:['fib','Rückstellung in der Buchhaltung']},
+   {v:'lc', re:/Änderungsbescheid Zuwendung/, f:[
+     ['Worum es geht','Die Senatsverwaltung verlängert die Projektlaufzeit des Zuwendungsprojekts um drei Monate, die Fördersumme bleibt gleich.'],
+     ['Einschätzung','Geprüft: keine Beschwer, keine neuen Auflagen. Ein Rechtsbehelf ist nicht nötig.'],
+     ['Folgen','Der Verwendungsnachweis verschiebt sich entsprechend; der Mittelabruf-Plan wurde angepasst.'],
+     ['Nächster Schritt','Zur Kenntnis nehmen und im Fördermittel-Modul ablegen.']], z:['zuw','Zum Fördermittel-Modul']},
+   /* ---- Fristen ---- */
+   {v:'lc', re:/Widerspruchsfrist Aufhebungsbescheid/, f:[
+     ['Frist','Fristende '+tag(14)+' (ein Monat nach Bekanntgabe, § 84 SGG).'],
+     ['Stand','Der Widerspruch ist entworfen und wartet auf Freigabe. Versand per Fax und Post mit Zugangsnachweis.'],
+     ['Eskalation','Ohne Freigabe erinnert das System täglich, ab drei Tagen vor Fristende zusätzlich die Geschäftsführung.']], z:['lc/verfahren','Zum Widerspruchsentwurf']},
+   {v:'lc', re:/AZAV-Überwachungsaudit/, f:[
+     ['Worum es geht','Jährliches Überwachungsaudit der fachkundigen Stelle für die Trägerzulassung nach AZAV.'],
+     ['Stand','Unterlagen zu 80 % bereit: Teilnehmerzahlen, Anwesenheit und Erfolgsquoten kommen aus den Ist-Daten. Offen: Managementbewertung und zwei Lehrkraft-Nachweise.'],
+     ['Nächster Schritt','Audit-Nachweispaket im Management erzeugen und die offenen Punkte schließen.']], z:['m/compliance','Zum Audit-Paket']},
+   {v:'lc', re:/DSGVO-Löschlauf/, f:[
+     ['Worum es geht','Zwölf Teilnehmerakten haben ihre Aufbewahrungsfrist erreicht und sind zur Löschung vorgeschlagen (Art. 17 DSGVO, Aufbewahrung nach Förderrecht abgelaufen).'],
+     ['Stand','Das System schlägt vor, gelöscht wird erst nach Freigabe durch einen Menschen. Jede Löschung erhält einen Löschnachweis im Protokoll.'],
+     ['Nächster Schritt','Vorschläge im Archiv prüfen und freigeben oder mit Begründung zurückstellen.']], z:['m/archiv','Zum Archiv']},
+   {v:'lc', re:/Führungszeugnis R\. Peters|R\. Peters · Führungszeugnis/, f:[
+     ['Worum es geht','Das erweiterte Führungszeugnis (§ 30a BZRG) von R. Peters, Fachanleitung Logistik, ist abgelaufen.'],
+     ['Folge','Automatische Einsatzsperre: R. Peters ist in der Einsatzplanung für Maßnahmen mit Teilnehmerkontakt gesperrt, bis das neue Zeugnis vorliegt.'],
+     ['Stand','Antrag ist gestellt, Vertretung für M-4712 ist geplant. Die Erinnerung ist an die Leitung eskaliert.'],
+     ['Nächster Schritt','Eingang des neuen Zeugnisses erfassen — die Sperre hebt sich dann von selbst auf.']], z:['m/personal','Zur Einsatzplanung']},
+   {v:'lc', re:/AEVO-Auffrischung K\. Lindner|K\. Lindner · AEVO/, f:[
+     ['Worum es geht','Die Ausbilder-Eignung von K. Lindner (Sprachkurse) braucht in 30 Tagen die Auffrischung.'],
+     ['Stand','Erinnerung ist versendet, ein Kurstermin ist vorgeschlagen. Keine Sperre, solange der Nachweis gültig ist.'],
+     ['Nächster Schritt','Kurstermin bestätigen; die Vertretung für zwei Unterrichtstage ist eingeplant.']], z:['m/personal','Zur Personalübersicht']},
+   {v:'lc', re:/Widerspruch Aufhebungsbescheid/, f:[
+     ['Verfahren','Widerspruch gegen den Aufhebungs- und Erstattungsbescheid des Jobcenters Nord (Az. JC-N 4711/26).'],
+     ['Stand','Entwurf liegt vor, Freigabe offen. Streitwert 2.840 €.'],
+     ['Nächster Schritt','Freigeben und versenden — oder bei Zweifeln an die Kanzlei geben.']], z:['lc/verfahren','Zum Entwurf']},
+   {v:'lc', re:/Arbeitsgericht · Statusklage/, f:[
+     ['Verfahren','Statusklage einer ehemaligen Honorarkraft vor dem Arbeitsgericht.'],
+     ['Stand','Kanzlei ist mandatiert, der Gütetermin ist noch nicht bestimmt.'],
+     ['Nächster Schritt','Terminsladung abwarten; die Kanzlei meldet sich mit einem Vergleichsvorschlag.']], z:['lc/post','Zum Posteingang']},
+   {v:'lc', re:/Beschwerdeverfahren M-4712/, f:[
+     ['Verfahren','Internes Beschwerdeverfahren zur Praxisphase der Maßnahme M-4712.'],
+     ['Stand','Anhörung läuft, Frist zur Rückmeldung ist gewahrt.'],
+     ['Nächster Schritt','Ergebnis dokumentieren und der Teilnehmerin mitteilen.']], z:['lc/post','Zum Posteingang']},
+   {v:'lc', re:/M\. Sağlam · Erste Hilfe/, f:[
+     ['Worum es geht','Die Erste-Hilfe-Auffrischung von M. Sağlam (Kursleitung Pflege) ist in 45 Tagen fällig.'],
+     ['Stand','Termin ist vorgeschlagen, keine Sperre.'],
+     ['Nächster Schritt','Termin bestätigen.']], z:['m/personal','Zur Personalübersicht']},
+   {v:'lc', re:/3 Führungszeugnisse/, f:[
+     ['Worum es geht','Drei weitere Führungszeugnisse laufen in weniger als 60 Tagen ab.'],
+     ['Stand','Alle drei Personen wurden automatisch erinnert; zwei haben den Antrag bereits gestellt.'],
+     ['Nächster Schritt','Nichts zu tun, solange die Anträge laufen. Bei Ablauf greift die Einsatzsperre automatisch.']], z:['m/personal','Zur Personalübersicht']},
+   {v:'lc', re:/krankmeldung/i, f:[
+     ['Eingang','Krankmeldung über die Teilnehmer-App, automatisch der Maßnahme und dem Tag zugeordnet.'],
+     ['Folge','Die Anwesenheit ist für den Tag als „krank" geführt; Kursleitung und Kostenträger-Report sind aktualisiert.'],
+     ['Nächster Schritt','Bei mehr als drei Tagen: Arbeitsunfähigkeitsbescheinigung anfordern.']], z:['kl','Zur Kursleitung']},
+   {v:'lc', re:/zeitbuchung|vergabe|hinweis/i, f:[
+     ['Eingang','Meldung aus dem laufenden Betrieb, unveränderbar protokolliert.'],
+     ['Folge','Der Vorgang ist der betroffenen Maßnahme zugeordnet und im Ereignisprotokoll nachvollziehbar.']], z:['m','Zum Management']},
+   /* ---- Personal: Mein Bereich ---- */
+   {v:'mit', re:/^(Mo|Di|Do) · .*|M-4711 · Praxisanleitung/, f:[
+     ['Einsatz','Praxisanleitung in der Umschulung Pflegehelfer/in (M-4711), Kohorte mit 18 Teilnehmenden.'],
+     ['Ort','Skills-Lab, Raum N-204 am Standort Nord — dienstags auf der Partnerstation.'],
+     ['Geprüft','Keine Überschneidung, Qualifikation gültig, Raum belegt — sonst hätte die Planung den Einsatz blockiert.'],
+     ['Abrechnung','Die Stunden werden mit der Zeitbuchung der Maßnahme M-4711 zugeordnet.']], z:['mit/zeit','Zur Zeitbuchung']},
+   {v:'mit', re:/^Mi · .*|M-4713 · Prüfungsvorbereitung/, f:[
+     ['Einsatz','Prüfungsvorbereitung Fachsprache im Berufssprachkurs B2 Pflege (M-4713).'],
+     ['Ort','Standort Nord, Raum 1.12.'],
+     ['Geprüft','Keine Überschneidung mit der Praxisanleitung in M-4711.'],
+     ['Abrechnung','Die Stunden laufen auf M-4713.']], z:['mit/zeit','Zur Zeitbuchung']},
+   {v:'mit', re:/^Fr · .*|Teamzeit/, f:[
+     ['Einsatz','Teamzeit: Dokumentation, Übergaben und Fallbesprechung.'],
+     ['Abrechnung','Wird als Gemeinkosten anteilig auf die Maßnahmen verteilt.']], z:['mit/zeit','Zur Zeitbuchung']},
+   {v:'mit', re:/^(Heute|Gestern) · /, f:[
+     ['Buchung','Arbeitszeit mit Maßnahme-Zuordnung, unveränderbar gespeichert.'],
+     ['Lohn','Fließt in die Monatsabrechnung.'],
+     ['Kosten','Wird der Maßnahme als Personalkosten zugerechnet.'],
+     ['Nachweis','Erscheint im Personalkosten-Nachweis für den Kostenträger.']], z:['fib','So sieht es die Buchhaltung']},
+   {v:'mit', re:/^Führungszeugnis/, f:[
+     ['Nachweis','Erweitertes Führungszeugnis (§ 30a BZRG), Pflicht für die Arbeit mit Teilnehmenden.'],
+     ['Stand','Gültig. Sechs Wochen vor Ablauf erinnert das System, bei Ablauf greift die Einsatzsperre.']]},
+   {v:'mit', re:/Praxisanleiter-Weiterbildung/, f:[
+     ['Nachweis','Berufspädagogische Zusatzqualifikation zur Praxisanleitung (300 Stunden).'],
+     ['Pflicht','Jährlich 24 Stunden Fortbildung. Der Refresher ist beantragt und liegt der Geschäftsführung vor.']], z:['mit/antraege','Zum Antrag']},
+   {v:'mit', re:/^Erste Hilfe/, f:[
+     ['Nachweis','Erste-Hilfe-Fortbildung, alle zwei Jahre aufzufrischen.'],
+     ['Stand','In 45 Tagen fällig. Ein Termin ist vorgeschlagen.']]},
+   {v:'mit', re:/Masernschutz/, f:[
+     ['Nachweis','Nachweis des Masernschutzes (§ 20 IfSG), Pflicht in Einrichtungen mit Pflege-Praxis.'],
+     ['Stand','Hinterlegt und geprüft, kein Ablauf.']]},
+   {v:'mit', re:/Arbeitsvertrag/, f:[
+     ['Dokument','Arbeitsvertrag mit Verschwiegenheitserklärung, revisionssicher abgelegt.'],
+     ['Einsicht','Nur du selbst und die Geschäftsführung.']]},
+   {v:'mit', re:/Gehaltsabrechnung/, f:[
+     ['Dokument','Monatsabrechnung, erstellt aus den Zeitbuchungen.'],
+     ['Einsicht','Nur du selbst und die Geschäftsführung. Kostenträger sehen nur die Summe im Personalkosten-Nachweis.']]},
+   {v:'mit', re:/Zeitnachweis/, f:[
+     ['Dokument','Monatlicher Zeitnachweis je Maßnahme.'],
+     ['Verwendung','Grundlage für den Personalkosten-Nachweis gegenüber dem Kostenträger.']], z:['ktr/nw','Zu den Nachweisen']},
+   {v:'mit', re:/Fortbildung · Praxisanleiter-Refresher/, f:[
+     ['Antrag','24 Stunden Pflichtfortbildung für Praxisanleitende.'],
+     ['Geprüft','Vertretung in M-4711 ist für die drei Kurstage gesichert.'],
+     ['Stand','Liegt der Geschäftsführung zur Freigabe vor.']]},
+   {v:'mit', re:/^Urlaub/, f:[
+     ['Antrag','Urlaub zwischen den Jahren.'],
+     ['Stand','Genehmigt. In dieser Zeit ruht der Kursbetrieb, eine Vertretung ist nicht nötig.']]},
+   /* ---- Qualifizierung & Zeugnisse ---- */
+   {v:'zgv', re:/Kenntnisprüfung Pflege/, f:[
+     ['Prüfung','Kenntnisprüfung für vier Teilnehmende der Maßnahme M-4711 vor der zuständigen Stelle.'],
+     ['Stand','Angemeldet, Unterlagen vollständig, Prüfungsgebühr ist gebucht.'],
+     ['Vorbereitung','Alle vier haben die Prüfungssimulation mit über 70 % bestanden.']], z:['sl','Zur Prüfungssimulation']},
+   {v:'zgv', re:/Gleichwertigkeitsverfahren/, f:[
+     ['Verfahren','Anerkennung des ausländischen Berufsabschlusses von L. Mendoza beim Landesamt.'],
+     ['Stand','Unterlagen sind vollständig eingereicht, das Landesamt prüft.'],
+     ['Folge','Je nach Bescheid: volle Anerkennung oder Kenntnisprüfung mit Vorbereitungskurs.']], z:['cp','Zum Auslandscampus']},
+   {v:'zgv', re:/telc B2 Pflege/, f:[
+     ['Prüfung','Sprachprüfung telc Deutsch B2 Pflege für sechs Teilnehmende der Maßnahme M-4713.'],
+     ['Stand','Die Prüfungsreife ist erreicht. Die Anmeldung ist vorgeschlagen und wartet auf Freigabe.']], z:['kl','Zur Kursleitung']},
+   {v:'zgv', re:/Modul-Zertifikate Grundpflege/, f:[
+     ['Ablauf','Nach jedem abgeschlossenen Modul entsteht das Zertifikat automatisch aus dem Lernstand.'],
+     ['Ausgabe','Gesiegelt, in der Wallet der Teilnehmenden abgelegt und per Prüflink prüfbar.']], z:['tn/wallet','Zur Zeugnis-Wallet']},
+   {v:'zgv', re:/Modul-Zertifikat Grundpflege|Sprachzertifikat B2/, f:[
+     ['Zeugnis','Ausgestellt und elektronisch gesiegelt. Der Inhalt lässt sich nachträglich nicht ändern.'],
+     ['Prüfung der Echtheit','Über den öffentlichen Prüflink sieht jeder Arbeitgeber in Sekunden, ob das Zeugnis echt ist.'],
+     ['Ablage','In der Wallet der Teilnehmerin; im Kostenträger-Report als Nachweis der Maßnahme sichtbar.']], z:['ag/zv','Zum Zeugnis-Check']}
+   ,
+   /* ---- Auslandscampus ---- */
+   {v:'cp', re:/DMW-Registrierung/, f:[
+     ['Worum es geht','Die Registrierung beim philippinischen Department of Migrant Workers ist Voraussetzung, um vor Ort rekrutieren zu dürfen.'],
+     ['Stand','Gültig. Das Unterlagenpaket für die Erneuerung liegt als Entwurf bereit und wartet auf Freigabe.'],
+     ['Nächster Schritt','Entwurf prüfen, freigeben und über die Campusleitung in Manila einreichen.']], z:['lc','Fristen in Recht & Compliance']},
+   {v:'cp', re:/Deployment-Kontingent/, f:[
+     ['Worum es geht','Die Behörde in Manila hat das Kontingent für Ausreisen um 15 % angehoben.'],
+     ['Einordnung','Das passt zur freien Kapazität: Haus C hält 24 Plätze für die nächste Kohorte frei.'],
+     ['Nächster Schritt','Mit den Arbeitgeber-Partnern klären, wie viele zusätzliche Stellen sie zusagen.']], z:['ag','Zu den Arbeitgebern']}
+  ];
+  function esc2(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function finde(v,text){ for(var i=0;i<D.length;i++){ if(D[i].v===v && D[i].re.test(text)) return D[i]; } return null; }
+  function oeffne(z,v){
+    var text=(z.innerText||'').replace(/\s+/g,' ').trim(); var e=finde(v,text); if(!e) return false;
+    var titelEl=z.querySelector('b')||z.querySelector('span'); var titel=titelEl?titelEl.textContent.trim():text.slice(0,60);
+    var st=z.querySelector('.tag'); var status=st?st.textContent.trim():'';
+    var d=document.getElementById('g5det');
+    if(!d){ d=document.createElement('div'); d.className='gdeck'; d.id='g5det'; d.addEventListener('click',function(ev){ if(ev.target===d) d.classList.remove('auf'); }); document.body.appendChild(d); }
+    var h='<div class="gglas" style="max-width:600px"><h3>'+esc2(titel)+'<button class="gx" onclick="document.getElementById(\'g5det\').classList.remove(\'auf\')">×</button></h3>'
+      +(status?'<p><span class="tag rw">'+esc2(status)+'</span></p>':'')
+      +'<div class="g5det-f">'+e.f.map(function(x){ return '<div><span>'+esc2(x[0])+'</span><p>'+esc2(x[1])+'</p></div>'; }).join('')+'</div>'
+      +'<div class="zeile" style="border:none;gap:8px;flex-wrap:wrap;margin-top:6px">'
+      +(e.z?'<button class="btn primaer" onclick="document.getElementById(\'g5det\').classList.remove(\'auf\');tief(\''+e.z[0]+'\')">'+esc2(e.z[1])+' ›</button>':'')
+      +'<button class="btn geist" onclick="document.getElementById(\'g5det\').classList.remove(\'auf\')">Schließen</button></div></div>';
+    d.innerHTML=h; d.classList.add('auf'); return true;
+  }
+  document.addEventListener('click',function(ev){
+    if(ev.target.closest('button,a,input,select,textarea,.gdeck')) return;
+    if((document.documentElement.getAttribute('lang')||'de')!=='de') return;
+    var z=ev.target.closest('.zeile'); if(!z) return;
+    var sec=z.closest('#v-lc,#v-mit,#v-zgv,#v-cp'); if(!sec) return;
+    oeffne(z,sec.id.slice(2));
+  });
+  /* Zeilen mit Detailebene als anklickbar kennzeichnen */
+  function markiere(){
+    ["lc","mit","zgv","cp"].forEach(function(v){ var s=document.getElementById('v-'+v); if(!s) return;
+      s.querySelectorAll('.zeile').forEach(function(z){ if(z.dataset.g5) return; z.dataset.g5='1';
+        if(!z.querySelector('button') && finde(v,(z.innerText||'').replace(/\s+/g,' ').trim())) z.classList.add('g5klick'); else if(finde(v,(z.innerText||'').replace(/\s+/g,' ').trim())) z.classList.add('g5klick'); }); });
+  }
+  setInterval(markiere,900);
+})();
+</script>

@@ -1,0 +1,80 @@
+<script>
+/* G5: zweite Detailebene für alle übrigen Infozeilen — je Karte: was die Angabe bedeutet, woher sie kommt, was daraus folgt. */
+(function(){
+  var R=[
+   ['m',/Signale aus Markt/,[['Quelle','Kuratierte Meldungen aus Vergabeportalen, Verbänden und Fachpresse. Die Einordnung für das eigene Haus entwirft KAȲȲA.'],['Was daraus folgt','Jedes Signal ist als Chance oder Risiko markiert. Ob daraus eine Bewerbung, ein Angebot oder eine Preisanpassung wird, entscheidet die Geschäftsführung.']],['m/chancen','Zu den Chancen']],
+   ['m',/Maßnahmen · Bewertung/,[['Datenbasis','Belegung, Anwesenheit und Wirtschaftlichkeit kommen aus den laufenden Buchungen der Maßnahme, nicht aus Monatsmeldungen.'],['Bewertung','Weiterführen, Gegensteuern oder Kritisch ist ein Vorschlag aus diesen Kennzahlen. Die Entscheidung bleibt bei der Leitung.']],['ktr/mass','So sieht es der Kostenträger']],
+   ['m',/Fördermittel & öffentliche Gelder/,[['Quelle','Öffentliche Bekanntmachungen und Kursangebote, live abgerufen. Ohne Verbindung steht der letzte Import mit Datum da.'],['Was daraus folgt','Passende Treffer lassen sich als Chance übernehmen. KAȲȲA entwirft daraus die Bewerbungsunterlage.']],['zuw/radar','Zum Förder-Radar']],
+   ['*',/Zahllauf/,[['Ablauf','Freigegebene Rechnungen werden zu einer Sammelüberweisung gebündelt. Zwei Personen geben frei, erst dann entsteht die Bankdatei.'],['Sicherung','Niemand kann eine Zahlung allein auslösen. Jede Freigabe ist mit Name und Zeit protokolliert.']],['fib/zl','Zum Zahllauf']],
+   ['*',/Bankkonten|^Konten/,[['Herkunft','Kontostand aus dem letzten Abruf der Kontoumsätze.'],['Stand der Anbindung','Der automatische Abruf über EBICS ist vorbereitet. Bis zur Freischaltung durch die Bank stehen hier Beispieldaten.']],['fib/exp','Zum Stand der Bank-Anbindung']],
+   ['*',/Letzte Umsätze|Umsätze heute/,[['Zuordnung','KAȲȲA schlägt zu jedem Umsatz Konto, Maßnahme und steuerliche Sphäre vor.'],['Kontrolle','Sichere Zuordnungen laufen automatisch durch, unsichere warten auf die Buchhaltung.']],['fib/bank','Zu Bank & Kontierung']],
+   ['m',/Einsatzplanung/,[['Prüfung','Jeder Einsatz wird gegen Überschneidung, Qualifikation und Raumbelegung geprüft.'],['Offene Einheit','Unbesetzte Unterrichtseinheiten stehen hier, bis eine qualifizierte Vertretung zugewiesen ist.']],['mit/einsatz','So sieht es die Mitarbeiterin']],
+   ['m',/Zeiterfassung heute/,[['Buchung','Kommen und Gehen per Terminal oder App, mit Zuordnung zur Maßnahme.'],['Verwendung','Die Zeiten fließen in Lohn, Maßnahmekosten und den Personalkosten-Nachweis.']],['mit/zeit','Zur Zeitbuchung']],
+   ['ktr',/Prüfpaket/,[['Inhalt','Dieses Dokument gehört zum Prüfpaket, das der Träger auf Anforderung zusammenstellt.'],['Herkunft','Es wird aus den laufenden Daten erzeugt und vor dem Versand vom Träger freigegeben.']],['ktr/kette','Zur Belegkette']],
+   ['zuw',/Antrags-Pipeline/,[['Vorgang','Bewilligter Antrag. Die Fördersumme ist der Maßnahme zugeordnet.'],['Nächster Schritt','Mittel abrufen und Ausgaben laufend dem Verwendungsnachweis zuordnen.']],['zuw/vn','Zum Verwendungsnachweis']],
+   ['zuw',/rechnet mit/,[['Regel','De-minimis-Beihilfen sind auf 300.000 € in drei Jahren begrenzt. Das Fenster läuft rollierend.'],['Was daraus folgt','Fällt eine alte Beihilfe aus dem Fenster, wird der Betrag wieder frei.']],null],
+   ['fib',/Freigabekette · Fachbereich/,[['Ablauf','Die Rechnung liegt beim Fachbereich zur sachlichen Prüfung: Wurde geliefert, was bestellt war?'],['Danach','Nach der fachlichen Freigabe prüft die Buchhaltung, über 500 € zusätzlich das Management.']],['kl/geld','So sieht es die Kursleitung']],
+   ['fib',/Management-Freigabe/,[['Regel','Rechnungen über 500 € brauchen eine zweite Freigabe durch das Management.'],['Stand','Fachlich ist die Rechnung bereits bestätigt.']],['m/freigaben','Zu den Freigaben']],
+   ['fib',/Bestellungen · buchhalterische/,[['Ablauf','Bestellung aus dem Kurs, bereits fachlich freigegeben. Die Buchhaltung prüft Budget und Kontierung.'],['Danach','Mit dem Rechnungseingang wird die Bestellung automatisch abgeglichen.']],['kl/geld','So sieht es die Kursleitung']],
+   ['fib',/Spenden & Zustiftungen/,[['Zuordnung','Zuwendungen ohne Gegenleistung gehören in die ideelle Sphäre und werden getrennt vom Zweckbetrieb gebucht.'],['Nächster Schritt','Zuordnung bestätigen. Die Zuwendungsbestätigung entsteht nach amtlichem Muster.']],null],
+   ['fib',/Heute im Posteingang/,[['Ablauf','Eingehende Dokumente werden gelesen, klassifiziert und der richtigen Akte zugeordnet.'],['Aufbewahrung','Das Original wird unveränderbar abgelegt, jede Bearbeitung protokolliert.']],null],
+   ['fib',/Einzelprüfung/,[['Warum hier','Die automatische Erkennung war sich bei diesem Beleg nicht sicher genug. Ein Mensch prüft Konto, Kostenstelle und Maßnahme.'],['Danach','Nach der Bestätigung läuft der Beleg in die normale Freigabekette.']],['fib/re','Zu den Rechnungen']],
+   ['fib',/Signalboard/,[['Warum angehalten','Das interne Kontrollsystem hat eine Auffälligkeit erkannt und den Vorgang gestoppt, bevor Geld fließt.'],['Nächster Schritt','Klären und freigeben oder ablehnen. Die Entscheidung wird mit Begründung protokolliert.']],null],
+   ['fib',/Bank-Anbindung · Status/,[['Stand','Dieser Baustein ist technisch vorbereitet und wird mit der Freischaltung durch die Bank aktiv.'],['Bis dahin','Zahlungsdateien werden erzeugt und von Hand ins Bankprogramm übernommen.']],null],
+   ['kl',/hat vorgearbeitet/,[['Entwurf','KAȲȲA hat den Entwurf aus Anwesenheit, Lernstand und deinen Notizen erstellt.'],['Regel','Nichts geht ohne deine Freigabe hinaus. Du kannst jeden Satz ändern.']],null],
+   ['kl',/Bestellen · BANF/,[['Bestellung','Bedarfsanforderung aus dem Kurs, der Maßnahme zugeordnet.'],['Stand','Fachlich freigegeben, liegt zur Prüfung in der Buchhaltung.']],['fib/re','So sieht es die Buchhaltung']],
+   ['kl',/Rechnungen im Fach/,[['Deine Aufgabe','Bestätigen, dass die Lieferung vollständig und in Ordnung ist.'],['Danach','Die Rechnung geht an die Buchhaltung, über 500 € zusätzlich an das Management.']],['fib/re','So sieht es die Buchhaltung']],
+   ['kl',/Einsätze · KW/,[['Einsatz','Fester Wocheneinsatz aus der Einsatzplanung, auf Überschneidungen geprüft.'],['Zeiten','Gebuchte Stunden werden der Maßnahme zugeordnet.']],['mit/zeit','Zur Zeitbuchung']],
+   ['*',/Frühwarn/,[['Sichtbar ist','Nur der Status der Begleitung. Inhalte aus Gesprächen bleiben bei der sozialpädagogischen Begleitung.'],['Zweck','Früh unterstützen, bevor ein Abbruch droht. Das Signal ist keine Sanktion.']],['mot','Zur Begleitung']],
+   ['tn',/^Heute ·/,[['Termin','Aus dem Stundenplan deiner Maßnahme. Raum- oder Zeitänderungen erscheinen hier sofort.'],['Anwesenheit','Der Check-in erfolgt vor Ort per QR-Code.']],null],
+   ['tn',/Deine Serie/,[['Lernserie','Lerntage, Abzeichen und Punkte zeigen deinen eigenen Fortschritt.'],['Wozu','Die Serie soll motivieren. Sie hat keinen Einfluss auf Bewertung oder Leistungsbezug.']],['tn/pfad','Zum Lernpfad']],
+   ['tn',/Zeugnis-Wallet/,[['Siegel','Zeugnisse sind elektronisch gesiegelt und nach offenem Standard ausgestellt.'],['Nutzen','Arbeitgeber prüfen die Echtheit über einen Link, ohne beglaubigte Kopie.']],['ag/zv','So prüft ein Arbeitgeber']],
+   ['tn',/Deine Daten/,[['Deine Entscheidung','Einwilligungen kannst du jederzeit widerrufen. Der Widerruf wirkt sofort.'],['Löschung','Nach Ablauf der Aufbewahrungsfristen wird die Löschung vorgeschlagen und nach Freigabe durchgeführt.']],null],
+   ['tn',/Krankmeldung/,[['Meldung','Deine Krankmeldung ist mit Datum und Uhrzeit gespeichert.'],['Wer informiert ist','Kursleitung und Träger. Die Meldung an den Kostenträger bereitet KAȲȲA vor, der Träger gibt sie frei.']],null],
+   ['tn',/Reha heute|Vitalwerte/,[['Gesundheitsdaten','Diese Angaben liegen in einem getrennten Datenraum. Zugriff hat nur das therapeutische Team.'],['Kostenträger','Der Kostenträger sieht keine Einzelwerte.']],null],
+   ['ag',/Anbindungen/,[['Schnittstelle','Verbindung zu einem angrenzenden System.'],['Stand','Die Markierung rechts zeigt, ob die Anbindung live ist oder vorbereitet.']],null],
+   ['ag',/Deine Meldungen/,[['Bedarfsmeldung','Dein gemeldeter Personalbedarf mit Profil, Anzahl und Starttermin.'],['Nächster Schritt','Der Träger gleicht den Bedarf mit dem Talentpool ab und meldet passende Profile.']],['ag/pool','Zum Talentpool']],
+   ['ag',/Warum das zählt/,[['Hintergrund','Das Zeugnis trägt ein elektronisches Siegel. Jede nachträgliche Änderung macht die Prüfung ungültig.']],null],
+   ['sl',/Nächster Meilenstein|Prüfungssimulation ·/,[['Meilenstein','Die Prüfungssimulation bildet die Kenntnisprüfung in Aufbau und Zeit ab.'],['Danach','Mit bestandener Simulation gilt die Prüfungsreife als erreicht. Die Anmeldung zur echten Prüfung läuft über den Träger.']],['zgv','Zu Prüfungen & Zeugnissen']],
+   ['sl',/Lernstand nach Kompetenz|Lernstandsbericht/,[['Bericht','Der Lernstand je Kompetenz kommt aus bearbeiteten Einheiten und Tests.'],['Freigabe','Den Bericht für den Kostenträger entwirft KAȲȲA, die Kursleitung gibt ihn frei.']],['ktr/nw','Zu den Nachweisen']],
+   ['sl',/Wochenplan/,[['Vorschlag','Der Plan richtet sich nach deinen schwächeren Kompetenzen und der Zeit bis zur Prüfung.'],['Frei wählbar','Du kannst jede Einheit tauschen.']],['sl/katalog','Zum Katalog']],
+   ['mot',/Eskalationskette/,[['Stufe','Die Kette läuft in festen Stufen. Keine Stufe startet ohne einen Menschen, der sie auslöst.'],['Ziel','Erst erinnern, dann begleiten, erst zuletzt melden.']],null],
+   ['mot',/Übergaben & Eskalationen/,[['Übergabe','Der Fall wurde mit Einwilligung an das zuständige Team übergeben.'],['Datenschutz','Übergeben wird nur, was das Team für seine Aufgabe braucht.']],['s24','Zur Krisenhilfe']],
+   ['*',/Wer sieht was/,[['Grundsatz','Jede Rolle sieht nur, was sie für ihre Aufgabe braucht. Der Kostenträger sieht Status und Nachweise, keine Gesprächsinhalte.'],['Kontrolle','Jeder Zugriff wird protokolliert.']],null],
+   ['s24',/Letzte Nacht/,[['Nachtkanal','Kontakte außerhalb der Kurszeiten, mit Uhrzeit und Ergebnis.'],['Übergabe','Am Morgen liegt eine Zusammenfassung bei der zuständigen Begleitung.']],null],
+   ['s24',/Rückholplan/,[['Plan','Schritte, um die Teilnehmerin nach einer Krise in der Maßnahme zu halten.'],['Stand','Entwurf. Er gilt erst nach Freigabe durch die Begleitung.']],null],
+   ['s24',/Erreichbarkeit/,[['Erreichbarkeit','Wer wann erreichbar ist und wohin im Notfall verwiesen wird.'],['Grenze','KAȲȲA ersetzt keinen Notruf. Bei akuter Gefahr wird an 112 und den Krisendienst verwiesen.']],null]
+  ];
+  function e2(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function frei(z){ return !z.querySelector('button,a,input,select,textarea') && !z.getAttribute('onclick') && !z.closest('[onclick]'); }
+  function regel(z){ var sec=z.closest('section.view'); if(!sec) return null; var v=sec.id.slice(2); var k=z.closest('.karte'); if(!k) return null;
+    var kt=k.querySelector('.k-titel'); var t=kt?(kt.innerText||'').replace(/\s+/g,' ').trim():''; if(!t) return null;
+    for(var i=0;i<R.length;i++){ if((R[i][0]==='*'||R[i][0]===v) && R[i][1].test(t)) return R[i]; } return null; }
+  function zu(){ var d=document.getElementById('g5det'); if(d) d.classList.remove('auf'); }
+  window.g5zu=zu;
+  document.addEventListener('click',function(ev){
+    if(ev.target.closest('button,a,input,select,textarea,.gdeck')) return;
+    if((document.documentElement.getAttribute('lang')||'de')!=='de') return;
+    var z=ev.target.closest('.zeile.g5info'); if(!z) return; var r=regel(z); if(!r) return;
+    var tEl=z.querySelector('.zn')||z.querySelector('b')||z.querySelector('span'); var titel=tEl?tEl.textContent.replace(/\s+/g,' ').trim():'';
+    var fEl=z.querySelector('.zf'); var ang=fEl?fEl.textContent.replace(/\s+/g,' ').trim():'';
+    if(!titel){ titel=(z.innerText||'').replace(/\s+/g,' ').trim().slice(0,70); }
+    var st=z.querySelector('.tag'); var status=st?st.textContent.trim():'';
+    var d=document.getElementById('g5det');
+    if(!d){ d=document.createElement('div'); d.className='gdeck'; d.id='g5det'; d.addEventListener('click',function(e){ if(e.target===d) zu(); }); document.body.appendChild(d); }
+    var f=r[2].slice(); if(ang) f.unshift(['Angabe',ang]);
+    d.innerHTML='<div class="gglas" style="max-width:600px"><h3>'+e2(titel)+'<button class="gx" onclick="g5zu()">×</button></h3>'
+      +(status?'<p><span class="tag rw">'+e2(status)+'</span></p>':'')
+      +'<div class="g5det-f">'+f.map(function(y){ return '<div><span>'+e2(y[0])+'</span><p>'+e2(y[1])+'</p></div>'; }).join('')+'</div>'
+      +'<div class="zeile" style="border:none;gap:8px;flex-wrap:wrap;margin-top:6px">'
+      +(r[3]?'<button class="btn primaer" onclick="g5zu();tief(\''+r[3][0]+'\')">'+e2(r[3][1])+' ›</button>':'')
+      +'<button class="btn geist" onclick="g5zu()">Schließen</button></div></div>';
+    d.classList.add('auf');
+  });
+  function markiere(){ document.querySelectorAll('section.view .zeile:not([data-g5i])').forEach(function(z){
+      if(!z.offsetParent) return; z.setAttribute('data-g5i','1');
+      if(z.closest('.gdeck') || z.classList.contains('g5klick')) return;
+      if(frei(z) && getComputedStyle(z).cursor!=='pointer' && regel(z)) z.classList.add('g5info','g5klick'); }); }
+  setInterval(markiere,900);
+})();
+</script>

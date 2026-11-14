@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KAȲȲA G5 · Entwurf Startseite</title>
+<meta name="robots" content="noindex">
+<style>
+@font-face{font-family:'Fraunces';src:url('fonts/Fraunces-var.woff2') format('woff2');font-weight:400 700;font-display:swap}
+@font-face{font-family:'Inter';src:url('fonts/Inter-var.woff2') format('woff2');font-weight:400 800;font-display:swap}
+:root{ --bg:#F7F5F0; --karte:#FFFFFF; --ink:#1C1816; --mut:#6A635B; --line:#E2DDD3; --akz:#5B1B5B; --akz-flaeche:#EFE7EF; --gruen:#1E7B4D; --gelb:#8A5F00 }
+@media (prefers-color-scheme:dark){ :root{ --bg:#161311; --karte:#1E1A17; --ink:#EDE8E2; --mut:#A39B91; --line:#2E2925; --akz:#D9A8D9; --akz-flaeche:#2B2029; --gruen:#4CC98A; --gelb:#E8B94A } }
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+.entwurf{background:var(--akz);color:#fff;font-size:12.5px;font-weight:600;text-align:center;padding:6px 12px;letter-spacing:.04em}
+
+header{display:flex;align-items:center;justify-content:space-between;padding:22px 0;border-bottom:1px solid var(--line);gap:16px;flex-wrap:wrap}
+.marke svg{height:30px;width:auto;display:block}
+.marke .ka{fill:var(--ink)} .marke .yy{fill:var(--akz)}
+nav{display:flex;gap:26px;font-size:14px;font-weight:500;color:var(--mut);align-items:center;flex-wrap:wrap}
+nav a:hover{color:var(--akz)}
+.btn{display:inline-block;font:600 14.5px 'Inter',sans-serif;border-radius:10px;padding:11px 20px;border:1.5px solid var(--ink)}
+.btn.voll{background:var(--ink);color:var(--bg)} .btn.voll:hover{background:var(--akz);border-color:var(--akz);color:#fff}
+.btn:not(.voll):hover{border-color:var(--akz);color:var(--akz)}
+nav .btn{padding:8px 16px;font-size:13.5px}
+
+.hero{padding:64px 0 44px;display:grid;grid-template-columns:1.25fr 1fr;gap:56px;align-items:end}
+.zeile1{font:700 12px 'Inter',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--akz);margin-bottom:16px}
+h1{font:600 clamp(36px,5vw,56px)/1.06 'Fraunces',serif;letter-spacing:-.02em}
+h1 em{font-style:italic;color:var(--akz)}
+.sub{margin-top:20px;font-size:18px;line-height:1.6;color:var(--mut);max-width:560px}
+.cta{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap}
+.fakten{border-top:2px solid var(--ink)}
+.fakten div{display:flex;gap:16px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--line)}
+.fakten b{font:600 22px 'Fraunces',serif;min-width:74px;color:var(--akz)}
+.fakten span{font-size:14.5px;color:var(--mut)}
+
+section{padding:52px 0;border-top:1px solid var(--line)}
+.kopf{display:grid;grid-template-columns:1fr 2fr;gap:56px;margin-bottom:26px}
+.kopf small{font:700 12px 'Inter',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+h2{font:600 30px/1.15 'Fraunces',serif;letter-spacing:-.015em;margin-top:6px}
+.kopf p{font-size:16.5px;color:var(--mut);max-width:620px;align-self:end}
+
+/* Weg einer Massnahme */
+.weg{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--line);border-radius:14px;background:var(--karte);overflow:hidden}
+.weg div{padding:20px 18px 18px;border-right:1px solid var(--line)}
+.weg div:last-child{border-right:none}
+.weg i{font:600 13px 'Fraunces',serif;font-style:normal;color:var(--akz)}
+.weg b{display:block;font:600 17px/1.25 'Fraunces',serif;margin:4px 0 6px}
+.weg span{font-size:13.5px;line-height:1.5;color:var(--mut);display:block}
+
+/* Module */
+.gruppe{display:grid;grid-template-columns:1fr 2fr;gap:56px;padding:26px 0;border-top:1px solid var(--line)}
+.gruppe:first-of-type{border-top:2px solid var(--ink)}
+.gruppe .links i{font:600 13px 'Fraunces',serif;font-style:normal;color:var(--akz)}
+.gruppe .links h3{font:600 22px/1.2 'Fraunces',serif;margin:2px 0 8px}
+.gruppe .links p{font-size:14.5px;color:var(--mut);max-width:300px}
+.modul{display:grid;grid-template-columns:200px 1fr 24px;gap:18px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--line)}
+.modul:first-child{padding-top:2px}
+.modul:last-child{border-bottom:none}
+.modul b{font:600 16.5px/1.3 'Fraunces',serif}
+.modul span{font-size:14px;line-height:1.5;color:var(--mut)}
+.modul span strong{display:block;color:var(--ink);font-weight:500;margin-bottom:2px}
+.modul em{font-style:normal;color:var(--mut);text-align:right;transition:transform .15s}
+a.modul:hover b{color:var(--akz)} a.modul:hover em{color:var(--akz);transform:translateX(3px)}
+
+/* Zwei Spalten: Kostentraeger + Stand */
+.zwei{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.kasten{background:var(--karte);border:1px solid var(--line);border-radius:14px;padding:26px 26px 22px}
+.kasten h3{font:600 21px/1.25 'Fraunces',serif;margin-bottom:10px}
+.kasten p{font-size:15px;color:var(--mut);margin-bottom:12px}
+.kasten ul{list-style:none}
+.kasten li{display:flex;gap:12px;align-items:baseline;font-size:14.5px;padding:8px 0;border-top:1px solid var(--line)}
+.tag{flex:none;font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;border:1px solid var(--line);color:var(--mut);min-width:86px;text-align:center}
+.tag.gruen{color:var(--gruen);border-color:var(--gruen)} .tag.gelb{color:var(--gelb);border-color:var(--gelb)}
+
+.schluss{text-align:center;padding:60px 0}
+.schluss h2{font-size:34px}
+.schluss p{color:var(--mut);margin:10px auto 24px;max-width:520px}
+.schluss .cta{justify-content:center;margin-top:0}
+footer{border-top:1px solid var(--line);padding:22px 0 36px;font-size:13px;color:var(--mut);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+@media (max-width:900px){
+  .hero,.kopf,.gruppe,.zwei{grid-template-columns:1fr;gap:22px}
+  .weg{grid-template-columns:1fr} .weg div{border-right:none;border-bottom:1px solid var(--line)} .weg div:last-child{border-bottom:none}
+  .modul{grid-template-columns:1fr 20px} .modul span{grid-column:1/2;grid-row:2}
+  nav a:not(.btn){display:none}
+}
+</style>
+</head>
+<body>
+<div class="entwurf">ENTWURF · nur lokal, nicht live · Vorschlag für die G5-Startseite</div>
+<div class="wrap">
+
+<header>
+  <div class="marke"><svg viewBox="-8 -26 276.19 134" role="img" aria-label="KAȲȲA"><g class="ka"><path d="M4.200 53.768 L42.994 100.000 L48.476 100.000 L6.521 50.000 L48.476 0.000 L42.994 0.000 L4.200 46.232 L4.200 0.000 L0.000 0.000 L0.000 100.000 L4.200 100.000 Z"/><path d="M79.072 0.000 L49.072 74.253 L49.072 85.464 L79.072 11.212 L109.072 85.464 L109.072 74.253 Z"/><path d="M230.190 0.000 L260.190 74.253 L260.190 85.464 L230.190 11.212 L200.190 85.464 L200.190 74.253 Z"/></g><g class="yy"><path d="M120.972 62.394 L95.764 0.000 L91.234 0.000 L118.872 68.408 L118.872 100.000 L123.072 100.000 L123.072 68.408 L150.711 0.000 L146.181 0.000 Z"/><path d="M188.290 62.394 L213.499 0.000 L218.029 0.000 L190.390 68.408 L190.390 100.000 L186.190 100.000 L186.190 68.408 L158.551 0.000 L163.081 0.000 Z"/><rect x="99.56" y="-16.0" width="42.82" height="4.2" rx="2.1"/><rect x="166.88" y="-16.0" width="42.82" height="4.2" rx="2.1"/></g></svg></div>
+  <nav>
+    <a href="#weg">Der Weg einer Maßnahme</a>
+    <a href="#module">Module</a>
+    <a href="#kostentraeger">Für Ihre Kostenträger</a>
+    <a href="#stand">Stand</a>
+    <a class="btn voll" href="g5/">Demo öffnen</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <div>
+    <div class="zeile1">Das Betriebssystem für Bildungs- und Eingliederungsträger</div>
+    <h1>Weniger Verwaltung. <em>Mehr Maßnahme.</em></h1>
+    <div class="sub">KAȲȲA führt Ihren Träger in einem System: von der Ausschreibung über Kursbetrieb und Abrechnung bis zum Nachweis beim Kostenträger. Jede Rolle hat ihre eigene Oberfläche, alle arbeiten auf denselben Daten.</div>
+    <div class="cta">
+      <a class="btn voll" href="g5/">Demo öffnen</a>
+      <a class="btn" href="mailto:b@kayya.org?subject=KAYYA%20%E2%80%93%20Gespr%C3%A4ch">Gespräch vereinbaren</a>
+    </div>
+  </div>
+  <div class="fakten">
+    <div><b>1</b><span>Datenbasis für den ganzen Träger. Nichts wird doppelt erfasst.</span></div>
+    <div><b>14</b><span>Module für jede Rolle, vom Management bis zur Teilnehmerin.</span></div>
+    <div><b>live</b><span>Ihr Kostenträger sieht seine Maßnahmen in Echtzeit statt im Quartalsbericht.</span></div>
+    <div><b>KI</b><span>entwirft Angebote, Bescheid-Antworten und Nachweise. Entscheiden tun Menschen.</span></div>
+  </div>
+</div>
+
+<section id="weg">
+  <div class="kopf">
+    <div><small>So arbeitet KAȲȲA</small><h2>Der Weg einer Maßnahme</h2></div>
+    <p>Eine Maßnahme wird einmal angelegt und läuft dann durch alle Stationen. Jeder Schritt baut auf den Daten des vorigen auf.</p>
+  </div>
+  <div class="weg">
+    <div><i>01</i><b>Finden</b><span>Ausschreibungen und Förderaufrufe laufen ein und werden nach Passung, Frist und Marge bewertet.</span></div>
+    <div><i>02</i><b>Bieten</b><span>Angebot und Kalkulation entstehen als Entwurf. Sie prüfen, ändern und geben frei.</span></div>
+    <div><i>03</i><b>Durchführen</b><span>Aus dem Zuschlag wird die Maßnahme: Kursbetrieb, Anwesenheit, Lernstand, Begleitung.</span></div>
+    <div><i>04</i><b>Abrechnen</b><span>Belege, Zeiten und Rechnungen fließen in die Buchhaltung und sind der Maßnahme zugeordnet.</span></div>
+    <div><i>05</i><b>Nachweisen</b><span>Der Kostenträger sieht den Verlauf live. Nachweise und Zeugnisse entstehen aus den Ist-Daten.</span></div>
+  </div>
+</section>
+
+<section id="module">
+  <div class="kopf">
+    <div><small>Was drin ist</small><h2>14 Module, vier Aufgaben</h2></div>
+    <p>Sie können mit einem Modul beginnen. Alle Module teilen dieselbe Datenbasis, deshalb passt später jedes weitere dazu.</p>
+  </div>
+
+  <div class="gruppe">
+    <div class="links"><i>A</i><h3>Aufträge gewinnen</h3><p>Wissen, was ausgeschrieben ist, und in Stunden statt Tagen ein Angebot abgeben.</p></div>
+    <div>
+      <a class="modul" href="g5/#/m"><b>Vergabe-Monitor</b><span><strong>Ausschreibungen bewertet nach Passung, Frist und Marge</strong>Bieten-Empfehlung · Angebotsunterlage als Entwurf · Kalkulation · Fristen-Ampel</span><em>→</em></a>
+      <a class="modul" href="g5/#/zuw"><b>Fördermittel &amp; Zuwendung</b><span><strong>Förder-Radar über Bund, Länder und EU</strong>Chancen-Radar · Anträge als Entwurf · Verwendungsnachweis · De-minimis</span><em>→</em></a>
+    </div>
+  </div>
+
+  <div class="gruppe">
+    <div class="links"><i>B</i><h3>Maßnahmen durchführen</h3><p>Der Kursbetrieb läuft digital. Lehrkräfte unterrichten, statt Listen zu führen.</p></div>
+    <div>
+      <a class="modul" href="g5/#/kl"><b>Kursleitung</b><span><strong>Der Arbeitstag der Lehrkraft auf einer Seite</strong>Anwesenheit · Kompetenz-Matrix · Bestellen &amp; Rechnungen · Woche &amp; Team</span><em>→</em></a>
+      <a class="modul" href="g5/#/tn"><b>Teilnehmer</b><span><strong>Der eigene Stand, jederzeit</strong>Lernpfad · Check-in · Zeugnis-Wallet · Melden &amp; Reha · Jobradar · Tutor</span><em>→</em></a>
+      <a class="modul" href="g5/#/sl"><b>Selbstlernen</b><span><strong>Lernen außerhalb des Kursraums</strong>Katalog · Einheiten · Materialien · Prüfungssimulation · Diagnostik</span><em>→</em></a>
+      <a class="modul" href="g5/#/mot"><b>Begleitung</b><span><strong>Abbrüche früh erkennen und auffangen</strong>Motivation · Frühwarnsignale · vertraulicher Draht · Krisenhilfe rund um die Uhr</span><em>→</em></a>
+      <a class="modul" href="g5/#/cp"><b>Auslandscampus</b><span><strong>Fachkräfte aus dem Ausland, in einer Kette</strong>Sprache · Anerkennung · Kenntnisprüfung · Visum · Einreise</span><em>→</em></a>
+    </div>
+  </div>
+
+  <div class="gruppe">
+    <div class="links"><i>C</i><h3>Träger steuern</h3><p>Zahlen, Personal und Fristen an einer Stelle. Freigaben im Vier-Augen-Prinzip.</p></div>
+    <div>
+      <a class="modul" href="g5/#/m"><b>Management</b><span><strong>Der Überblick für die Geschäftsführung</strong>Maßnahmen-Bewertung · Freigaben · Wirtschaftlichkeit je Maßnahme · Archiv</span><em>→</em></a>
+      <a class="modul" href="g5/#/fib"><b>Buchhaltung</b><span><strong>Jeder Euro ist einer Maßnahme zugeordnet</strong>Rechnungen · Zahllauf · Bank &amp; Kontierung · Verträge &amp; Räume · DATEV-Export</span><em>→</em></a>
+      <a class="modul" href="g5/#/mit"><b>Personal</b><span><strong>Eine Zeitbuchung für Lohn, Kosten und Nachweis</strong>Einsatzplanung · Zeitbuchung · Personalakte · Anträge · Qualifikations-Fristen</span><em>→</em></a>
+      <a class="modul" href="g5/#/lc"><b>Recht &amp; Compliance</b><span><strong>Kein Bescheid und keine Frist geht verloren</strong>Posteingang · Fristen · Widerspruch &amp; Verfahren · Zulassungen · Löschfristen</span><em>→</em></a>
+    </div>
+  </div>
+
+  <div class="gruppe">
+    <div class="links"><i>D</i><h3>Ergebnisse nachweisen</h3><p>Was Sie leisten, ist belegt und für die Richtigen sichtbar.</p></div>
+    <div>
+      <a class="modul" href="g5/#/ktr"><b>Kostenträger-Report</b><span><strong>Der Geldgeber sieht nur seine Maßnahmen, live</strong>Maßnahmen-Ampel · Belegkette · Nachweise · Meldungen · Prüfpaket</span><em>→</em></a>
+      <a class="modul" href="g5/#/zgv"><b>Qualifizierung &amp; Zeugnisse</b><span><strong>Vom Prüfungstermin bis zum prüfbaren Zeugnis</strong>Prüfungs-Pipeline · Siegelung · Wallet · öffentlicher Prüflink</span><em>→</em></a>
+      <a class="modul" href="g5/#/ag"><b>Arbeitgeber &amp; Vermittlung</b><span><strong>Absolventen kommen in Arbeit</strong>Talentpool · Reservierungen · Stellenmarkt · Zeugnis-Check</span><em>→</em></a>
+    </div>
+  </div>
+</section>
+
+<section id="kostentraeger">
+  <div class="zwei">
+    <div class="kasten">
+      <h3>Für Ihre Kostenträger</h3>
+      <p>Jobcenter, Agentur und Kommune prüfen heute über Berichte, die Wochen alt sind. Mit KAȲȲA geben Sie ihnen einen eigenen Lese-Zugang.</p>
+      <ul>
+        <li>Sie sehen ausschließlich die Maßnahmen, die sie selbst finanzieren.</li>
+        <li>Anwesenheit, Fortschritt und Belege stammen aus dem laufenden Betrieb, nicht aus einem Selbstbericht.</li>
+        <li>Der Zugang ist nur lesend. Anmeldungen und jede Änderung im System werden protokolliert.</li>
+      </ul>
+    </div>
+    <div class="kasten" id="stand">
+      <h3>Ehrlicher Stand</h3>
+      <p>KAȲȲA ist in der Beta. Wir zeigen, was läuft, und sagen, was noch kommt.</p>
+      <ul>
+        <li><span class="tag gruen">läuft</span>Datenbasis, Management, Kostenträger-Report mit Lese-Zugang</li>
+        <li><span class="tag gelb">in Arbeit</span>die übrigen Module in der neuen G5-Oberfläche</li>
+        <li><span class="tag">vorbereitet</span>Anbindungen eM@w, DATEV und EBICS, Fernsiegel für Zeugnisse</li>
+        <li><span class="tag">offen</span>AZAV-Zulassung des eigenen Trägers</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="schluss">
+  <h2>Sehen Sie es sich an.</h2>
+  <p>Die Demo läuft auf einer echten Datenbank mit Beispieldaten. Für ein Gespräch über Ihren Träger genügt eine Nachricht.</p>
+  <div class="cta">
+    <a class="btn voll" href="g5/">Demo öffnen</a>
+    <a class="btn" href="mailto:b@kayya.org?subject=KAYYA%20%E2%80%93%20Gespr%C3%A4ch">Gespräch vereinbaren</a>
+  </div>
+</div>
+
+<footer>
+  <span>KAȲȲA · Bernhard Krug · Thaerstraße 40 · 10249 Berlin</span>
+  <span><a href="/">Impressum &amp; Datenschutz</a></span>
+</footer>
+
+</div>
+</body>
+</html>

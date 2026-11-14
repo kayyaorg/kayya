@@ -1,0 +1,113 @@
+<nav id="g5nav" aria-label="Module"><div class="in">
+<div class="gruppen">
+<button data-g="a">Gewinnen</button><button data-g="b">Durchführen</button><button data-g="c">Steuern</button><button data-g="d">Nachweisen</button>
+</div>
+<div class="module">
+<span data-g="a"><a data-k="m/vergabe" href="#/m/vergabe">Vergabe-Monitor</a><a data-k="zuw" href="#/zuw">Fördermittel &amp; Zuwendung</a></span>
+<span data-g="b"><a data-k="kl" href="#/kl">Kursleitung</a><a data-k="tn" href="#/tn">Teilnehmer</a><a data-k="sl" href="#/sl">Selbstlernen</a><a data-k="mot" href="#/mot">Begleitung</a><a data-k="s24" href="#/s24">Krisenhilfe 24/7</a><a data-k="cp" href="#/cp">Auslandscampus</a></span>
+<span data-g="c"><a data-k="m" href="#/m">Management</a><a data-k="fib" href="#/fib">Buchhaltung</a><a data-k="mit" href="#/mit">Personal</a><a data-k="lc" href="#/lc">Recht &amp; Compliance</a></span>
+<span data-g="d"><a data-k="ktr" href="#/ktr">Kostenträger-Report</a><a data-k="zgv" href="#/zgv">Qualifizierung &amp; Zeugnisse</a><a data-k="ag" href="#/ag">Arbeitgeber &amp; Vermittlung</a></span>
+</div>
+</div></nav>
+<script>
+/* G5: Modul-Leiste in zwei Ebenen (Aufgabe -> Module); ohne Ziel geht es zur Übersicht. */
+(function(){
+  var nav=document.getElementById('g5nav'), gewaehlt=null;
+  function gruppe(g){
+    nav.querySelectorAll('.gruppen button').forEach(function(b){ b.classList.toggle('an', b.getAttribute('data-g')===g); });
+    nav.querySelectorAll('.module span').forEach(function(s){ s.style.display=(s.getAttribute('data-g')===g)?'flex':'none'; });
+  }
+  /* Rollen: wer nur einzelne Module sehen darf (z. B. ein Kostenträger mit Live-Link), bekommt nur diese angeboten */
+  function rollen(){
+    var e=window.ROLLE_ERLAUBT||null, sicht=0;
+    nav.querySelectorAll('.module span').forEach(function(s){ var n=0;
+      s.querySelectorAll('a').forEach(function(a){ var ok=!e||e.has(a.getAttribute('data-k').split('/')[0]); a.style.display=ok?'':'none'; if(ok) n++; });
+      var b=nav.querySelector('.gruppen button[data-g="'+s.getAttribute('data-g')+'"]'); if(b) b.style.display=n?'':'none'; sicht+=n; });
+    nav.style.display=(e&&sicht<=1)?'none':'';
+    var z=document.getElementById('zurueck'); if(z){ if(e) z.style.setProperty('display','none','important'); else z.style.removeProperty('display'); }
+    document.documentElement.classList.toggle('g5-eng',!!e);
+    if(e && !window.__g5heim){ window.__g5heim=1; window.heim=function(){ if(window.zeig && window.ROLLE_HAUPT) zeig(window.ROLLE_HAUPT); }; }
+  }
+  function mark(){
+    rollen();
+    var h=location.hash.replace('#/',''), k=h.split('/')[0], aktiv=null;
+    nav.querySelectorAll('.module a').forEach(function(a){
+      var d=a.getAttribute('data-k');
+      var an=(d==='m/vergabe') ? (h.indexOf('m/vergabe')===0) : (d===k && !(k==='m' && h.indexOf('m/vergabe')===0));
+      a.classList.toggle('an',an); if(an) aktiv=a;
+    });
+    if(aktiv && !gewaehlt) gruppe(aktiv.parentNode.getAttribute('data-g'));
+    else if(!aktiv && !gewaehlt) gruppe('c');
+  }
+  nav.querySelectorAll('.gruppen button').forEach(function(b){
+    b.addEventListener('click',function(){ gewaehlt=b.getAttribute('data-g'); gruppe(gewaehlt); });
+  });
+  nav.querySelectorAll('.module a').forEach(function(a){
+    a.addEventListener('click',function(ev){ ev.preventDefault(); gewaehlt=null; var zk=a.getAttribute('data-k'); if(window.tief) tief(zk==='m'?'m/ueberblick':zk); setTimeout(mark,160); });
+  });
+  window.addEventListener('hashchange',function(){ gewaehlt=null; mark(); });
+  window.addEventListener('popstate',function(){ gewaehlt=null; mark(); });
+  setInterval(mark,700); mark();
+  if(!location.hash && !/[?&](t|blick)=/.test(location.search)) location.replace('../g5.html');
+})();
+</script>
+<script>
+/* G5: Modulleiste und neue Modultitel in allen Sprachen der App */
+(function(m){ if(window.I18N_ADD) window.I18N_ADD(m); })({
+ "Gewinnen":{"en":"Win","tr":"Kazanma","tl":"Pagkuha","pl":"Pozyskiwanie","ar":"الاستقطاب"},
+ "Durchführen":{"en":"Deliver","tr":"Yürütme","tl":"Pagsasagawa","pl":"Realizacja","ar":"التنفيذ"},
+ "Steuern":{"en":"Manage","tr":"Yönetim","tl":"Pamamahala","pl":"Zarządzanie","ar":"الإدارة"},
+ "Nachweisen":{"en":"Prove","tr":"Belgeleme","tl":"Pagpapatunay","pl":"Dokumentowanie","ar":"الإثبات"},
+ "Vergabe-Monitor":{"en":"Tender monitor","tr":"İhale izleme","tl":"Monitor ng tender","pl":"Monitor przetargów","ar":"مراقبة المناقصات"},
+ "Fördermittel & Zuwendung":{"en":"Funding & grants","tr":"Hibe ve teşvikler","tl":"Pondo at grant","pl":"Dotacje i granty","ar":"التمويل والمنح"},
+ "Kursleitung":{"en":"Course lead","tr":"Kurs yönetimi","tl":"Pamumuno ng kurso","pl":"Prowadzenie kursu","ar":"قيادة الدورة"},
+ "Teilnehmer":{"en":"Participants","tr":"Katılımcılar","tl":"Mga kalahok","pl":"Uczestnicy","ar":"المشاركون"},
+ "Selbstlernen":{"en":"Self-study","tr":"Kendi kendine öğrenme","tl":"Sariling pag-aaral","pl":"Samodzielna nauka","ar":"التعلّم الذاتي"},
+ "Begleitung":{"en":"Support","tr":"Destek","tl":"Paggabay","pl":"Wsparcie","ar":"المرافقة"},
+ "Krisenhilfe 24/7":{"en":"Crisis support 24/7","tr":"7/24 kriz desteği","tl":"Tulong sa krisis 24/7","pl":"Pomoc kryzysowa 24/7","ar":"دعم الأزمات 24/7"},
+ "Auslandscampus":{"en":"Campus abroad","tr":"Yurt dışı kampüsü","tl":"Kampus sa ibang bansa","pl":"Kampus zagraniczny","ar":"الحرم الخارجي"},
+ "Management":{"en":"Management","tr":"Yönetim","tl":"Pamunuan","pl":"Zarząd","ar":"الإدارة العليا"},
+ "Buchhaltung":{"en":"Accounting","tr":"Muhasebe","tl":"Accounting","pl":"Księgowość","ar":"المحاسبة"},
+ "Personal":{"en":"Staff","tr":"Personel","tl":"Kawani","pl":"Personel","ar":"الموظفون"},
+ "Recht & Compliance":{"en":"Legal & compliance","tr":"Hukuk ve uyum","tl":"Legal at compliance","pl":"Prawo i compliance","ar":"الشؤون القانونية والامتثال"},
+ "Kostenträger-Report":{"en":"Funder report","tr":"Finansör raporu","tl":"Ulat sa tagapondo","pl":"Raport dla płatnika","ar":"تقرير الجهة الممولة"},
+ "Qualifizierung & Zeugnisse":{"en":"Qualifications & certificates","tr":"Yeterlilik ve sertifikalar","tl":"Kwalipikasyon at sertipiko","pl":"Kwalifikacje i świadectwa","ar":"التأهيل والشهادات"},
+ "Arbeitgeber & Vermittlung":{"en":"Employers & placement","tr":"İşverenler ve yerleştirme","tl":"Mga employer at placement","pl":"Pracodawcy i pośrednictwo","ar":"أصحاب العمل والتوظيف"},
+ "‹ Übersicht":{"en":"‹ Overview","tr":"‹ Genel bakış","tl":"‹ Pangkalahatan","pl":"‹ Przegląd","ar":"‹ نظرة عامة"},
+ "Hell":{"en":"Light","tr":"Açık","tl":"Maliwanag","pl":"Jasny","ar":"فاتح"},
+ "Dunkel":{"en":"Dark","tr":"Koyu","tl":"Madilim","pl":"Ciemny","ar":"داكن"}
+});
+</script>
+<script>
+/* G5: Sicht eines Kostenträgers (Live-Link oder Kostenträger-Konto) — Kopfzeile, Kennzahlen und Fragen nur zu den eigenen Maßnahmen */
+(function(){
+  var REST=' · Maßnahmen im Live-Blick · Nur Lesen — jede Zahl trägt ihren Beleg';
+  function eigene(){
+    if(!window.DBA||!DBA.cache||!DBA.cache.massnahmen) return null;
+    var w=DBA.wer&&DBA.wer(), b=window.KTR_BLICK;
+    if(!b && !(w&&w.rolle==='kostentraeger')) return null;
+    var ms=DBA.cache.massnahmen; if(b) ms=ms.filter(function(d){ return b.ids.indexOf(d.kennung)>=0; });
+    return {name:b?b.n:((ms[0]&&ms[0].kostentraeger)||w.name), ms:ms};
+  }
+  function euro(n){ return String(Math.round(n/10)*10).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+' €'; }
+  function lauf(){
+    var sec=document.getElementById('v-ktr'); if(!sec) return; var e=eigene(); if(!e) return;
+    var vs=sec.querySelector('.v-kopf .vsub'); var soll=e.name+REST;
+    if(vs && vs.getAttribute('data-g5')!==e.name){ vs.setAttribute('data-g5',e.name); vs.textContent=soll;
+      if(window.I18N_ADD){ var m={}; m[soll]={en:e.name+' · programs in live view · read-only — every number carries its receipt',tr:e.name+' · programlar canlı görünümde · salt okunur — her rakam belgesini taşır',tl:e.name+' · live na tanaw ng mga programa · read-only — bawat numero may kasamang patunay',pl:e.name+' · działania w podglądzie na żywo · tylko odczyt — każda liczba ma swój dowód',ar:e.name+' · البرامج في عرض مباشر · قراءة فقط — كل رقم يحمل مستنده'}; I18N_ADD(m); } }
+    var ids=e.ms.map(function(d){ return d.kennung; });
+    sec.querySelectorAll('.ktr-ki-btns button').forEach(function(b){ var m=(b.textContent.match(/M-\d{4}/)||[])[0]; if(m && ids.indexOf(m)<0) b.style.display='none'; });
+    var band=document.getElementById('ktr-kpis'); if(!band) return; var k=band.querySelectorAll('.kpi'); if(k.length<4 || k[3].getAttribute('data-g5')) return;
+    var tn=0,pl=0,aw=0,ks=0,kn=0;
+    e.ms.forEach(function(d){ var t=+d.belegt||0; tn+=t; pl+=(+d.plaetze||0); aw+=t*(+d.anwesenheit_prozent||0);
+      var z=parseFloat(String(d.kosten_je_eingliederung||'').replace(/\./g,'').replace(',','.').replace(/[^\d.]/g,'')); if(z>0){ ks+=z; kn++; } });
+    function setze(el,wert,label){ el.querySelector('b').textContent=wert; el.querySelector('span').textContent=label; el.setAttribute('data-g5','1'); el.setAttribute('onclick',"tief('ktr/mass')"); }
+    k[0].style.display='none';
+    setze(k[1], tn?Math.round(aw/tn)+' %':'–', 'Ø Anwesenheit · Ihre Maßnahmen, nach Teilnehmenden gewichtet');
+    setze(k[2], kn?euro(ks/kn):'–', 'Kosten je Eingliederung · Ø Ihrer Maßnahmen');
+    setze(k[3], tn+' / '+pl, 'Belegte Plätze · '+(pl-tn)+' frei');
+    var nerv=sec.querySelector('.ktr-nerv'); if(nerv) nerv.textContent='Die Kennzahlen zeigen nur Ihre Maßnahmen. Ein Klick führt zur Maßnahme und ihren Belegen.';
+  }
+  setInterval(lauf,800);
+})();
+</script>

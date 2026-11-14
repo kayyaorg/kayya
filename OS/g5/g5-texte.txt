@@ -1,0 +1,56 @@
+# G5-Textkorrekturen fuer den Build: alt<TAB>neu (UTF-8). Zeilen mit # werden ignoriert. Reihenfolge zaehlt.
+Urlaubsantrag 12.–16.10. an die GF	Urlaubsantrag für die übernächste Woche an die GF
+Urlaub 22.–24.12.	Urlaub zwischen den Jahren
+November 2026 · Unterlagen zu 80 % bereit	in 6 Wochen · Unterlagen zu 80 % bereit
+Eingänge heute	Letzte Eingänge
+Q3 2027	Q4 2027
+Q2 2027	Q3 2027
+Q1 2027	Q2 2027
+Q4 2026	Q1 2027
+<h2>Zuwendung</h2>	<h2>Fördermittel &amp; Zuwendung</h2>
+<h2>FiBu</h2>	<h2>Buchhaltung</h2>
+<h2>Kursleiter</h2>	<h2>Kursleitung</h2>
+<h2>Arbeitgeber</h2>	<h2>Arbeitgeber &amp; Vermittlung</h2>
+<h2>Motivation</h2>	<h2>Begleitung</h2>
+<h2>24/7</h2>	<h2>Krisenhilfe 24/7</h2>
+<h2>Auslandscampus</h2>	<h2>Auslandscampus</h2>
+Frist 12.10.	Frist {{t+14}}
+12.10.2026 · 14 Tage	{{T+14}} · 14 Tage
+Erstattungsbescheid vom 18.09.2026	Erstattungsbescheid vom {{T-20}}
+ausgestellt:'22.09.2026'	ausgestellt:'{{T-32}}'
+Import-Stand 23.08.2026	Import-Stand {{T-2}}
+15.09.2026	{{T+7}}
+(15.09.)	({{t+7}})
+(15 Sep)	({{e+7}})
+(15.09)	({{t+7}})
+bis 30.09. anstoßen	bis {{t+17}} anstoßen
+bis 30.09.2026 anstoßen	bis {{T+17}} anstoßen
+01.10.2026	01.01.2027
+Gehaltsanpassung zum 01.10.	Gehaltsanpassung zum 01.01.
+Import 22.08.2026	Import {{T-1}}
+Import 23.08.2026	Import {{T-2}}
+Import 23.08.	Import {{t-2}}
+Überwachungsaudit 11/2026 – Unterlagen ab 09/2026	Überwachungsaudit 09/2026 – Unterlagen ab 08/2026
+"21.07. 	"{{t-1}} 
+dat:"21.07."	dat:"{{t-1}}"
+datum:"21.07."	datum:"{{t-1}}"
+"20.07. 	"{{t-2}} 
+dat:"15.07."	dat:"{{t-6}}"
+datum:"15.07."	datum:"{{t-6}}"
+65 / 73	66 / 73
+8 freie Plätze über 4 Maßnahmen	7 freie Plätze über 4 laufende Maßnahmen
+Belegte Plätze · 8 frei · Beleg ›	Belegte Plätze · 7 frei · Beleg ›
+· 8 free ·	· 7 free ·
+· 8 boş ·	· 7 boş ·
+· 8 bakante ·	· 7 bakante ·
+· 8 wolnych ·	· 7 wolnych ·
+· 8 متاحة ·	· 7 متاحة ·
+wert:"14 / 16", detail:[["Aktiv teilnehmend",14],["Frei",2]]	wert:"15 / 16", detail:[["Aktiv teilnehmend",15],["Frei",1]]
+tn:14, pl:16	tn:15, pl:16
+tn:14,pl:16	tn:15,pl:16
+Jobcenter Region Nord · Maßnahmen im Live-Blick	Alle Kostenträger · Maßnahmen im Live-Blick
+Jobcenter Region Nord · programs in live view	All funders · programs in live view
+Jobcenter Region Nord · programlar canlı	Tüm finansörler · programlar canlı
+Jobcenter Region Nord · live na tanaw	Lahat ng tagapondo · live na tanaw
+Jobcenter Region Nord · działania w podglądzie	Wszyscy płatnicy · działania w podglądzie
+Jobcenter Region Nord · البرامج في عرض	جميع الجهات الممولة · البرامج في عرض

@@ -1,0 +1,145 @@
+/* ============================================================
+   KAȲȲA G5 — Erscheinungsbild der App (wird vom Build in g5/index.html eingesetzt).
+   Ruhig, typografisch, ohne Effekte: warmes Dunkel, Fraunces + Inter, ein Akzent.
+   ============================================================ */
+@font-face{font-family:'Fraunces';src:url('../fonts/Fraunces-var.woff2') format('woff2');font-weight:400 700;font-display:swap}
+@font-face{font-family:'Inter';src:url('../fonts/Inter-var.woff2') format('woff2');font-weight:400 800;font-display:swap}
+:root{--ink:#161311;--glow:#D9A8D9;--gold:#E8B94A;--mag:#E58FB5;--txt:#EDE8E2;--mut:#A39B91;
+  --panel1:#201C19;--panel2:#201C19;--rand:#2E2925;--linie:#2E2925;--flaeche:#1E1A17;--bg:#161311;--pan:#201C19;--btnrand:rgba(237,232,226,.55);--hover:rgba(237,232,226,.04)}
+
+html{background:var(--bg)!important}
+body{font-family:'Inter',system-ui,sans-serif!important;background:var(--bg)!important;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+#gfoto,#gdunkel,#home,#pt-homestart{display:none!important}
+*{text-shadow:none!important}
+*,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important}
+.view.an{animation:none!important}
+
+/* Kopf */
+#kopf{background:var(--bg)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border-bottom:1px solid var(--linie)!important;padding:16px 24px!important;gap:14px}
+#kopf .marke{display:flex;align-items:center;cursor:pointer}
+#kopf .marke svg{height:26px;width:auto;display:block}
+#kopf .marke .ka{fill:var(--txt)} #kopf .marke .yy{fill:var(--glow)}
+.vchip{font-family:'Inter',sans-serif!important;font-weight:600;font-size:10.5px!important;letter-spacing:.1em;color:var(--mut)!important;border:1px solid var(--linie)!important;padding:4px 11px!important}
+#zurueck{display:inline-flex!important;font-family:'Inter',sans-serif;font-size:13px!important;font-weight:600!important;color:var(--txt)!important;border:1.5px solid var(--txt)!important;border-radius:10px!important;padding:7px 14px!important;background:none}
+#zurueck:hover{border-color:var(--glow)!important;color:var(--glow)!important}
+#kopf .rechts a,#kopf .rechts button,#kopf .rechts span{font-family:'Inter',sans-serif}
+#kopf .rechts a{border:none!important;color:var(--mut)!important;font-size:12.5px!important;padding:4px 6px!important}
+#kopf .rechts a:hover{color:var(--glow)!important}
+
+/* Flaechen */
+main{max-width:1120px!important;padding:26px 24px 70px!important}
+.v-kopf{margin-bottom:22px!important;padding-bottom:18px;border-bottom:1px solid var(--linie)}
+.v-kopf .vic{display:none!important}
+.v-kopf h2{font-family:'Fraunces',serif!important;font-size:30px!important;font-weight:600!important;letter-spacing:-.015em;line-height:1.15}
+.v-kopf .vsub{font-size:14px!important;color:var(--mut)!important;font-weight:400!important;letter-spacing:0!important;text-transform:none!important;margin-top:6px!important;line-height:1.5;max-width:760px}
+h1,h3{font-family:'Fraunces',serif;font-weight:600;letter-spacing:-.01em}
+
+.karte,.kpi{background:var(--pan)!important;border:1px solid var(--linie)!important;box-shadow:none!important}
+.karte{border-radius:14px!important;padding:20px 22px!important}
+.ki-karte{border-color:rgba(232,185,74,.4)!important}
+.k-titel{font-family:'Fraunces',serif!important;font-size:18px!important;font-weight:600!important;letter-spacing:-.005em!important;text-transform:none!important;color:var(--txt)!important;margin-bottom:12px!important}
+.kpi{border-radius:14px!important;padding:16px 18px!important}
+.kpi b{font-family:'Fraunces',serif;font-size:26px!important;font-weight:600!important;color:var(--txt)}
+.kpi span{font-size:12px!important;font-weight:500!important;letter-spacing:0!important;text-transform:none!important;color:var(--mut)!important;line-height:1.4;display:block;margin-top:3px}
+
+.tag{font-family:'Inter',sans-serif!important;font-size:11px!important;font-weight:700!important;padding:2px 9px!important}
+.btn{font-family:'Inter',sans-serif;font-size:13.5px!important;font-weight:600!important;border-radius:10px!important;padding:9px 16px!important;border:1.5px solid var(--btnrand)!important;color:var(--txt)!important;box-shadow:none!important;transition:border-color .15s,color .15s!important}
+.btn:hover{border-color:var(--glow)!important;color:var(--glow)!important}
+.btn:active{transform:none!important}
+.btn.primaer{background:var(--txt)!important;color:var(--bg)!important;border-color:var(--txt)!important}
+.btn.primaer:hover{background:var(--glow)!important;border-color:var(--glow)!important;color:var(--bg)!important}
+.btn.gold{border-color:rgba(232,185,74,.6)!important;color:var(--gold)!important}
+.btn.geist{border-color:var(--linie)!important;color:var(--mut)!important}
+.btn.geist:hover{border-color:var(--glow)!important;color:var(--glow)!important}
+button{font-family:'Inter',sans-serif}
+
+.zeile{background:none!important;border-radius:0!important;border-bottom:1px solid var(--linie);padding:11px 2px!important;margin-bottom:0!important}
+.zeile:last-child{border-bottom:none}
+.zeile .zic,.zic{display:none!important}
+.zeile .zn{font-size:14.5px!important;font-weight:600!important}
+.zeile .zf{font-family:'Inter',sans-serif!important;font-size:12.5px!important;color:var(--mut)!important}
+.hinweis{font-size:13px!important;line-height:1.55!important}
+
+.balken{height:6px!important;background:var(--linie)!important}
+.balken>i{background:#4CC98A!important}
+.balken>i.gold{background:var(--gold)!important}
+.balken>i.rot{background:#FF7A70!important}
+
+.tabelle table{font-size:13.5px!important}
+.tabelle th{font-family:'Inter',sans-serif!important;font-size:11px!important;font-weight:700;border-bottom:1px solid var(--linie)!important;padding:8px 9px!important}
+.tabelle td{border-bottom:1px solid var(--linie)!important;padding:10px 9px!important}
+
+.tab-bar{gap:4px!important;border-bottom:1px solid var(--linie);margin-bottom:20px!important;padding-bottom:0}
+.tab-bar button{font-family:'Inter',sans-serif;font-size:13.5px!important;font-weight:600!important;border:none!important;border-bottom:2px solid transparent!important;border-radius:0!important;background:none!important;color:var(--mut)!important;padding:10px 14px!important;margin-bottom:-1px}
+.tab-bar button:hover{color:var(--txt)!important}
+.tab-bar button.an{color:var(--txt)!important;border-bottom-color:var(--glow)!important;background:none!important}
+
+.gdeck{background:rgba(12,10,9,.78)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.gglas{background:var(--pan)!important;border:1px solid var(--linie)!important;border-radius:16px!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.gglas h3{font-size:19px!important}
+#toast{background:var(--txt)!important;color:var(--bg)!important;border:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border-radius:10px!important;font-weight:600!important;font-size:13.5px!important}
+
+input,select,textarea{font-family:'Inter',sans-serif!important}
+textarea,input[type=text],input[type=number],input[type=password],input[type=date],input:not([type]),select{background:var(--bg)!important;border:1px solid var(--linie)!important;color:var(--txt)!important;border-radius:10px!important}
+::placeholder{color:#7D766D}
+
+/* Modul-Leiste: zwei Ebenen (Aufgabe -> Module), bleibt beim Scrollen oben */
+#kopf{position:static!important;flex-wrap:wrap;row-gap:10px}
+#kopf .rechts{flex-wrap:wrap;row-gap:6px;justify-content:flex-end}
+#zurueck{white-space:nowrap}
+#kopf .rechts *{font-family:'Inter',sans-serif!important;letter-spacing:.02em}
+#kopf .rechts span,#kopf .rechts button{font-size:11.5px!important}
+#g5nav{position:sticky;top:0;z-index:19;background:var(--bg);border-bottom:1px solid var(--linie);padding:0 24px}
+#g5nav .in{max-width:1120px;margin:0 auto;display:flex;align-items:stretch;gap:22px;flex-wrap:wrap}
+#g5nav .gruppen{display:flex;gap:2px;align-items:center;padding:8px 0}
+#g5nav .gruppen button{font:700 11px 'Inter',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);background:none;border:1px solid transparent;border-radius:99px;padding:6px 12px;cursor:pointer}
+#g5nav .gruppen button:hover{color:var(--txt)}
+#g5nav .gruppen button.an{color:var(--bg);background:var(--txt)}
+#g5nav .module{display:flex;flex:1;min-width:0;border-left:1px solid var(--linie);padding-left:14px}
+#g5nav .module span{display:none;gap:2px;flex-wrap:wrap}
+#g5nav .module a{font:600 13.5px 'Inter',sans-serif;color:var(--mut);padding:13px 11px 11px;border-bottom:2px solid transparent;text-decoration:none;white-space:nowrap}
+#g5nav .module a:hover{color:var(--txt)}
+#g5nav .module a.an{color:var(--txt);border-bottom-color:var(--glow)}
+@media (max-width:760px){ #g5nav .module{border-left:none;padding-left:0;flex-basis:100%} }
+
+*:focus-visible{outline:2px solid var(--glow);outline-offset:2px}
+::selection{background:rgba(217,168,217,.3)}
+
+/* Fenster (Angebotsunterlage u. a.): Felder sauber setzen, auch ausserhalb des Moduls */
+.gglas .m-kv{display:grid;grid-template-columns:130px 1fr;gap:6px 14px;font-size:13.5px}
+.gglas .m-kv .k{color:var(--mut)}
+.gglas .m-ta,.gglas textarea{width:100%;min-height:170px;padding:12px;font-size:13.5px;line-height:1.55}
+.gglas .tabelle,.gglas table{width:100%}
+
+/* Detailebene: anklickbare Zeilen und Vorgangsfenster */
+.zeile.g5klick{cursor:pointer;position:relative;padding-right:22px!important}
+.zeile.g5klick::after{content:'›';position:absolute;right:4px;top:50%;transform:translateY(-50%);color:var(--mut);font-size:17px}
+.zeile.g5klick:hover{background:var(--hover)!important}
+.zeile.g5klick:hover::after{color:var(--glow)}
+.g5det-f{display:grid;gap:14px;margin:14px 0 16px}
+.g5det-f span{display:block;font:700 10.5px 'Inter',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-bottom:3px}
+.g5det-f p{margin:0;font-size:14px;line-height:1.55;color:var(--txt)}
+
+/* Heller Modus: dieselbe Ordnung auf warmem Papier */
+html[data-theme="light"]{--ink:#F6F2EC;--glow:#7A3F7A;--gold:#8A5B00;--mag:#B03A6E;--txt:#221D19;--mut:#6B635A;
+  --panel1:#FFFFFF;--panel2:#FFFFFF;--rand:#DDD5CA;--linie:#DDD5CA;--flaeche:#FFFFFF;--bg:#F6F2EC;--pan:#FFFFFF;--btnrand:rgba(34,29,25,.42);--hover:rgba(34,29,25,.04)}
+html[data-theme="light"] body{background:var(--bg)!important}
+html[data-theme="light"] .gdeck{background:rgba(34,29,25,.45)!important}
+html[data-theme="light"] .balken>i{background:#1F8A57!important}
+html[data-theme="light"] .balken>i.gold{background:#B07A10!important}
+html[data-theme="light"] .balken>i.rot{background:#C0392B!important}
+html[data-theme="light"] ::placeholder{color:#978E84}
+
+/* Schalter Hell/Dunkel und Sprachwahl im Kopf: schlicht */
+#kth-toggle{display:inline-flex!important;width:auto!important;height:auto!important;background:none!important;border:1px solid var(--linie)!important;border-radius:99px!important;color:var(--mut)!important;font:600 11.5px 'Inter',sans-serif!important;padding:4px 11px!important;cursor:pointer;box-shadow:none!important;transform:none!important}
+#kth-toggle:hover{border-color:var(--glow)!important;color:var(--glow)!important}
+#lsw-btn{background:none!important;border:1px solid var(--linie)!important;color:var(--mut)!important}
+#lsw-btn:hover{border-color:var(--glow)!important;color:var(--glow)!important}
+#lsw-menu{background:var(--pan)!important;border:1px solid var(--linie)!important;box-shadow:0 8px 24px rgba(0,0,0,.18)!important}
+
+/* Detailebene nur auf Deutsch; in anderen Sprachen bleiben die Zeilen reine Anzeige */
+html:not([lang="de"]) .zeile.g5klick{cursor:default}
+html:not([lang="de"]) .zeile.g5klick::after{display:none}
+
+/* Eingeschraenkte Rollen (Live-Link): kein Sprung zur Uebersicht */
+.g5-eng #kopf .marke{pointer-events:none;cursor:default}
