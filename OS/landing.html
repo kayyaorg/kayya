@@ -202,6 +202,7 @@
 function offen(id){ document.getElementById(id).classList.add('auf'); }
 function zu(id){ document.getElementById(id).classList.remove('auf'); }
 function gateHash(s){ let h=5381; for(let i=0;i<s.length;i++){ h=((h<<5)+h+s.charCodeAt(i))>>>0; } return h; }
+var START_SUCHE=location.search;   /* vor dem Aufraeumen der Adresse merken */
 var MOBIL=('ontouchstart' in window)&&Math.min(screen.width,screen.height)<820;
 /* Handy: eigene, fuer kleine Bildschirme gebaute Seite. kayya.org/?desktop=1 zeigt trotzdem diese Startseite. */
 if(MOBIL && !/[?&](desktop|bereich|tor|film)=/.test(location.search)) location.replace('mobil.html');
@@ -269,7 +270,7 @@ function vsTon(){ var v=document.getElementById('vs-film'); v.muted=false; v.cur
 function vsStart(){ var v=document.getElementById('vs-film'); v.muted=false; document.getElementById('vs-start').classList.remove('an'); v.play(); vsVollbild(); }
 (function(){
   try{
-    var q=new URLSearchParams(location.search), nochmal=q.get('film')==='1';
+    var q=new URLSearchParams(START_SUCHE), nochmal=q.get('film')==='1';
     if(q.get('bereich') || q.get('tor') || q.get('desktop')) return;
     if(!nochmal && sessionStorage.getItem('kayya_film')==='1'){ document.body.classList.add('nachfilm'); return; }
     /* Zuerst der Produktfilm (film.html, animiert, ohne Ton). Fehlt er, greift die Videodatei darunter. */
