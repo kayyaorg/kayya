@@ -104,6 +104,7 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--txt);-webkit-font-smoo
 
 /* Schluss */
 .schluss{position:relative;margin-top:84px}
+.schluss .satz em{font-style:italic;color:var(--akz)}
 .schluss .satz{font:600 84px/1.1 'Fraunces',serif;letter-spacing:-.02em}
 .schluss .alt{position:relative;display:inline-block}
 .schluss .alt::after{content:'';position:absolute;left:-3%;top:52%;height:14px;width:0;background:var(--akz);border-radius:8px;transform:rotate(-2deg)}
@@ -210,31 +211,15 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--txt);-webkit-font-smoo
 
 <!-- 73,7 Kursleitung -->
 <div class="sz clip" data-ab="73.7" data-v="1.0"><video src="video/c2.mp4" muted playsinline preload="auto"></video><div class="ct k">Wer eine Stunde hält,</div></div>
-<div class="sz" data-ab="75.6">
+<div class="sz" data-ab="75.2">
   <div class="h s k">hat sie damit</div>
   <div style="display:flex;gap:18px;margin-top:44px"><span class="wort" style="--d:400ms">dokumentiert</span><span class="wort" style="--d:1000ms">nachgewiesen</span><span class="wort" style="--d:1600ms">abgerechnet</span></div>
   <div class="bu t" style="--d:2200ms">Keine Listen am Abend. <em>Keine Nachfragen im Quartal.</em></div>
 </div>
 
-<!-- 79,2 Zahllauf -->
-<div class="sz" data-ab="79.2">
-  <div class="ui">
-    <div class="kopf"><b>Buchhaltung</b> Zahllauf · 3 Zahlungen · 13.567,90 € <span class="sig wort" style="--d:300ms;margin-left:auto">Freigabe 1</span><span class="sig wort" style="--d:700ms">Freigabe 2</span></div>
-    <div class="in" style="gap:18px">
-      <div>
-        <div class="z"><div>Vermietung Nord GmbH<small>Miete · Umlage auf alle Maßnahmen</small></div><span class="r">12.400,00 €</span></div>
-        <div class="z"><div>SimMed GmbH<small>Pflegesimulator · M-4711</small></div><span class="r">878,00 €</span></div>
-      </div>
-      <div class="datei" style="--d:1100ms"><span>pain.001 · Sammelüberweisung</span><u>›</u><span class="ziel">S-Firm</span></div>
-      <div class="datei" style="--d:1900ms"><span>EXTF · Buchungsstapel</span><u>›</u><span class="ziel">DATEV</span></div>
-    </div>
-  </div>
-  <div class="bu t" style="--d:2700ms">Zwei Unterschriften. <em>Null Abtippen.</em></div>
-</div>
-
 <!-- 83,7 Zeit fuer Menschen / Eskalation -->
-<div class="sz clip" data-ab="83.7" data-v="2.0"><video src="video/c5.mp4" muted playsinline preload="auto"></video><div class="ct k">Die Zeit gehört wieder<br><em>den Teilnehmern.</em></div></div>
-<div class="sz" data-ab="85.9">
+<div class="sz clip" data-ab="78.9" data-v="2.0"><video src="video/c5.mp4" muted playsinline preload="auto"></video><div class="ct k">Die Zeit gehört wieder<br><em>den Teilnehmern.</em></div></div>
+<div class="sz" data-ab="81.0">
   <div class="kette">
     <div class="st t" style="--d:100ms"><i>STUFE 1</i><b>Erinnerung</b><span>automatisch, freundlich, protokolliert</span></div>
     <div class="pf t" style="--d:500ms">›</div>
@@ -250,6 +235,22 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--txt);-webkit-font-smoo
   <div class="bu t" style="--d:3900ms;margin-top:34px">Eskalation. <em>Bevor es brennt.</em></div>
 </div>
 
+<!-- 87,2 Zahllauf -->
+<div class="sz" data-ab="87.2">
+  <div class="ui">
+    <div class="kopf"><b>Buchhaltung</b> Zahllauf · 3 Zahlungen · 13.567,90 € <span class="sig wort" style="--d:300ms;margin-left:auto">Freigabe 1</span><span class="sig wort" style="--d:700ms">Freigabe 2</span></div>
+    <div class="in" style="gap:18px">
+      <div>
+        <div class="z"><div>Vermietung Nord GmbH<small>Miete · Umlage auf alle Maßnahmen</small></div><span class="r">12.400,00 €</span></div>
+        <div class="z"><div>SimMed GmbH<small>Pflegesimulator · M-4711</small></div><span class="r">878,00 €</span></div>
+      </div>
+      <div class="datei" style="--d:1100ms"><span>pain.001 · Sammelüberweisung</span><u>›</u><span class="ziel">S-Firm</span></div>
+      <div class="datei" style="--d:1900ms"><span>EXTF · Buchungsstapel</span><u>›</u><span class="ziel">DATEV</span></div>
+    </div>
+  </div>
+  <div class="bu t" style="--d:2700ms">Zwei Unterschriften. <em>Null Abtippen.</em></div>
+</div>
+
 <!-- 92,4 Verwaltungsquote -->
 <div class="sz" data-ab="92.4"><div class="riesig k" style="font-size:300px">unter 10 %</div><div class="sub t" style="--d:600ms;font-size:44px;color:var(--txt)">Verwaltungsquote. Statt zwanzig bis dreißig.</div></div>
 <div class="sz" data-ab="95.6" data-mod="1"><div id="mod"></div></div>
@@ -257,7 +258,7 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--txt);-webkit-font-smoo
 <!-- 97,8 Schluss -->
 <div class="sz" data-ab="97.8">
   <div class="marke k"><svg viewBox="-8 -26 276.19 134" role="img" aria-label="KAȲȲA"><g class="ka"><path d="M4.200 53.768 L42.994 100.000 L48.476 100.000 L6.521 50.000 L48.476 0.000 L42.994 0.000 L4.200 46.232 L4.200 0.000 L0.000 0.000 L0.000 100.000 L4.200 100.000 Z"/><path d="M79.072 0.000 L49.072 74.253 L49.072 85.464 L79.072 11.212 L109.072 85.464 L109.072 74.253 Z"/><path d="M230.190 0.000 L260.190 74.253 L260.190 85.464 L230.190 11.212 L200.190 85.464 L200.190 74.253 Z"/></g><g class="yy"><path d="M120.972 62.394 L95.764 0.000 L91.234 0.000 L118.872 68.408 L118.872 100.000 L123.072 100.000 L123.072 68.408 L150.711 0.000 L146.181 0.000 Z"/><path d="M188.290 62.394 L213.499 0.000 L218.029 0.000 L190.390 68.408 L190.390 100.000 L186.190 100.000 L186.190 68.408 L158.551 0.000 L163.081 0.000 Z"/><rect x="99.56" y="-16.0" width="42.82" height="4.2" rx="2.1"/><rect x="166.88" y="-16.0" width="42.82" height="4.2" rx="2.1"/></g></svg></div>
-  <div class="schluss k" style="--d:200ms"><span class="neu">KAȲȲA</span><div class="satz"><span class="alt">Ein Update</span> war überfällig.</div></div>
+  <div class="schluss k" style="--d:200ms"><div class="satz">Ein Update war <em>überfällig.</em></div></div>
   <div class="org t" style="--d:2600ms">KAYYA.ORG</div>
 </div>
 
@@ -272,6 +273,7 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--txt);-webkit-font-smoo
    ?aufnahme=1 : für die Bildschirmaufnahme (ohne Ton, ohne Knöpfe, 3 s Schwarz als Vorlauf). */
 var B=document.getElementById('b'), SZ=[].slice.call(document.querySelectorAll('.sz')), lauf=document.getElementById('lauf'), spur=document.getElementById('spur');
 var VID=[].slice.call(document.querySelectorAll('video')), AB=SZ.map(function(s){ return +s.getAttribute('data-ab'); });
+var AB0=parseFloat((location.search.match(/[?&]ab=([0-9.]+)/)||[])[1])||0;
 var DAUER=105.4, AUFNAHME=/[?&]aufnahme=1/.test(location.search), akt=-1, t0=0, mitTonLauf=false, raf=null, modT=null, fertig=false;
 var MODULE=['Vergabe','Fördermittel','Kursleitung','Teilnehmer','Selbstlernen','Begleitung','Krisenhilfe','Auslandscampus','Management','Buchhaltung','Personal','Recht','Kostenträger','Zeugnisse','Arbeitgeber'];
 var NACHWEISE=['Anwesenheitsliste','Fehlzeitenmeldung','Teilnehmerakte','Maßnahmekalkulation','Standortnachweis','Führungszeugnis','eM@w-Meldung','Monatsbericht','Verwendungsnachweis','Prüfpaket','Datenschutzkonzept','Abschlussbericht','Rechnung je Teilnehmer','Zertifikat','Kostensatz-Begründung','Leistungsbeurteilung'];
@@ -308,7 +310,7 @@ function los(ton){
   cancelAnimationFrame(raf); clearInterval(modT); fertig=false; akt=-1; mitTonLauf=!!ton;
   document.getElementById('nochmal').style.display='none';
   document.getElementById('ton').style.display=(ton||AUFNAHME)?'none':'block';
-  t0=performance.now(); raf=requestAnimationFrame(takt);
+  t0=performance.now()-AB0*1000; raf=requestAnimationFrame(takt);
 }
 function start(nachKlick){
   if(AUFNAHME){ lauf.style.display='none'; SZ.forEach(function(s){ s.classList.remove('an'); }); setTimeout(function(){ los(false); },3000); return; }
