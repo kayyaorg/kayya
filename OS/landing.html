@@ -104,9 +104,16 @@
   #vs-start.an{display:block}
   /* Nach dem Film: Demo-Angebot über dem Zugangsfeld */
   #demoangebot{display:none;position:relative;z-index:5;text-align:center;max-width:520px;margin:34px auto 0;padding:0 16px;color:#EAF2F5;text-shadow:0 1px 3px #000,0 0 14px rgba(0,0,0,.95)}
-  body.nachfilm #demoangebot{display:block}
+  body.nachfilm #demoangebot,body.vorfilm #demoangebot{display:block}
   body.nachfilm #zugang{margin-top:22px}
   #demoangebot b{display:block;font-size:20px;font-weight:700;letter-spacing:.01em}
+  /* Nach dem Film: erst nur das bewegte Logo, dann blenden Demo-Knopf, Zugang und zuletzt die Fusszeile ein */
+  body.vorfilm #demoangebot,body.vorfilm #zugang,body.vorfilm #dbstatus,body.vorfilm #fuss,body.vorfilm #zughinweis{opacity:0;pointer-events:none}
+  body.einblenden #demoangebot,body.einblenden #zugang,body.einblenden #dbstatus,body.einblenden #fuss{transition:opacity 1.4s ease}
+  body.einblenden #demoangebot{transition-delay:2.4s} body.einblenden #zugang{transition-delay:3.0s} body.einblenden #dbstatus{transition-delay:3.6s} body.einblenden #fuss{transition-delay:4.2s}
+  body.nachfilm #demoangebot{margin-top:84px}
+  .demoknopf{display:inline-block;font-size:19px;font-weight:700;color:#05070D!important;background:#fff;border-radius:99px;padding:16px 38px;text-decoration:none!important;text-shadow:none;box-shadow:0 0 28px rgba(190,240,255,.35)}
+  .demoknopf:hover{background:var(--glow)}
   #demoangebot span{display:block;font-size:15px;line-height:1.5;margin-top:6px;opacity:.92}
   #demoangebot a{color:#fff;font-weight:600;text-decoration:underline;text-underline-offset:3px}
 </style>
@@ -136,7 +143,7 @@
     </g>
   </svg>
 </div>
-<div id="demoangebot"><b>Demo: KAȲȲA OS G5</b><span>Mit Ihrem Zugangswort öffnen Sie die Demo sofort. Noch kein Zugang? <a href="mailto:b@kayya.org?subject=KAYYA%20OS%20G5%20%E2%80%93%20Demo">Demo anfragen</a></span></div>
+<div id="demoangebot"><a class="demoknopf" href="mailto:b@kayya.org?subject=KAYYA%20OS%20G5%20%E2%80%93%20Demo">Demo anfragen</a><span>KAȲȲA OS G5 · Sie haben schon ein Zugangswort? Dann hier:</span></div>
 <div id="zugang">
   <div class="zkarte" id="zkarte">
     <div class="pwzeile">
@@ -256,13 +263,16 @@ fetch("/kayya-api.php?action=ping",{headers:{}}).then(function(r){return r.json(
    Aktiv nur, wenn die Datei auf dem Server liegt. Optional: video/kayya-intro.jpg als Standbild.
    Einmal je Browser-Sitzung; nicht, wenn jemand vom Tor umgeleitet wurde. Erneut ansehen: kayya.org/?film=1 */
 var VS_DATEI='video/kayya-intro.mp4', VS_BILD='video/kayya-intro.jpg';
-function vsEnde(){
+function vsEnde(natuerlich){
   var o=document.getElementById('vorspann'), v=document.getElementById('vs-film'); if(!o) return;
   try{ v.pause(); }catch(e){}
   try{ if(document.fullscreenElement) document.exitFullscreen(); }catch(e){}
   try{ sessionStorage.setItem('kayya_film','1'); }catch(e){}
-  o.classList.add('weg'); document.body.classList.add('nachfilm');
-  setTimeout(function(){ var f=document.getElementById('vs-seite'); if(f) f.remove(); },800);
+  /* Logo neu starten (helle Phase zuerst), dann blenden die Bedienelemente nacheinander ein */
+  try{ var wm=document.getElementById('wm'); if(wm){ var neu=wm.cloneNode(true); wm.parentNode.replaceChild(neu,wm); } }catch(e){}
+  o.classList.add('weg'); document.body.classList.add('nachfilm','einblenden'); document.body.classList.remove('vorfilm');
+  /* am natuerlichen Ende klingt die Musik im Film noch aus, beim Ueberspringen ist sofort Ruhe */
+  setTimeout(function(){ var f=document.getElementById('vs-seite'); if(f) f.remove(); },natuerlich===true?3000:800);
   setTimeout(function(){ o.classList.remove('an'); var p=document.getElementById('pw'); if(p && !MOBIL) p.focus(); },750);
 }
 function vsVollbild(){ try{ var o=document.getElementById('vorspann'); if(o.requestFullscreen && !document.fullscreenElement) o.requestFullscreen().catch(function(){}); }catch(e){} }
@@ -281,11 +291,11 @@ function vsStart(){ var v=document.getElementById('vs-film'); v.muted=false; doc
       var f=document.createElement('iframe'); f.id='vs-seite'; f.src='film.html'; f.title='KAȲȲA OS Film'; f.setAttribute('scrolling','no');
       f.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:0;background:#000';
       o.insertBefore(f,o.firstChild);
-      window.addEventListener('message',function(e){ if(e.origin===location.origin && e.data==='kayya-film-ende') vsEnde(); });
+      window.addEventListener('message',function(e){ if(e.origin===location.origin && e.data==='kayya-film-ende') vsEnde(true); });
       /* Ton: Browser erlauben ihn erst nach einer Eingabe. Der erste Klick, Tipp oder Tastendruck irgendwo schaltet ihn im Film ein. */
       ['pointerdown','keydown','touchend'].forEach(function(ev){ document.addEventListener(ev,function(){ try{ if(f.contentWindow) f.contentWindow.postMessage('kayya-film-ton',location.origin); }catch(e){} },true); });
       document.addEventListener('keydown',function(e){ if(e.key==='Escape' && o.classList.contains('an') && !o.classList.contains('weg')) vsEnde(); });
-      o.classList.add('an');
+      o.classList.add('an'); document.body.classList.add('vorfilm');
     }).catch(function(){ return fetch(VS_DATEI,{method:'HEAD',cache:'no-store'}).then(function(r){
       if(!r.ok || !/video/i.test(r.headers.get('content-type')||'')) return;
       var o=document.getElementById('vorspann'), v=document.getElementById('vs-film');

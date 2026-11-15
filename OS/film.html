@@ -274,6 +274,7 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--txt);-webkit-font-smoo
 var B=document.getElementById('b'), SZ=[].slice.call(document.querySelectorAll('.sz')), lauf=document.getElementById('lauf'), spur=document.getElementById('spur');
 var VID=[].slice.call(document.querySelectorAll('video')), AB=SZ.map(function(s){ return +s.getAttribute('data-ab'); });
 var AB0=parseFloat((location.search.match(/[?&]ab=([0-9.]+)/)||[])[1])||0;
+var gemeldet=false;
 var DAUER=101.0, AUFNAHME=/[?&]aufnahme=1/.test(location.search), akt=-1, t0=0, mitTonLauf=false, raf=null, modT=null, fertig=false;
 var MODULE=['Vergabe','Fördermittel','Kursleitung','Teilnehmer','Selbstlernen','Begleitung','Krisenhilfe','Auslandscampus','Management','Buchhaltung','Personal','Recht','Kostenträger','Zeugnisse','Arbeitgeber'];
 var NACHWEISE=['Anwesenheitsliste','Fehlzeitenmeldung','Teilnehmerakte','Maßnahmekalkulation','Standortnachweis','Führungszeugnis','eM@w-Meldung','Monatsbericht','Verwendungsnachweis','Prüfpaket','Datenschutzkonzept','Abschlussbericht','Rechnung je Teilnehmer','Zertifikat','Kostensatz-Begründung','Leistungsbeurteilung'];
@@ -296,18 +297,20 @@ function takt(){
   var t=zeit(), i=0; for(var j=0;j<AB.length;j++){ if(t>=AB[j]) i=j; }
   if(i!==akt) zeige(i);
   lauf.style.width=Math.min(100,t/DAUER*100)+'%';
+  /* Auf der Startseite: nach dem Schlusssatz uebernimmt das bewegte Logo der Seite, die Musik klingt hier noch aus */
+  if(!AUFNAHME && parent!==window && !gemeldet && t>=96.2){ gemeldet=true; try{ parent.postMessage('kayya-film-ende',location.origin); }catch(e){} }
   if(t>=DAUER){ ende(); return; }
   raf=requestAnimationFrame(takt);
 }
 function ende(){
   if(fertig) return; fertig=true; try{ spur.pause(); }catch(e){}
   if(AUFNAHME) return;
-  try{ if(parent!==window) parent.postMessage('kayya-film-ende',location.origin); }catch(e){}
+  try{ if(parent!==window && !gemeldet){ gemeldet=true; parent.postMessage('kayya-film-ende',location.origin); } }catch(e){}
   if(parent===window) document.getElementById('nochmal').style.display='block';
   document.getElementById('ton').style.display='none';
 }
 function los(ton){
-  cancelAnimationFrame(raf); clearInterval(modT); fertig=false; akt=-1; mitTonLauf=!!ton;
+  cancelAnimationFrame(raf); clearInterval(modT); fertig=false; gemeldet=false; akt=-1; mitTonLauf=!!ton;
   document.getElementById('nochmal').style.display='none';
   document.getElementById('ton').style.display=(ton||AUFNAHME)?'none':'block';
   t0=performance.now()-AB0*1000; raf=requestAnimationFrame(takt);
