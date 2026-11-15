@@ -282,6 +282,8 @@ function vsStart(){ var v=document.getElementById('vs-film'); v.muted=false; doc
       f.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:0;background:#000';
       o.insertBefore(f,o.firstChild);
       window.addEventListener('message',function(e){ if(e.origin===location.origin && e.data==='kayya-film-ende') vsEnde(); });
+      /* Ton: Browser erlauben ihn erst nach einer Eingabe. Der erste Klick, Tipp oder Tastendruck irgendwo schaltet ihn im Film ein. */
+      ['pointerdown','keydown','touchend'].forEach(function(ev){ document.addEventListener(ev,function(){ try{ if(f.contentWindow) f.contentWindow.postMessage('kayya-film-ton',location.origin); }catch(e){} },true); });
       document.addEventListener('keydown',function(e){ if(e.key==='Escape' && o.classList.contains('an') && !o.classList.contains('weg')) vsEnde(); });
       o.classList.add('an');
     }).catch(function(){ return fetch(VS_DATEI,{method:'HEAD',cache:'no-store'}).then(function(r){
