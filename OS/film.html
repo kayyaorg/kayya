@@ -115,7 +115,8 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--txt);-webkit-font-smoo
 
 #lauf{position:absolute;left:0;bottom:0;height:5px;width:0;background:var(--akz);z-index:5}
 #ton,#nochmal{position:absolute;z-index:9;font:600 26px 'Inter',sans-serif;color:var(--txt);background:rgba(0,0,0,.5);border:2px solid var(--txt);border-radius:99px;padding:14px 34px;cursor:pointer;display:none}
-#ton{right:60px;top:50px}
+#ton{left:50%;top:60px;transform:translateX(-50%);font-size:34px;padding:22px 54px;background:var(--txt);color:#111;border-color:var(--txt);box-shadow:0 0 0 0 rgba(241,236,229,.5);animation:tonpuls 1.6s ease-out infinite}
+@keyframes tonpuls{0%{box-shadow:0 0 0 0 rgba(241,236,229,.55)}100%{box-shadow:0 0 0 34px rgba(241,236,229,0)}}
 #nochmal{left:50%;bottom:80px;transform:translateX(-50%)}
 #ton:hover,#nochmal:hover{background:var(--txt);color:#111}
 </style>
@@ -263,7 +264,7 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--txt);-webkit-font-smoo
 </div>
 
 <div id="lauf"></div>
-<button id="ton" onclick="mitTon()">Ton einschalten</button>
+<button id="ton" onclick="mitTon()">Ton an: einmal klicken</button>
 <button id="nochmal" onclick="start(true)">Noch einmal ansehen</button>
 </div>
 <audio id="spur" src="video/kayya-film.m4a" preload="auto"></audio>
