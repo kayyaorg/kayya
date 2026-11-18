@@ -38,49 +38,49 @@ Diesen Block vollständig kopieren, von „Sie kennen das.“ bis „überfälli
 
 Sie kennen das. <break time="0.7s" /> Ein Ordner für die fachkundige Stelle, einer für die Agentur, einer für das Jobcenter. <break time="0.5s" /> Und keiner davon bringt einen Menschen in Arbeit.
 
-<break time="0.9s" />
+<break time="1.6s" />
 
 Jede Maßnahme, die ein Kostenträger finanziert, verlangt Nachweise, Kalkulationen, Meldungen. Dafür unterhalten Träger einen Apparat, der ein Viertel der Mittel verbraucht, bevor ein Teilnehmer etwas davon hat.
 
-<break time="0.9s" />
+<break time="1.6s" />
 
 Und die Vorgaben ziehen an. <break time="0.5s" /> Seit Juli gilt der Vermittlungsvorrang, eine Maßnahme muss ihren Erfolg belegen. <break time="0.4s" /> Die Kostensätze werden Position für Position geprüft. <break time="0.4s" /> Ab zweitausendachtundzwanzig müssen Honorarkräfte angestellt sein. <break time="0.4s" /> Und die Jobcenter hatten im Frühjahr zweitausendfünfundzwanzig ein Fünftel weniger Menschen in Maßnahmen als ein Jahr zuvor.
 
-<break time="0.9s" />
+<break time="1.6s" />
 
 Wer daran festhält, die Verwaltung hinterher zu erledigen, verliert. <break time="0.5s" /> Nicht gegen die Politik, sondern gegen die eigene Kostenrechnung.
 
-<break time="1.2s" />
+<break time="1.6s" />
 
 Kaja O-S dreht die Reihenfolge um. <break time="0.5s" /> Der Nachweis entsteht im Moment der Arbeit. <break time="0.4s" /> Und der Kostenträger ist von Anfang an dabei, mit einer eigenen Sicht auf seine Maßnahme, bis zum einzelnen Beleg.
 
-<break time="0.9s" />
+<break time="1.6s" />
 
 Was der Kostenträger sehen will, wird einmal erfasst. <break time="0.4s" /> Anwesenheit, Stunde, Beleg. <break time="0.5s" /> Das Prüfpaket kommt auf Knopfdruck, der Monatsbericht ist die Live-Ansicht. <break time="0.4s" /> Bis zum Zeugnis mit Prüfcode.
 
-<break time="0.9s" />
+<break time="1.6s" />
 
 Für die Kursleitung heißt das: Wer eine Stunde hält, hat sie damit dokumentiert und abgerechnet. <break time="0.4s" /> Keine Listen am Abend, keine Nachfragen im Quartal.
 
-<break time="0.9s" />
+<break time="1.6s" />
 
 Wird es kritisch, eskaliert das System in Stufen: erst erinnern, dann reden, dann melden. <break time="0.4s" /> Keine Stufe ohne einen Menschen.
 
-<break time="0.9s" />
+<break time="1.6s" />
 
 Der Zahllauf geht mit zwei Freigaben an Es-Firm, der Buchungsstapel an Datev. <break time="0.4s" /> Niemand tippt etwas ab.
 
-<break time="0.9s" />
+<break time="1.6s" />
 
 Die Zeit gehört wieder den Teilnehmern. <break time="0.4s" /> Und weil kein Apparat mitverdient, bleibt das Geld bei denen, die die Arbeit machen.
 
-<break time="0.9s" />
+<break time="1.6s" />
 
 Festangestellt, gut bezahlt, langfristig im Team. <break time="0.5s" /> Das ist bei Kaja O-S kein Versprechen, sondern eine Rechnung: Verwaltungsquote unter zehn Prozent statt zwanzig bis dreißig.
 
-<break time="1.4s" />
+<break time="1.6s" />
 
-Kaja O-S. <break time="0.8s" /> Ein Update war überfällig.
+Kaja O-S. <break time="0.6s" /> Ein Update war überfällig.
 
 
 4. FASSUNG B · für Eleven v3 (ohne <break>, Pausen über Satzzeichen und Absätze)
